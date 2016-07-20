@@ -9,6 +9,7 @@ Capabilities:
 - 1kHz exchange rate with PC
 
 
+<pre>
 Pinout:
 		 STM32F103C8T6
 		  -----------------
@@ -34,5 +35,8 @@ Pinout:
 		- |GND		   B12| - COL4
 		  ----------------
 		  
+</pre>
 		  
 Wiring Scheme in file Wiring_Scheme.jpg
+
+Project URL - https://opensimhardware.wordpress.com/pedal-button-controller/
