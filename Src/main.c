@@ -179,17 +179,18 @@ int main(void)
 	  USBSendBuffer[14] = HIBYTE(a);
 
 	  a = ADC1Values[3];
-	  b = ADC1Values[4];
-	  a = (a > b) ? a : b;
 	  USBSendBuffer[15] = LOBYTE(a);
 	  USBSendBuffer[16] = HIBYTE(a);
-
-	  a = ADC1Values[5];
+	  a = ADC1Values[4];
 	  USBSendBuffer[17] = LOBYTE(a);
 	  USBSendBuffer[18] = HIBYTE(a);
-	  a = ADC1Values[6];
+
+	  a = ADC1Values[5];
+	  b = ADC1Values[6];
+	  a = (a > b) ? a : b;
 	  USBSendBuffer[19] = LOBYTE(a);
 	  USBSendBuffer[20] = HIBYTE(a);
+
 
 
 	  for (uint8_t i=0;i<NUMCOLS;i++)
