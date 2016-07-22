@@ -126,6 +126,7 @@ int main(void)
 
    USBSendBuffer[0] = 2;
    uint64_t diff;
+   uint8_t chk=0;
 
 
   /* USER CODE END 2 */
@@ -230,8 +231,14 @@ int main(void)
 	  }
 
 
+	  for (uint8_t i=1;i<21;i++) {
+		  chk |= USBSendBuffer[i];
+	  }
 
-	  USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, 21);
+	  if (chk) {
+		  USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, 21);
+	  }
+
 
 
 	//  HAL_Delay(1000);
