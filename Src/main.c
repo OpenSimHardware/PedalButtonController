@@ -155,7 +155,7 @@ int main(void)
 //	[5] - 8 buttons
 //	[6] - 8 buttons
 //	[7]	- 8 buttons
-//	[8] - 4 buttons + 4 not used buttons
+//	[8] - 8 buttons
 //	[9] - LOWBYTE from 1st axis
 //	[10]- HIGHBYTE from 1st axis
 //	[11]- LOWBYTE from 2nd axis

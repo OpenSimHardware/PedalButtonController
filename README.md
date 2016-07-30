@@ -1,6 +1,6 @@
-# PedalButtonController
+# OpenSimHardware Pedals & Buttons Controller
 
-STM32F103C8T6 - based Pedal & Button Controller (Joystick/GamePad interface) for DIY pedals, button boxes, shifters, hand brakes, etc
+STM32F103C8T6-based Pedals & Buttons Controller (Joystick/GamePad interface) for DIY pedals, button boxes, shifters, hand brakes, etc
 
 Capabilities:
 - 6x 12-bit (4096 steps) axises
