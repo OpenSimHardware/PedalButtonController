@@ -57,8 +57,7 @@ struct pin_conf {
 // GPIOC
 // C13 - C15 output PP lowspeed
 
-
-volatile struct pin_conf pins[] = {
+volatile struct pin_conf pins[USEDPINS] = {
 		{1, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},	//A0
 		{1, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},	//A1
 		{1, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, //A2
@@ -88,11 +87,19 @@ volatile struct pin_conf pins[] = {
 		{6, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15}
 };
 
-
+volatile uint16_t * tmp;
 void gpio_init(void) {
 
 	// GPIO Ports Clock for GPIOA/B/C/D
 	RCC->APB2ENR |= (uint32_t)0x3C;
+
+
+	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
+		write_flash();
+	} else {
+		get_config();
+	}
+
 
 	gpio_ports_config();
 
@@ -106,13 +113,12 @@ void gpio_init(void) {
 void gpio_ports_config(void) {
 
 	uint32_t tmpregmask;
-	uint8_t tmpconfvalue=0x4,tmpbsrrvalue,i,tmp=0,num_elements=0;
+	uint8_t tmpconfvalue=0x4,tmpbsrrvalue,i,tmp=0;
 
 
 	// making registers configuration;
-	num_elements=(sizeof(pins)/sizeof(pins[0]));
 
-	for (i=0;i<num_elements;i++){
+	for (i=0;i<USEDPINS;i++){
 		switch (pins[i].pin_type) {
 		case 0:	tmpconfvalue=0x4;
 				tmpbsrrvalue=0x10;

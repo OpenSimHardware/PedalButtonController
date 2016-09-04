@@ -1,9 +1,9 @@
 /*
  * ----------------------------------------------------------------------------------
- * @file  		: periph_init.h
+ * @file  		: flash_store.h
  * @author 		: Dmitry Skulkin <dmitry.skulkin@gmail.com>
  * @version		: 0.1
- * @brief 		: Periphery initialization  library
+ * @brief 		: Flash reading/writing  library
  *
  * ----------------------------------------------------------------------------------
  *	 Copyright (c) 2016 Dmitry Skulkin <dmitry.skulkin@gmail.com>					*
@@ -28,15 +28,20 @@
  * ----------------------------------------------------------------------------------
  * */
 
-#ifndef PERIPH_INIT_H_
-#define PERIPH_INIT_H_
+#ifndef FLASH_STORE_H_
+#define FLASH_STORE_H_
 
-#include <stm32f1xx.h>
-#include <flash_store.h>
+#include <stdint.h>
+#include <periph_init.h>
 
-#define USEDPINS 27
+#define FLASHSIZEREG 	0x1FFFF7E0
+//#define FLASHBASE		0x08000000
+//#define FLASH_KEY1               ((uint32_t)0x45670123)
+//#define FLASH_KEY2               ((uint32_t)0xCDEF89AB)
 
-void gpio_init(void);
-void gpio_ports_config(void);
+uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr);
+void get_config(void);
+void write_flash(void);
+void erase_flash(void);
 
-#endif /* PERIPH_INIT_H_ */
+#endif /* FLASH_STORE_H_ */
