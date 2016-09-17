@@ -67,7 +67,7 @@ void SWV_printnum(long number);
 
 volatile uint32_t ADC1Values[7];
 uint32_t a,b;//,c,d,e;
-extern uint8_t Keypad_Buttons[NUMROWS][NUMCOLS][3];
+extern uint8_t Keypad_Buttons[USEDPINS][USEDPINS][3];
 uint8_t USBSendBuffer[21];			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
 uint8_t ButtonsCodes[8] = {
 		0x01,	//b00000001,
@@ -82,8 +82,12 @@ uint8_t ButtonsCodes[8] = {
 
 
 
-extern volatile struct rots RotaryStore[NUMROTARIES];
+extern volatile struct rots RotaryStore[USEDPINS];
+extern uint8_t Number_Rotaries;
+extern uint8_t Number_Rows, Number_Columns;
 extern volatile uint64_t millis;
+extern struct keypad buttons[USEDPINS];
+
 //extern __IO uint8_t PrevXferComplete;
 
 //extern uint32_t gpioa_l,gpioa_h,gpiob_l,gpiob_h,gpioc_l,gpioc_h;
@@ -132,9 +136,11 @@ int main(void)
    if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Values, 7) != HAL_OK)
 	   Error_Handler();
 
-   USBSendBuffer[0] = 2;
+   USBSendBuffer[0] = 4;
    uint64_t diff;
    uint8_t chk=0;
+
+   uint8_t buttons_offset=Number_Rotaries*2/8 + 1;
 
 
   /* USER CODE END 2 */
@@ -155,7 +161,7 @@ int main(void)
 	  CheckRotaries();
 
 //	USBSendBuffer structure:
-//	[0] - report id (2)
+//	[0] - report id (4)
 //	[1] - 4 encoders (8 buttons)
 //	[2] - 4 encoders (8 buttons)
 //	[3] - 3 encoders (6 buttons) + 2 not used buttons
@@ -201,25 +207,33 @@ int main(void)
 	  USBSendBuffer[20] = HIBYTE(a);
 
 
-
-	  for (uint8_t i=0;i<NUMCOLS;i++)
-		  for (uint8_t j=0;j<NUMROWS;j++){
-			  if (Keypad_Buttons[i][j][0] == 1) {
-				  USBSendBuffer[4+i] |= ButtonsCodes[j];
-			//	  SWV_printnum((long)Keypad_Buttons[i][j][0]);
-			  } else {
-				  USBSendBuffer[4+i] &= ~ButtonsCodes[j];
-			  }
+//	  buttons_offset=1;
+	  for (uint8_t i=0;i<Number_Columns*Number_Rows;i++) {
+		  if (buttons[i].pressed) {
+			  USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
+		  } else {
+			  USBSendBuffer[buttons_offset+i/8] &= ~ButtonsCodes[i%8];
 		  }
+	  }
+
+//	  for (uint8_t i=0;i<Number_Columns;i++)
+//		  for (uint8_t j=0;j<Number_Rows;j++){
+//			  if (Keypad_Buttons[i][j][0] == 1) {
+//				  USBSendBuffer[4+i] |= ButtonsCodes[j];
+//			//	  SWV_printnum((long)Keypad_Buttons[i][j][0]);
+//			  } else {
+//				  USBSendBuffer[4+i] &= ~ButtonsCodes[j];
+//			  }
+//		  }
 
 	  //CW: Byte[i/4] = mass[(i%4) *2]
 //	  CCW: bytes[i/4] = mass[(i%4) *2 + 1]
 
-	  for (uint8_t i=0;i<NUMROTARIES;i++){
+	  for (uint8_t i=0;i<Number_Rotaries;i++){
 
 		  diff = millis - RotaryStore[i].time_pressed;
 
-		  if (RotaryStore[i].pressed == 1) {
+		  if (RotaryStore[i].pressed == DIR_CW) {
 				  if ( diff > ROTTIME){
 				  USBSendBuffer[(uint8_t)(i/4)+1] &= ~ButtonsCodes[(i%4)*2];
 				  RotaryStore[i].pressed = 0;
@@ -228,7 +242,7 @@ int main(void)
 		  			 USBSendBuffer[(uint8_t)(i/4)+1] |= ButtonsCodes[(i%4)*2];
 		  	 }
 
-		  if (RotaryStore[i].pressed == 2) {
+		  if (RotaryStore[i].pressed == DIR_CCW) {
 			  if (diff > ROTTIME){
 				  USBSendBuffer[(uint8_t)(i/4)+1] &= ~ButtonsCodes[(i%4)*2+1];
 				  RotaryStore[i].pressed = 0;

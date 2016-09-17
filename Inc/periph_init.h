@@ -34,7 +34,26 @@
 #include <stm32f1xx.h>
 #include <flash_store.h>
 
+
 #define USEDPINS 27
+
+typedef enum {
+	Not_Used,
+	Analog,
+	Rotary_PINA,
+	Rotary_PINB,
+	Rotary_Enc,
+	Button_ROW,
+	Button_COLUMN,
+} pintype;
+
+struct pin_conf {
+		pintype pin_type;
+		uint32_t * conf_reg_addr;
+		uint32_t * bsrr_reg_addr;
+		uint32_t * idr_reg_addr;
+		uint8_t pin_number;
+	};
 
 void gpio_init(void);
 void gpio_ports_config(void);

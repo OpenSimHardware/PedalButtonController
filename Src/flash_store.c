@@ -28,15 +28,6 @@
 
 #include <flash_store.h>
 
-struct pin_conf {
-		uint8_t pin_type;
-		uint32_t * conf_reg_addr;
-		uint32_t * bsrr_reg_addr;
-		uint32_t * idr_reg_addr;
-		uint8_t pin_number;
-	};
-
-
 
 extern struct pin_conf pins[USEDPINS];
 

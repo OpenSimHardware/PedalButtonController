@@ -77,54 +77,64 @@
  */
 __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END =
 {
-		 /* USER CODE BEGIN 0 */
-				0x06, 0x00, 0xFF,              // 	USAGE_PAGE (Generic Desktop)
-			    0x09, 0x01,                    // 	USAGE (Vendor Usage 1)
-			    0xa1, 0x01,                    // 	COLLECTION (Application)
-			    0x85, 0x01,                    //   REPORT_ID (1)
-			    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
-			    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-			    0x26, 0xFF, 0x00,                    //   LOGICAL_MAXIMUM (255)
-			    0x75, 0x08,                    //   REPORT_SIZE (8)
-			    0x95, 0x10, 	           //   REPORT_COUNT (x)
-			    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
-			    0xC0,    /*     END_COLLECTION	             */
+		 		0x06, 0x00, 0xFF,            //	USAGE_PAGE (Generic Desktop)
+			    0x09, 0x01,                  //	USAGE (Vendor Usage 1)
+			    0xa1, 0x01,                  //	COLLECTION (Application)
+//
+			    0x85, 0x01,                    	//  REPORT_ID (1)
+			    0x09, 0x01,                    	//  USAGE (Vendor Usage 1)
+			    0x15, 0x00,                    	//  LOGICAL_MINIMUM (0)
+			    0x26, 0xFF, 0x00,               //  LOGICAL_MAXIMUM (255)
+			    0x75, 0x08,                    	//  REPORT_SIZE (8)
+			    0x95, 0x20, 	           		//  REPORT_COUNT (32)
+			    0x91, 0x82,                    	//  OUTPUT (Data,Var,Abs,Vol)
+//
+			    0x85, 0x02,       				// 	REPORT_ID (2)
+			    0x09, 0x02,						//	USAGE (Vendor Usage 2)
+			    0x26, 0xFF, 0x00,				//	LOGICAL_MAXIMUM(255)
+			    0x15, 0x00,						//	LOGICAL_MINIMUM(0)
+			    0x75, 0x08,                    	//  REPORT_SIZE (8)
+			    0x95, 0x01, 	           		//  REPORT_COUNT (1)
+			    0x91, 0x82,                    	//  OUTPUT (Data,Var,Abs,Vol)
+//
+			    0x85, 0x03,       				// 	REPORT_ID (3)
+			    0x09, 0x03,						//	USAGE (Vendor Usage 3)
+			    0x26, 0xFF, 0x00,				//	LOGICAL_MAXIMUM(255)
+			    0x15, 0x00,						//	LOGICAL_MINIMUM(0)
+			    0x75, 0x08,                    	//  REPORT_SIZE (8)
+			    0x95, 0x20, 	           		//  REPORT_COUNT (32)
+			    0x81, 0x82,                    	//  INPUT (Data,Var,Abs,Vol)
+
+			    0xC0,    					  // END_COLLECTION
 			    //joystick
-			    0x05, 0x01,        //USAGE_PAGE (Generic Desktop)
-			    0x09, 0x05,        //USAGE (Game Pad)
-			    0xA1, 0x01,        //COLLECTION (Application)
-			    0x85, 0x02,       // REPORT_ID (2)
-				0x05, 0x09,			// USAGE_PAGE (Button)
-			    0x15, 0x00,        //  LOGICAL_MINIMUM(0)
-			    0x25, 0x01,        //  LOGICAL_MAXIMUM(1)
-			    0x35, 0x00,        //  PHYSICAL_MINIMUM(0)
-			    0x45, 0x01,        //  PHYSICAL_MAXIMUM(1)
-			    0x75, 0x01,        //  REPORT_SIZE(1)
-			    0x95, 0x40,        //  REPORT_COUNT(48)
-				0x19, 0x01,			//USAGE_MINIMUM (Button 1)
-				0x29, 0x40,			//USAGE_MAXIMUM (Button 48)
-				0x81, 0x02,        //  INPUT(Data,Var,Abs)
-	//			0x05, 0x02,			//USAGE_PAGE (Simulation Controls)
-	//			0x09, 0xC4,			//USAGE (Accelerator)
-	//			0x09, 0xC5,			//USAGE (Brake)
-	//			0x09, 0xC6,			//USAGE (Clutch)
-	//			0x09, 0xC7,			//USAGE (Shifter)
-	//			0x09, 0xCF,			//USAGE (Front Brake)
-	//			0x09, 0xCF,			//USAGE (Rear Brake)
-				0x05, 0x01,        //USAGE_PAGE (Generic Desktop)
-				0x09, 0x30,			//USAGE (X)
-				0x09, 0x31,			//USAGE (Y)
-				0x09, 0x32,			//USAGE (Z)
-				0x09, 0x33,			//USAGE (Rx)
-				0x09, 0x34,			//USAGE (Ry)
-				0x09, 0x35,			//USAGE (Rz)
-				0x15, 0x00,        //  LOGICAL_MINIMUM(0)
-				0x26, 0xFF, 0x0F,	//LOGICAL_MAXIMUM(4095)
-				0x75, 0x10,		//REPORT_SIZE (16)
-				0x95, 0x06,		//REPORT_COUNT (6)
-				0x81, 0x02,        //  INPUT(Data,Var,Abs)
-		  /* USER CODE END 0 */
-		  0xC0    /*     END_COLLECTION	             */
+			    0x05, 0x01,        			//	USAGE_PAGE (Generic Desktop)
+			    0x09, 0x05,        			//	USAGE (Game Pad)
+			    0xA1, 0x01,        			//	COLLECTION (Application)
+//			    0x85, 0x02,       				// REPORT_ID (2)
+			    0x85, 0x04,       				// REPORT_ID (4)
+				0x05, 0x09,						// USAGE_PAGE (Button)
+			    0x15, 0x00,        				// LOGICAL_MINIMUM(0)
+			    0x25, 0x01,        				// LOGICAL_MAXIMUM(1)
+			    0x35, 0x00,        				// PHYSICAL_MINIMUM(0)
+			    0x45, 0x01,        				// PHYSICAL_MAXIMUM(1)
+			    0x75, 0x01,        				// REPORT_SIZE(1)
+			    0x95, 0x40,        				// REPORT_COUNT(48)
+				0x19, 0x01,						// USAGE_MINIMUM (Button 1)
+				0x29, 0x40,						// USAGE_MAXIMUM (Button 48)
+				0x81, 0x02,        				// INPUT(Data,Var,Abs)
+				0x05, 0x01,        			//	USAGE_PAGE (Generic Desktop)
+				0x09, 0x30,						//	USAGE (X)
+				0x09, 0x31,						//	USAGE (Y)
+				0x09, 0x32,						//	USAGE (Z)
+				0x09, 0x33,						//	USAGE (Rx)
+				0x09, 0x34,						//	USAGE (Ry)
+				0x09, 0x35,						//	USAGE (Rz)
+				0x15, 0x00,        				//  LOGICAL_MINIMUM(0)
+				0x26, 0xFF, 0x0F,				//	LOGICAL_MAXIMUM(4095)
+				0x75, 0x10,						//	REPORT_SIZE (16)
+				0x95, 0x06,						//	REPORT_COUNT (6)
+				0x81, 0x02,        				//  INPUT(Data,Var,Abs)
+		  		  0xC0    				//	END_COLLECTION
 
 }; 
 /* USB handler declaration */
@@ -132,6 +142,7 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   USBD_HandleTypeDef  *hUsbDevice_0;
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
+  extern struct pin_conf pins[USEDPINS];
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -202,6 +213,27 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
 static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 { 
   /* USER CODE BEGIN 6 */ 
+
+	USBD_CUSTOM_HID_HandleTypeDef     *hhid = (USBD_CUSTOM_HID_HandleTypeDef*)hUsbDevice_0->pClassData;
+	uint8_t report_id;
+	uint8_t USB_send_buffer[USEDPINS+1];
+
+	report_id = hhid->Report_buf[0];
+
+	if (report_id == 2) {
+		if (hhid->Report_buf[1]==1) {
+			USB_send_buffer[0] = 3;
+			for (uint8_t i=1;i<USEDPINS+1;i++){
+				USB_send_buffer[i] = pins[i-1].pin_type;
+			}
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USB_send_buffer, USEDPINS+1);
+		}
+	}
+//	  for (uint8_t i = 0; i < 4; i++)
+//	  {
+//	    dataToReceive[i] = hhid->Report_buf[i];
+//	  }
+
   return (0);
   /* USER CODE END 6 */ 
 }
