@@ -34,8 +34,8 @@
 #include <stm32f1xx.h>
 #include <flash_store.h>
 
-
 #define USEDPINS 27
+#define ADC_BUFF_SIZE 7
 
 typedef enum {
 	Not_Used,
@@ -57,5 +57,6 @@ struct pin_conf {
 
 void gpio_init(void);
 void gpio_ports_config(void);
+void adc_init(void);
 
 #endif /* PERIPH_INIT_H_ */

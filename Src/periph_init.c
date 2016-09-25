@@ -29,25 +29,6 @@
 #include <periph_init.h>
 
 // default ports configuration
-
-// pin_type:
-// 0 - Not Used
-// 1 - Analog
-// 2 - Rotary Enc PINA
-// 3 - Rotary Enc PINB
-// 4 - Rotary Enc
-// 5 - Button Matrix ROW
-// 6 - Button Matrix COLUMN
-
-// GPIOA
-// A0 - A6 - analog
-// A7 - A10 - output PP lowspeed
-// GPIOB
-// B4 - B9, B10 - B11 - input pulldown
-// B0, B1, B3, B12 - B15 - output PP lowspeed
-// GPIOC
-// C13 - C15 output PP lowspeed
-
 volatile struct pin_conf pins[USEDPINS] = {
 		{Analog, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},	//A0
 		{Analog, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},	//A1
@@ -81,6 +62,7 @@ volatile struct pin_conf pins[USEDPINS] = {
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0, Number_Rows=0, Number_Columns=0;
+extern uint32_t ADC1Values[ADC_BUFF_SIZE];
 
 void gpio_init(void) {
 
@@ -158,3 +140,79 @@ void gpio_ports_config(void) {
 		*pins[i].bsrr_reg_addr &= 1 << (pins[i].pin_number+tmpbsrrvalue);
 	}
 }
+
+void adc_init(void) {
+
+
+	//ADC clock enable
+	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN ;
+	//DMA clock enable
+	RCC->AHBENR |= RCC_AHBENR_DMA1EN;
+
+	//reset ADC prev config
+	ADC1->CR1=(uint32_t)0x0;
+	ADC1->CR2=(uint32_t)0x0;
+	ADC1->SMPR1=(uint32_t)0x0;
+	ADC1->SMPR2=(uint32_t)0x0;
+	ADC1->SQR3=(uint32_t)0x0;
+	ADC1->SQR2=(uint32_t)0x0;
+	ADC1->SQR1=(uint32_t)0x0;
+	//reset DMA prev config
+	DMA1_Channel1->CPAR = 0x0;
+	DMA1_Channel1->CMAR = 0x0;
+	DMA1_Channel1->CCR = 0x0;
+	DMA1_Channel1->CNDTR =0x0;
+
+
+	//Set ADC DR Register as peripheral
+	DMA1_Channel1->CPAR = (uint32_t)&ADC1->DR;
+	//Set Memory address
+	DMA1_Channel1->CMAR = (uint32_t)ADC1Values;
+	//Total number of data transfered
+	DMA1_Channel1->CNDTR = ADC_BUFF_SIZE;
+	//Channel priority very high
+	DMA1_Channel1->CCR |= DMA_CCR_PL;
+	//Memory size 32bit
+	DMA1_Channel1->CCR |= DMA_CCR_MSIZE;
+	//Peripheral size 32bit
+	DMA1_Channel1->CCR |= DMA_CCR_PSIZE;
+	//Circular mode
+	DMA1_Channel1->CCR |= DMA_CCR_CIRC;
+	//Memory inc
+	DMA1_Channel1->CCR |= DMA_CCR_MINC;
+	//DMA Channel1 enable
+	DMA1_Channel1->CCR |= DMA_CCR_EN;
+
+	//Calibration
+	ADC1->CR2 |= ADC_CR2_CAL;
+	while (!(ADC1->CR2 & ADC_CR2_CAL));
+
+	//DMA + Continious Conversion
+	ADC1->CR2 |= ADC_CR2_DMA;
+	ADC1->CR2 |= ADC_CR2_CONT;
+	//Scan mode
+	ADC1->CR1 |= ADC_CR1_SCAN ;
+	//13.5 cycles for all channels
+	ADC1->SMPR1 = (uint32_t)0x492492;
+	ADC1->SMPR2 = (uint32_t)0x12492492;
+	//Wakeup ADC
+	ADC1->CR2 |= ADC_CR2_ADON;
+
+	uint8_t channel=0;
+
+	for (uint8_t i=0;i<USEDPINS;i++){
+		if (pins[i].pin_type == Analog) {
+			if (channel < 6) {
+				ADC1->SQR3 |= channel << (5*channel);
+			} else {
+				ADC1->SQR2 |= channel << (5*(channel-6));
+			}
+			channel++;
+		}
+	}
+	ADC1->SQR1 |= (--channel) << 20;
+
+	//Start ADC
+	ADC1->CR2 |= ADC_CR2_ADON;
+}
+

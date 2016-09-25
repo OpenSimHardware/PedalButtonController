@@ -41,6 +41,8 @@
 #include "usbd_customhid.h"
 //#include "usbd_hid.h"
 
+
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -55,8 +57,8 @@ DMA_HandleTypeDef hdma_adc1;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 //static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
-static void MX_ADC1_Init(void);
+//static void MX_DMA_Init(void);
+//static void MX_ADC1_Init(void);
 void Error_Handler(void);
 
 //uint8_t TM_KEYPAD_INT_Read(void);
@@ -65,7 +67,7 @@ void Error_Handler(void);
 /* Private function prototypes -----------------------------------------------*/
 void SWV_printnum(long number);
 
-volatile uint32_t ADC1Values[7];
+volatile uint32_t ADC1Values[ADC_BUFF_SIZE];
 uint32_t a,b;//,c,d,e;
 extern uint8_t Keypad_Buttons[USEDPINS][USEDPINS][3];
 uint8_t USBSendBuffer[21];			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
@@ -124,17 +126,18 @@ int main(void)
 
 //  MX_GPIO_Init();
   gpio_init();
-   MX_DMA_Init();
-  MX_ADC1_Init();
+//   MX_DMA_Init();
+//  MX_ADC1_Init();
+   adc_init();
   MX_USB_DEVICE_Init();
 
   /* USER CODE BEGIN 2 */
 // -- Enables ADC and starts conversion of the regular channels.
-   if( HAL_ADC_Start(&hadc1) != HAL_OK)
-	   Error_Handler();
+//   if( HAL_ADC_Start(&hadc1) != HAL_OK)
+//	   Error_Handler();
 // -- Enables ADC DMA request
-   if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Values, 7) != HAL_OK)
-	   Error_Handler();
+//   if (HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1Values, 7) != HAL_OK)
+//	   Error_Handler();
 
    USBSendBuffer[0] = 4;
    uint64_t diff;
@@ -311,99 +314,99 @@ void SystemClock_Config(void)
 }
 
 /* ADC1 init function */
-static void MX_ADC1_Init(void)
-{
+//static void MX_ADC1_Init(void)
+//{
+//
+//  ADC_ChannelConfTypeDef sConfig;
+//
+//    /**Common config
+//    */
+//  hadc1.Instance = ADC1;
+//  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+//  hadc1.Init.ContinuousConvMode = ENABLE;
+//  hadc1.Init.DiscontinuousConvMode = DISABLE;
+//  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+//  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+//  hadc1.Init.NbrOfConversion = 7;
+//  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+//
+//   /**Configure Regular Channel
+//    */
+//  sConfig.Channel = ADC_CHANNEL_0;
+//  sConfig.Rank = 1;
+////  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+//  sConfig.SamplingTime = ADC_SAMPLETIME_13CYCLES_5;
+////  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+//  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
 
-  ADC_ChannelConfTypeDef sConfig;
+//    /**Configure Regular Channel
+//    */
+//  sConfig.Channel = ADC_CHANNEL_1;
+//  sConfig.Rank = 2;
+//  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
 
-    /**Common config 
-    */
-  hadc1.Instance = ADC1;
-  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 7;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//  sConfig.Channel = ADC_CHANNEL_2;
+//  sConfig.Rank = 3;
+//  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
 
-    /**Configure Regular Channel 
-    */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = 1;
-//  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
-  sConfig.SamplingTime = ADC_SAMPLETIME_13CYCLES_5;
-//  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//  sConfig.Channel = ADC_CHANNEL_3;
+//  sConfig.Rank = 4;
+//  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
 
-    /**Configure Regular Channel
-    */
-  sConfig.Channel = ADC_CHANNEL_1;
-  sConfig.Rank = 2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//  sConfig.Channel = ADC_CHANNEL_4;
+//  sConfig.Rank = 5;
+//  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
 
-  sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = 3;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//  sConfig.Channel = ADC_CHANNEL_5;
+//   sConfig.Rank = 6;
+//   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
 
-  sConfig.Channel = ADC_CHANNEL_3;
-  sConfig.Rank = 4;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  sConfig.Channel = ADC_CHANNEL_4;
-  sConfig.Rank = 5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  sConfig.Channel = ADC_CHANNEL_5;
-   sConfig.Rank = 6;
-   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-   {
-     Error_Handler();
-   }
-
-   sConfig.Channel = ADC_CHANNEL_6;
-    sConfig.Rank = 7;
-    if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-    {
-      Error_Handler();
-    }
+//   sConfig.Channel = ADC_CHANNEL_6;
+//    sConfig.Rank = 7;
+//    if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+//    {
+//      Error_Handler();
+//    }
 
 
 
-}
+//}
 
 /** 
   * Enable DMA controller clock
   */
-void MX_DMA_Init(void) 
-{
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
+//void MX_DMA_Init(void)
+//{
+//  /* DMA controller clock enable */
+//  __HAL_RCC_DMA1_CLK_ENABLE();
+//
   /* DMA interrupt init */
   /* DMA1_Channel1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+//  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+//  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
-}
+//}
 
 /** Configure pins as 
         * Analog 
