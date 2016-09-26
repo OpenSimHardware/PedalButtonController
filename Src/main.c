@@ -120,7 +120,8 @@ int main(void)
   HAL_Init();
 
   /* Configure the system clock */
-  SystemClock_Config();
+//  SystemClock_Config();
+  sysclock_init();
 
   /* Initialize all configured peripherals */
 
@@ -210,7 +211,7 @@ int main(void)
 	  USBSendBuffer[20] = HIBYTE(a);
 
 
-//	  buttons_offset=1;
+
 	  for (uint8_t i=0;i<Number_Columns*Number_Rows;i++) {
 		  if (buttons[i].pressed) {
 			  USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
@@ -219,18 +220,6 @@ int main(void)
 		  }
 	  }
 
-//	  for (uint8_t i=0;i<Number_Columns;i++)
-//		  for (uint8_t j=0;j<Number_Rows;j++){
-//			  if (Keypad_Buttons[i][j][0] == 1) {
-//				  USBSendBuffer[4+i] |= ButtonsCodes[j];
-//			//	  SWV_printnum((long)Keypad_Buttons[i][j][0]);
-//			  } else {
-//				  USBSendBuffer[4+i] &= ~ButtonsCodes[j];
-//			  }
-//		  }
-
-	  //CW: Byte[i/4] = mass[(i%4) *2]
-//	  CCW: bytes[i/4] = mass[(i%4) *2 + 1]
 
 	  for (uint8_t i=0;i<Number_Rotaries;i++){
 
@@ -276,42 +265,42 @@ int main(void)
 
 /** System Clock Configuration
 */
-void SystemClock_Config(void)
-{
+//void SystemClock_Config(void)
+//{
+//
+//  RCC_OscInitTypeDef RCC_OscInitStruct;
+//  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+//  RCC_PeriphCLKInitTypeDef PeriphClkInit;
+//
+//  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+//  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+//  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+//  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+//  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+//  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+//  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  RCC_OscInitTypeDef RCC_OscInitStruct;
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_PeriphCLKInitTypeDef PeriphClkInit;
+//  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+//                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+//  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+//  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+//  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+//  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+//  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
 
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
-
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
-
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC|RCC_PERIPHCLK_USB;
+//  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC|RCC_PERIPHCLK_USB;
 //  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV8;
-  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
-  HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+//  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV8;
+//  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5;
+//  HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
 
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+//  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
-  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+//  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
   /* SysTick_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-}
+//  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+//}
 
 /* ADC1 init function */
 //static void MX_ADC1_Init(void)

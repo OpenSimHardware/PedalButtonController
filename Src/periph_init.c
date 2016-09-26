@@ -216,3 +216,41 @@ void adc_init(void) {
 	ADC1->CR2 |= ADC_CR2_ADON;
 }
 
+void sysclock_init(void) {
+	//HSE on
+	RCC->CR |= RCC_CR_HSEON;
+	//Wait for HSE is ready
+	while (!(RCC->CR & RCC_CR_HSERDY)) {};
+	//Turn on prefetch flash buffer
+	FLASH->ACR |= FLASH_ACR_PRFTBE;
+	//Config for 2 cycles
+	FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+	FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;
+	//PLL as system clock
+	RCC->CFGR |= RCC_CFGR_SW_PLL;
+	//AHB not divided
+	RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
+	//APB1 divided by 2
+	RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
+	//APB2 not divided
+	RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
+	//ADC divided by 8
+	RCC->CFGR |= RCC_CFGR_ADCPRE_DIV8;
+	//HSE for PLL source
+	RCC->CFGR |= RCC_CFGR_PLLSRC;
+	//PLL multiplicator factor
+	RCC->CFGR |= RCC_CFGR_PLLMULL9;
+	//PLL on
+	RCC->CR |= RCC_CR_PLLON;
+	//Wait until PLL is on
+	while(!(RCC->CR & RCC_CR_PLLRDY)) {};
+
+
+	//USB clock enable
+	RCC->APB1ENR |= RCC_APB1ENR_USBEN;
+
+	//SysTick
+	SysTick_Config(72000);
+	SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
+
+}

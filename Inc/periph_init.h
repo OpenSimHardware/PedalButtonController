@@ -58,5 +58,6 @@ struct pin_conf {
 void gpio_init(void);
 void gpio_ports_config(void);
 void adc_init(void);
+void sysclock_init(void);
 
 #endif /* PERIPH_INIT_H_ */
