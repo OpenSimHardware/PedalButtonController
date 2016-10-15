@@ -31,16 +31,12 @@
 extern struct pin_conf pins[USEDPINS];
 extern uint8_t Number_Rows, Number_Columns;
 uint64_t millis;
+struct keypad buttons[MAXBUTTONS];
 
-
-struct keypad buttons[USEDPINS];
 
 void CheckButtons(void) {
 
-	extern uint64_t millis;
 	uint8_t column=0;
-
-	millis++;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if (pins[i].pin_type == Button_COLUMN) {
@@ -73,7 +69,7 @@ void SetButtonState(uint8_t row, uint8_t column, uint8_t rowstate) {
 
 	extern uint64_t millis;
 	extern uint8_t Number_Columns;
-	extern struct keypad buttons[USEDPINS];
+
 
 	uint8_t i = row*Number_Columns + column;
 

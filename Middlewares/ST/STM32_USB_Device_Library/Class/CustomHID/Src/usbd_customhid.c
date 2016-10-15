@@ -410,9 +410,6 @@ uint8_t USBD_CUSTOM_HID_SendReport     (USBD_HandleTypeDef  *pdev,
                         CUSTOM_HID_EPIN_ADDR,                                      
                         report,
                         len);
- //     for (uint8_t i=1;i<9;i++) {
- //      	report[i]=0;
- //     }
     }
   }
   return USBD_OK;

@@ -36,6 +36,7 @@
 
 #define DEBOUNCETIME 50
 #define PRESSTIME 500
+#define MAXBUTTONS 64
 
 
 struct keypad {

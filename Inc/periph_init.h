@@ -34,18 +34,22 @@
 #include <stm32f1xx.h>
 #include <flash_store.h>
 
-#define USEDPINS 27
+#define USEDPINS 32
 #define ADC_BUFF_SIZE 7
 
 typedef enum {
-	Not_Used,
-	Analog,
-	Rotary_PINA,
-	Rotary_PINB,
-	Rotary_Enc,
-	Button_ROW,
-	Button_COLUMN,
+	Not_Used = 0,
+	AnalogNoSmooth = 1,
+	AnalogLowSmooth = 2,
+	AnalogMedSmooth = 3,
+	AnalogHighSmooth = 4,
+	Rotary_PINA = 5,
+	Rotary_PINB = 6,
+	Rotary_Enc = 7,
+	Button_ROW = 8,
+	Button_COLUMN = 9,
 } pintype;
+
 
 struct pin_conf {
 		pintype pin_type;
