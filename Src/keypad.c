@@ -79,10 +79,10 @@ void SetButtonState(uint8_t row, uint8_t column, uint8_t rowstate) {
 			buttons[i].time_pressed = millis;
 		}
 
-		if ((buttons[i].pressed == 1) &&  //if already pressed and longer then presstime
-				 (millis - buttons[i].time_pressed  > PRESSTIME)) { //then reset
-			buttons[i].pressed = 0;
-		}
+//		if ((buttons[i].pressed == 1) &&  //if already pressed and longer then presstime
+//				 (millis - buttons[i].time_pressed  > PRESSTIME)) { //then reset
+//			buttons[i].pressed = 0;
+//		}
 
 		if ((buttons[i].prev_state == 1) &&			//if previous state is HIGH and time since 1st push is
 				(!(buttons[i].current_state)) && 	//more than debounce time then button is pressed

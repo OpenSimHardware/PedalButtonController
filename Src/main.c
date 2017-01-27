@@ -48,6 +48,7 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
+volatile uint8_t USBSendBuffer[USEDPINS+1]={1,0};			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -74,15 +75,18 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint8_t USBSendBuffer[USEDPINS+1]={1,0};			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
+
 	extern volatile struct rots RotaryStore[USEDPINS];
     extern uint8_t Number_Rotaries;
     extern uint8_t Number_Buttons;
     extern uint8_t buttons_offset;
     extern volatile uint64_t millis;
     extern struct keypad buttons[MAXBUTTONS];
-    extern volatile uint32_t ADC1Values[ADC_BUFF_SIZE];
+    uint8_t chk=0;
+//    extern volatile uint32_t ADC1Values[ADC_BUFF_SIZE];
+//    extern volatile uint32_t ADC1Prevs_Values[ADC_BUFF_SIZE];
     extern USBD_HandleTypeDef  *hUsbDevice_0;
+//    extern uint8_t Number_Channels;
 
 	const uint8_t ButtonsCodes[8] = {
 			0x01,	//b00000001,
@@ -96,7 +100,7 @@ int main(void)
 	};
 
 	uint64_t diff;
-	uint32_t a,b;
+//	uint32_t a,b;
 //  uint8_t chk=0;
 
 
@@ -148,41 +152,42 @@ int main(void)
 		//	[19]- LOWBYTE from 6th axis
 		//	[20]- HIGHBYTE from 6th axis
 
-			  a = ADC1Values[0];
-			  USBSendBuffer[9] = LOBYTE(a);
-			  USBSendBuffer[10] = HIBYTE(a);
-			  a = ADC1Values[1];
-			  USBSendBuffer[11] = LOBYTE(a);
-			  USBSendBuffer[12] = HIBYTE(a);
-			  a = ADC1Values[2];
-			  USBSendBuffer[13] = LOBYTE(a);
-			  USBSendBuffer[14] = HIBYTE(a);
+//			  a = ADC1Values[0];
+//			  USBSendBuffer[9] = LOBYTE(a);
+//			  USBSendBuffer[10] = HIBYTE(a);
+//			  a = ADC1Values[1];
+//			  USBSendBuffer[11] = LOBYTE(a);
+//			  USBSendBuffer[12] = HIBYTE(a);
+//			  a = ADC1Values[2];
+//			  USBSendBuffer[13] = LOBYTE(a);
+//			  USBSendBuffer[14] = HIBYTE(a);
 
-			  a = ADC1Values[3];
-			  USBSendBuffer[15] = LOBYTE(a);
-			  USBSendBuffer[16] = HIBYTE(a);
-			  a = ADC1Values[4];
-			  USBSendBuffer[17] = LOBYTE(a);
-			  USBSendBuffer[18] = HIBYTE(a);
+//			  a = ADC1Values[3];
+//			  USBSendBuffer[15] = LOBYTE(a);
+//			  USBSendBuffer[16] = HIBYTE(a);
+//			  a = ADC1Values[4];
+//			  USBSendBuffer[17] = LOBYTE(a);
+//			  USBSendBuffer[18] = HIBYTE(a);
 
-			  a = ADC1Values[5];
-			  b = ADC1Values[6];
-			  a = (a > b) ? a : b;
-			  USBSendBuffer[19] = LOBYTE(a);
-			  USBSendBuffer[20] = HIBYTE(a);
-
-
-
-			  for (uint8_t i=0;i<Number_Buttons;i++) {
-				  if (buttons[i].pressed) {
-					  USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
-				  } else {
-					  USBSendBuffer[buttons_offset+i/8] &= ~ButtonsCodes[i%8];
-				  }
-			  }
+//			  a = ADC1Values[5];
+//			  b = ADC1Values[6];
+//			  a = (a > b) ? a : b;
+//			  USBSendBuffer[19] = LOBYTE(a);
+//			  USBSendBuffer[20] = HIBYTE(a);
 
 
-			  for (uint8_t i=0;i<Number_Rotaries;i++){
+	  	 fill_buffer_4_axises();
+
+		 for (uint8_t i=0;i<Number_Buttons;i++) {
+			if (buttons[i].pressed) {
+			 USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
+			 } else {
+			 USBSendBuffer[buttons_offset+i/8] &= ~ButtonsCodes[i%8];
+			 }
+		}
+
+
+	  for (uint8_t i=0;i<Number_Rotaries;i++){
 
 				  diff = millis - RotaryStore[i].time_pressed;
 
@@ -206,13 +211,13 @@ int main(void)
 			  }
 
 
-		//	  for (uint8_t i=1;i<21;i++) {
-		//		  chk |= USBSendBuffer[i];
-		//	  }
+			  for (uint8_t i=1;i<USEDPINS+1;i++) {
+				  chk |= USBSendBuffer[i];
+			  }
 
-		//	  if (chk) {
+			  if (chk) {
 				  USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
-		//	  }
+			  }
 
 
   }

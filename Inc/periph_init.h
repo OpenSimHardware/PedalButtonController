@@ -33,6 +33,7 @@
 
 #include <stm32f1xx.h>
 #include <flash_store.h>
+#include <usbd_def.h>
 
 #define USEDPINS 32
 #define ADC_BUFF_SIZE 7
@@ -63,5 +64,7 @@ void gpio_init(void);
 void gpio_ports_config(void);
 void adc_init(void);
 void sysclock_init(void);
+void processing_axises(uint8_t axis, uint8_t Kstab);
+void fill_buffer_4_axises(void);
 
 #endif /* PERIPH_INIT_H_ */
