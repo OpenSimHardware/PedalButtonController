@@ -49,6 +49,7 @@ typedef enum {
 	Rotary_Enc = 7,
 	Button_ROW = 8,
 	Button_COLUMN = 9,
+	Button = 10,
 } pintype;
 
 

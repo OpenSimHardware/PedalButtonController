@@ -49,6 +49,6 @@ struct keypad {
 
 void CheckRows(uint8_t column);
 void CheckButtons(void);
-void SetButtonState(uint8_t row, uint8_t column, GPIO_PinState rowstate);
+void SetButtonState(uint8_t i, GPIO_PinState rowstate);
 
 #endif /* KEYPAD_H_ */

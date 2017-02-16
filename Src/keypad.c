@@ -36,7 +36,9 @@ struct keypad buttons[MAXBUTTONS];
 
 void CheckButtons(void) {
 
-	uint8_t column=0;
+	uint8_t column=0, rowstate=0, button=0;
+
+	button = Number_Rows*Number_Columns;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if (pins[i].pin_type == Button_COLUMN) {
@@ -45,11 +47,22 @@ void CheckButtons(void) {
 			*(pins[i].bsrr_reg_addr) = 0x1<<(pins[i].pin_number+16);
 			column++;
 		}
+		if (pins[i].pin_type == Button) {
+			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
+				rowstate = 1;
+			  } else {
+				rowstate = 0;
+			  };
+			button++;
+			SetButtonState(button,rowstate);
+		}
 	}
 }
 
 void CheckRows(uint8_t column) {
-	uint8_t row=0,rowstate;
+	uint8_t row=0,rowstate,button=0;
+	extern uint8_t Number_Columns;
+	extern uint8_t Number_Simple_Buttons;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if (pins[i].pin_type == Button_ROW) {
@@ -57,21 +70,22 @@ void CheckRows(uint8_t column) {
 				rowstate = 1;
 			  } else {
 				rowstate = 0;
-			  }
-			SetButtonState(row,column,rowstate);
+			  };
+			button = row*Number_Columns + column + Number_Simple_Buttons;
+			SetButtonState(button,rowstate);
 			row++;
 		}
 	}
 }
 
 
-void SetButtonState(uint8_t row, uint8_t column, uint8_t rowstate) {
+void SetButtonState(uint8_t i, uint8_t rowstate) {
 
 	extern uint64_t millis;
-	extern uint8_t Number_Columns;
+//	extern uint8_t Number_Columns;
 
 
-	uint8_t i = row*Number_Columns + column;
+//	uint8_t i = row*Number_Columns + column;
 
 	if (rowstate == 1) {
 

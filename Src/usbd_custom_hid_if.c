@@ -90,12 +90,12 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x29, 0x3f,                    //     USAGE_MAXIMUM (Button 63)
 	    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
 	    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-	    0x09, 0x30,                    //     USAGE (X)
-	    0x09, 0x31,                    //     USAGE (Y)
-	    0x09, 0x32,                    //     USAGE (Z)
 	    0x09, 0x33,                    //     USAGE (Rx)
 	    0x09, 0x34,                    //     USAGE (Ry)
 	    0x09, 0x35,                    //     USAGE (Rz)
+	    0x09, /*0x30*/ 0x43,                    //     USAGE /*(X)*/ Vx
+	    0x09, /*0x31*/ 0x44,                    //     USAGE /*(Y)*/ Vy
+	    0x09, /*0x32*/ 0x45,                    //     USAGE /*(Z)*/ Vz
 	    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x0f,              //     LOGICAL_MAXIMUM (4095)
 	    0x75, 0x10,                    //     REPORT_SIZE (16)
