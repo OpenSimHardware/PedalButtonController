@@ -65,6 +65,7 @@ void gpio_init(void);
 void gpio_ports_config(void);
 void adc_init(void);
 void sysclock_init(void);
+void NVIC_init(void);
 void processing_axises(uint8_t axis, uint8_t Kstab);
 void fill_buffer_4_axises(void);
 

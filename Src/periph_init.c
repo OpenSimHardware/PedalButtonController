@@ -326,6 +326,24 @@ void sysclock_init(void) {
 	SysTick_Config(72000);
 	SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
 
+	NVIC_init();
+
+}
+
+
+void NVIC_init(void){
+	   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+	  /* System interrupt init*/
+	  /* MemoryManagement_IRQn interrupt configuration */
+	  NVIC_SetPriority(MemoryManagement_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+	  /* BusFault_IRQn interrupt configuration */
+	  NVIC_SetPriority(BusFault_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+	  /* UsageFault_IRQn interrupt configuration */
+	  NVIC_SetPriority(UsageFault_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+	  /* DebugMonitor_IRQn interrupt configuration */
+	  NVIC_SetPriority(DebugMonitor_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+	  /* SysTick_IRQn interrupt configuration */
+	  NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
 }
 
 

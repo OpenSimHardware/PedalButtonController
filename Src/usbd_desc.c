@@ -56,10 +56,10 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-#define USBD_VID     1209
+#define USBD_VID     0x1209
 #define USBD_LANGID_STRING     1033
 #define USBD_MANUFACTURER_STRING     "OpenSimHardware"
-#define USBD_PID_FS     3100
+#define USBD_PID_FS     0x3100
 #define USBD_PRODUCT_STRING_FS     "OSH PB Controller "
 #define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
 #define USBD_CONFIGURATION_STRING_FS     "OSH PB Controller Config"
