@@ -65,7 +65,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   gpio_init();
-  adc_init();
+//  adc_init();
   MX_USB_DEVICE_Init();
 
   while (1)

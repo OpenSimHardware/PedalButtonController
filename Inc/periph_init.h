@@ -36,7 +36,9 @@
 #include <usbd_def.h>
 
 #define USEDPINS 32
+#define AXISES 6
 #define ADC_BUFF_SIZE 7
+
 
 typedef enum {
 	Not_Used = 0,
@@ -61,6 +63,16 @@ struct pin_conf {
 		uint8_t pin_number;
 	};
 
+struct axis_conf {
+	uint8_t calib_min_lowbyte;
+	uint8_t calib_min_hibyte;
+	uint8_t calib_max_lowbyte;
+	uint8_t calib_max_hibyte;
+	uint8_t special;
+	uint32_t calib_min;
+	uint32_t calib_max;
+};
+
 void gpio_init(void);
 void gpio_ports_config(void);
 void adc_init(void);
@@ -68,5 +80,6 @@ void sysclock_init(void);
 void NVIC_init(void);
 void processing_axises(uint8_t axis, uint8_t Kstab);
 void fill_buffer_4_axises(void);
+uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 
 #endif /* PERIPH_INIT_H_ */

@@ -98,6 +98,16 @@ volatile struct pin_conf pins[USEDPINS] = {
 
 };
 
+volatile struct axis_conf axises[AXISES] =
+{
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+};
+
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0, Number_Rows=0, Number_Columns=0,Number_Buttons=0,Number_Simple_Buttons=0;
@@ -127,11 +137,6 @@ void gpio_init(void) {
 
 
 	gpio_ports_config();
-
-	// Reset all output pins
-//	GPIOA->ODR &= 0b1111100001111111;
-//	GPIOB->ODR &= 0b0001111111100100;
-//	GPIOC->ODR &= 0b0001111111111111;
 
 }
 
@@ -211,6 +216,8 @@ void gpio_ports_config(void) {
 		*pins[i].conf_reg_addr = (*(pins[i].conf_reg_addr) & (~tmpregmask)) | (tmpconfvalue << (tmp*4));
 		*pins[i].bsrr_reg_addr 	= 1 << (pins[i].pin_number+tmpbsrrvalue);
 	}
+
+	adc_init();
 }
 
 void adc_init(void) {
@@ -241,7 +248,7 @@ void adc_init(void) {
 	//Set Memory address
 	DMA1_Channel1->CMAR = (uint32_t)ADC1Values;
 	//Total number of data transfered
-	DMA1_Channel1->CNDTR = ADC_BUFF_SIZE;
+	DMA1_Channel1->CNDTR = Number_Channels;//ADC_BUFF_SIZE;
 	//Channel priority very high
 	DMA1_Channel1->CCR |= DMA_CCR_PL;
 	//Memory size 32bit
@@ -276,9 +283,11 @@ void adc_init(void) {
 		if ((pins[i].pin_type == AnalogNoSmooth) || (pins[i].pin_type == AnalogLowSmooth) ||
 				(pins[i].pin_type == AnalogMedSmooth) || (pins[i].pin_type == AnalogHighSmooth)) {
 			if (channel < 6) {
-				ADC1->SQR3 |= channel << (5*channel);
+				//ADC1->SQR3 |= channel << (5*channel);
+				ADC1->SQR3 |= pins[i].pin_number << (5*channel);
 			} else {
-				ADC1->SQR2 |= channel << (5*(channel-6));
+				//ADC1->SQR2 |= channel << (5*(channel-6));
+				ADC1->SQR2 |= pins[i].pin_number << (5*(channel-6));
 			}
 			channel++;
 		}
@@ -354,8 +363,8 @@ void fill_buffer_4_axises(void) {
 		  switch (pins[i].pin_type) {
 		  	  case AnalogNoSmooth:		  processing_axises(axis++, 100); break;
 		  	  case AnalogLowSmooth:	  	  processing_axises(axis++, 60); break;
-		  	  case AnalogMedSmooth:		  processing_axises(axis++, 40); break;
-		  	  case AnalogHighSmooth:	  processing_axises(axis++, 20); break;
+		  	  case AnalogMedSmooth:		  processing_axises(axis++, 30); break;
+		  	  case AnalogHighSmooth:	  processing_axises(axis++, 1); break;
 		  	  default:					  break;
 		  }
 	  }
@@ -366,15 +375,27 @@ void processing_axises(uint8_t axis, uint8_t Kstab) {
 
 	uint32_t curr = 0;
 	uint32_t optvalue =0;
+	uint32_t mapvalue=0;
 
 
 	curr = ADC1Values[axis];
-//	if (ADC1Prevs_Values[axis] == 0) ADC1Prevs_Values[axis] = curr;
 
 	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[axis]))/100 + ADC1Prevs_Values[axis];
 
+	if (optvalue < axises[axis].calib_min) optvalue = axises[axis].calib_min;
+	if (optvalue > axises[axis].calib_max) optvalue = axises[axis].calib_max;
+
+	mapvalue = map(optvalue, axises[axis].calib_min, axises[axis].calib_max, 0, 4095);
+
 	ADC1Prevs_Values[axis] = optvalue;
-	USBSendBuffer[9+(2*axis)] = LOBYTE(optvalue);
-	USBSendBuffer[10+(2*axis)] = HIBYTE(optvalue);
+	USBSendBuffer[9+(2*axis)] = LOBYTE(mapvalue);
+	USBSendBuffer[10+(2*axis)] = HIBYTE(mapvalue);
 
 }
+
+
+uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+

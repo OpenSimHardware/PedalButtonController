@@ -30,6 +30,7 @@
 
 
 extern struct pin_conf pins[USEDPINS];
+extern struct axis_conf axises[AXISES];
 
 
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
@@ -51,6 +52,21 @@ void get_config(void) {
 		pins[i].pin_type = (uint8_t)*curradr;
 		curradr++;
 	}
+	for (uint8_t i=0;i<AXISES;i++) {
+		axises[i].calib_min_lowbyte = (uint8_t)*curradr;
+		curradr++;
+		axises[i].calib_min_hibyte = (uint8_t)*curradr;
+		curradr++;
+		axises[i].calib_max_lowbyte = (uint8_t)*curradr;
+		curradr++;
+		axises[i].calib_max_hibyte = (uint8_t)*curradr;
+		curradr++;
+		axises[i].special = (uint8_t)*curradr;
+		curradr++;
+		axises[i].calib_min=(axises[i].calib_min_hibyte << 8) | axises[i].calib_min_lowbyte;
+		axises[i].calib_max=(axises[i].calib_max_hibyte << 8) | axises[i].calib_max_lowbyte;
+	}
+
 }
 
 void erase_flash(void) {
@@ -86,6 +102,29 @@ void write_flash(void) {
       ;
      curradr++;
    }
+	for (uint8_t i=0;i<AXISES;i++) {
+		*curradr = axises[i].calib_min_lowbyte;
+		while ((FLASH->SR & FLASH_SR_BSY) != 0 )
+		      ;
+		     curradr++;
+		*curradr = axises[i].calib_min_hibyte;
+		while ((FLASH->SR & FLASH_SR_BSY) != 0 )
+		      ;
+		     curradr++;
+		*curradr = axises[i].calib_max_lowbyte;
+		while ((FLASH->SR & FLASH_SR_BSY) != 0 )
+		      ;
+		     curradr++;
+		*curradr = axises[i].calib_max_hibyte;
+		while ((FLASH->SR & FLASH_SR_BSY) != 0 )
+		      ;
+		     curradr++;
+		*curradr = axises[i].special;
+		while ((FLASH->SR & FLASH_SR_BSY) != 0 )
+		      ;
+		     curradr++;
+	}
+
 
 
   FLASH->CR &= ~FLASH_CR_PG; /* Reset the flag back !!!! */
