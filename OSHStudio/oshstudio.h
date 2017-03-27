@@ -55,6 +55,8 @@ private slots:
   void drawAxis4Value(uint16_t axis_value);
   void drawAxis5Value(uint16_t axis_value);
   void drawAxis6Value(uint16_t axis_value);
+  void drawButtons1Value(uint64_t buttons_value);
+  void drawButtons2Value(uint64_t buttons_value);
   void showConnectDeviceInfo();
   void hideConnectDeviceInfo();
   QString DrawTypeComboBox(pintype i);
@@ -105,6 +107,8 @@ signals:
     void putAxis4Value(uint16_t axis_value);
     void putAxis5Value(uint16_t axis_value);
     void putAxis6Value(uint16_t axis_value);
+    void putButtons1Value(uint64_t buttons_value);
+    void putButtons2Value(uint64_t buttons_value);
     void putDisconnectedDeviceInfo(void);
     void putConnectedDeviceInfo(void);
 

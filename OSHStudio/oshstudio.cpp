@@ -12,7 +12,7 @@ void Worker::processData(void) {
     uint8_t buf[BUFFSIZE]={0};
 //    uint8_t bufrep2[2]={3,1};
     int8_t res=0;
-//        struct hid_device_info *devs;
+    uint64_t buttonsState=0;
 
 while (1) {
      if (!handle_read) {
@@ -24,6 +24,7 @@ while (1) {
           emit putAxis4Value(0);
           emit putAxis5Value(0);
           emit putAxis6Value(0);
+          emit putButtons1Value(0);
           emit putDisconnectedDeviceInfo();
           QThread::sleep(1);
       } else {
@@ -46,7 +47,11 @@ while (1) {
                     emit putAxis4Value(buf[16]*0x100+buf[15]);
                     emit putAxis5Value(buf[18]*0x100+buf[17]);
                     emit putAxis6Value(buf[20]*0x100+buf[19]);
-                    QThread::msleep(100);
+                    buttonsState=(buf[4]<<24)+(buf[3]<<16)+(buf[2]<<8)+buf[1];
+                    emit putButtons1Value(buttonsState);
+                    buttonsState=(buf[8]<<24)+(buf[7]<<16)+(buf[6]<<8)+buf[5];
+                    emit putButtons2Value(buttonsState);
+                    QThread::msleep(10);
                 }
             }
       }
@@ -131,6 +136,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
 
       qRegisterMetaType<uint16_t>("uint16_t");
+      qRegisterMetaType<uint64_t>("uint64_t");
 
       QThread* thread = new QThread;
       Worker* worker = new Worker();
@@ -149,6 +155,10 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(drawAxis5Value(uint16_t)));
       connect(worker, SIGNAL(putAxis6Value(uint16_t)),
                             SLOT(drawAxis6Value(uint16_t)));
+      connect(worker, SIGNAL(putButtons1Value(uint64_t)),
+                            SLOT(drawButtons1Value(uint64_t)));
+      connect(worker, SIGNAL(putButtons2Value(uint64_t)),
+                            SLOT(drawButtons2Value(uint64_t)));
       connect(worker, SIGNAL(putConnectedDeviceInfo()),
                             SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
@@ -519,6 +529,42 @@ void OSHStudio::drawAxis5Value(uint16_t axis_value) {
 void OSHStudio::drawAxis6Value(uint16_t axis_value) {
     ui->progressBarAxis6->setValue(axis_value);
 }
+
+
+void OSHStudio::drawButtons2Value(uint64_t buttons_value) {
+    QPixmap buttOn (":/Images/ON_2.png");
+    QPixmap buttOff (":/Images/OFF.png");
+
+    QString name_template("labelButt_%1");
+
+ //    QList<QLabel *> list = ui->tabWidget->children();
+
+    for(int i =32; i < 64; ++i)
+    {
+        QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
+        if (buttons_value & (0x1<<(i-32))) {
+            buttLabel->setPixmap(buttOn);
+        } else buttLabel->setPixmap(buttOff);
+
+    }
+}
+
+void OSHStudio::drawButtons1Value(uint64_t buttons_value) {
+    QPixmap buttOn (":/Images/ON_2.png");
+    QPixmap buttOff (":/Images/OFF.png");
+
+    QString name_template("labelButt_%1");
+
+
+    for(int i = 0; i < 32; ++i)
+    {
+        QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
+        if (buttons_value & (0x1<<i)) {
+            buttLabel->setPixmap(buttOn);
+        } else buttLabel->setPixmap(buttOff);
+    }
+}
+
 
 void OSHStudio::showConnectDeviceInfo() {
     ui->label_DevDescImg->setVisible(true);

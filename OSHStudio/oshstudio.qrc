@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>Images/MDB_pic.jpg</file>
-        <file>Images/down-pointing-small-red-triangle.png</file>
         <file>Images/cropped-OK-big-green-button.png</file>
         <file>Images/openhardware.ico</file>
+        <file>Images/OFF.png</file>
+        <file>Images/ON_2.png</file>
     </qresource>
 </RCC>
