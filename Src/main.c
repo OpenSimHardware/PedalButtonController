@@ -37,10 +37,13 @@ volatile uint8_t USBSendBuffer[USEDPINS+1]={1,0};			//1 report id, 8 bytes butto
 
 
 int main(void)
+
 {
 	extern volatile struct rots RotaryStore[USEDPINS];
     extern uint8_t Number_Rotaries;
     extern uint8_t Number_Buttons;
+    extern uint8_t Number_RotSwitches;
+//    extern uint8_t Number_RotSwitches;
     extern uint8_t buttons_offset;
     extern volatile uint64_t millis;
     extern struct keypad buttons[MAXBUTTONS];
@@ -70,7 +73,7 @@ int main(void)
 
   while (1)
   {
-	  CheckRotaries();
+
 
 		//	USBSendBuffer structure:
 		//	[0] - report id (1)
@@ -98,8 +101,10 @@ int main(void)
 
 
 	  	 fill_buffer_4_axises();
+	  	 CheckRotaries();
 
-		 for (uint8_t i=0;i<Number_Buttons;i++) {
+
+		 for (uint8_t i=0;i<Number_Buttons+Number_RotSwitches;i++) {
 			if (buttons[i].pressed) {
 			 USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
 			 } else {

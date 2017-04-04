@@ -44,7 +44,9 @@ private:
       Button_ROW = 8,
       Button_COLUMN = 9,
       Button = 10,
-  } pintype;
+      RotSwPole = 11,
+      RotSwWire = 12,
+} pintype;
 
 private slots:
   void getConfig_Slot();

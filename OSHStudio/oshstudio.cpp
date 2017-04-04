@@ -6,7 +6,15 @@
 
 hid_device *handle_read, *handle_write;
 
-uint8_t NumberAnalogInputs,PinA, PinB, Rotaries, ButtonsRows, ButtonsColumns, Buttons;
+uint8_t NumberAnalogInputs,
+        PinA,
+        PinB,
+        Rotaries,
+        ButtonsRows,
+        ButtonsColumns,
+        Buttons,
+        RotSwitchPoles,
+        RotSwitchWires;
 
 void Worker::processData(void) {
     uint8_t buf[BUFFSIZE]={0};
@@ -171,7 +179,9 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
       QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
                         <<"Analog Medium Smooth"<<"Analog High Smooting"<<"Rotary Encoder PINA"
-                        <<"Rotary Encoder PINB"<<"Rotary Encoder"<<"Button Matrix ROW"<<"Button Matrix COLUMN"<<"Single Button");
+                        <<"Rotary Encoder PINB"<<"Rotary Encoder"<<"Button Matrix ROW"
+                        <<"Button Matrix COLUMN"<<"Single Button"<<"Rotary Switch Pole"
+                        <<"Rotary Switch Wire");
       //comboBox->addItems(list);
       ui->comboBoxA0->addItems(list);
       ui->comboBoxA1->addItems(list);
@@ -494,12 +504,14 @@ QString OSHStudio::DrawTypeComboBox(pintype i) {
         case AnalogLowSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogMedSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogHighSmooth:  return "QComboBox { color: white; background-color: black; }";
-        case Rotary_PINA:       return "QComboBox { color: black; background-color: red; }";
-        case Rotary_PINB:       return "QComboBox { color: black; background-color: red; }";
+        case Rotary_PINA:       return "QComboBox { color: white; background-color: darkRed; }";
+        case Rotary_PINB:       return "QComboBox { color: white; background-color: darkRed; }";
         case Rotary_Enc:        return "QComboBox { color: black; background-color: red; }";
-        case Button_ROW:        return "QComboBox { color: black; background-color: green; }";
-        case Button_COLUMN:     return "QComboBox { color: black; background-color: blue; }";
-        case Button:            return "QComboBox { color: black; background-color: green; }";
+        case Button_ROW:        return "QComboBox { color: white; background-color: green; }";
+        case Button_COLUMN:     return "QComboBox { color: white; background-color: darkGreen; }";
+        case Button:            return "QComboBox { color: white; background-color: blue; }";
+        case RotSwPole:         return "QComboBox { color: white; background-color: magenta; }";
+        case RotSwWire:         return "QComboBox { color: white; background-color: darkMagenta; }";
         case Not_Used:          return "QComboBox { color: black; background-color: light gray; }";
     }
     return ("Non valid pin type");
@@ -1010,6 +1022,8 @@ void OSHStudio::gatherPinConfig(pintype i)
         case (8): ButtonsRows++; break;
         case (9): ButtonsColumns++; break;
         case (10): Buttons++; break;
+        case (11): RotSwitchPoles++; break;
+        case (12): RotSwitchWires++; break;
     }
 };
 
@@ -1022,6 +1036,8 @@ void OSHStudio::gatherAllConf()
     ButtonsRows=0;
     ButtonsColumns=0;
     Buttons=0;
+    RotSwitchPoles=0;
+    RotSwitchWires=0;
 
     gatherPinConfig((pintype)ui->comboBoxA0->currentIndex());
     gatherPinConfig((pintype)ui->comboBoxA1->currentIndex());
@@ -1086,6 +1102,16 @@ void OSHStudio::drawHelp()
 
     if (Buttons>0)
         HelpText = HelpText + "<br />" + QString::number(Buttons) + " single buttons (2nd leg to +3.3V) <br />";
+
+
+    if ((RotSwitchWires>0) && (RotSwitchPoles>0))
+        HelpText = HelpText + "<br />" + QString::number(RotSwitchWires*RotSwitchPoles) + " buttons in Rotary Switch Config <br />";
+
+    if ((RotSwitchWires>0) && (RotSwitchPoles<1))
+        HelpText = HelpText + "<font color='red'>You have to add at least 1 Pole to Rotary Switch Config</font><br />";
+
+    if ((RotSwitchWires<1) && (RotSwitchPoles>0))
+        HelpText = HelpText + "<font color='red'>You have to add at least 1 Wire to Rotary Switch Config</font><br />";
 
 
     ui->labelHelp->setText(HelpText);

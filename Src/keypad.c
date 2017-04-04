@@ -36,16 +36,16 @@ struct keypad buttons[MAXBUTTONS];
 
 void CheckButtons(void) {
 
-	uint8_t column=0, rowstate=0, button=0;
+	uint8_t column=0, rowstate=0, button=0, pole=0;
 
 	button = Number_Rows*Number_Columns;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
-		if (pins[i].pin_type == Button_COLUMN) {
+		if ((pins[i].pin_type == Button_COLUMN) || (pins[i].pin_type == RotSwPole)) {
 			*(pins[i].bsrr_reg_addr) = 0x1<<pins[i].pin_number;
-			CheckRows(column);
+			if (pins[i].pin_type == Button_COLUMN) CheckRows(column++);
+			if (pins[i].pin_type == RotSwPole) CheckWires(pole++);
 			*(pins[i].bsrr_reg_addr) = 0x1<<(pins[i].pin_number+16);
-			column++;
 		}
 		if (pins[i].pin_type == Button) {
 			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
@@ -58,6 +58,33 @@ void CheckButtons(void) {
 		}
 	}
 }
+
+void CheckWires(uint8_t pole) {
+	uint8_t rowstate=0, button=0, wire=0;
+	extern uint8_t Number_Wires;
+	extern uint8_t Number_Buttons;
+	extern uint8_t Number_Simple_Buttons;
+
+
+	for (uint8_t i=0;i<USEDPINS;i++){
+		if (pins[i].pin_type == RotSwWire) {
+			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
+				rowstate = 1;
+			  } else {
+				rowstate = 0;
+			  };
+			button = pole*Number_Wires + wire + Number_Simple_Buttons + Number_Buttons;
+			if ((buttons[button].pressed == 1) &&  //if already pressed and longer then presstime
+					 (millis - buttons[button].time_pressed  > ROTSWITCHTIME)) { //then reset
+						buttons[button].pressed = 0;
+						} else {
+							SetButtonState(button,rowstate);
+						}
+			wire++;
+		}
+	}
+}
+
 
 void CheckRows(uint8_t column) {
 	uint8_t row=0,rowstate,button=0;
@@ -77,7 +104,6 @@ void CheckRows(uint8_t column) {
 		}
 	}
 }
-
 
 void SetButtonState(uint8_t i, uint8_t rowstate) {
 

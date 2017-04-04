@@ -37,6 +37,7 @@
 #define DEBOUNCETIME 50
 #define PRESSTIME 500
 #define MAXBUTTONS 64
+#define ROTSWITCHTIME 100
 
 
 struct keypad {
@@ -50,5 +51,6 @@ struct keypad {
 void CheckRows(uint8_t column);
 void CheckButtons(void);
 void SetButtonState(uint8_t i, GPIO_PinState rowstate);
+void CheckWires(uint8_t pole);
 
 #endif /* KEYPAD_H_ */

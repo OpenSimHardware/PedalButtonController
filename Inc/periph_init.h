@@ -52,6 +52,8 @@ typedef enum {
 	Button_ROW = 8,
 	Button_COLUMN = 9,
 	Button = 10,
+	RotSwPole = 11,
+	RotSwWire = 12,
 } pintype;
 
 
@@ -71,6 +73,11 @@ struct axis_conf {
 	uint8_t special;
 	uint32_t calib_min;
 	uint32_t calib_max;
+};
+
+struct rot_switches {
+	uint8_t state;
+	uint64_t timepressed;
 };
 
 void gpio_init(void);
