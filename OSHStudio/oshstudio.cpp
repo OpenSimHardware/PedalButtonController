@@ -33,6 +33,8 @@ while (1) {
           emit putAxis5Value(0);
           emit putAxis6Value(0);
           emit putButtons1Value(0);
+          emit putButtons2Value(0);
+          emit putPOVSvalue(0x08080808);
           emit putDisconnectedDeviceInfo();
           QThread::sleep(1);
       } else {
@@ -59,6 +61,8 @@ while (1) {
                     emit putButtons1Value(buttonsState);
                     buttonsState=(buf[8]<<24)+(buf[7]<<16)+(buf[6]<<8)+buf[5];
                     emit putButtons2Value(buttonsState);
+                    buttonsState=(buf[24]<<24)+(buf[23]<<16)+(buf[22]<<8)+buf[21];
+                    emit putPOVSvalue(buttonsState);
                     QThread::msleep(10);
                 }
             }
@@ -142,6 +146,11 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->loadFile_Button, SIGNAL(clicked(bool)), SLOT(loadFromFile()));
       connect(ui->saveFile_Button, SIGNAL(clicked(bool)), SLOT(saveToFile()));
 
+      connect(ui->checkBox_POV1, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV1Changed(int)));
+      connect(ui->checkBox_POV2, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV2Changed(int)));
+      connect(ui->checkBox_POV3, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV3Changed(int)));
+      connect(ui->checkBox_POV4, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV4Changed(int)));
+
 
       qRegisterMetaType<uint16_t>("uint16_t");
       qRegisterMetaType<uint64_t>("uint64_t");
@@ -167,6 +176,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(drawButtons1Value(uint64_t)));
       connect(worker, SIGNAL(putButtons2Value(uint64_t)),
                             SLOT(drawButtons2Value(uint64_t)));
+      connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
+                            SLOT(drawPOVSvalue(uint64_t)));
       connect(worker, SIGNAL(putConnectedDeviceInfo()),
                             SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
@@ -182,56 +193,18 @@ OSHStudio::OSHStudio(QWidget *parent) :
                         <<"Rotary Encoder PINB"<<"Rotary Encoder"<<"Button Matrix ROW"
                         <<"Button Matrix COLUMN"<<"Single Button"<<"Rotary Switch Pole"
                         <<"Rotary Switch Wire");
-      //comboBox->addItems(list);
-      ui->comboBoxA0->addItems(list);
-      ui->comboBoxA1->addItems(list);
-      ui->comboBoxA2->addItems(list);
-      ui->comboBoxA3->addItems(list);
-      ui->comboBoxA4->addItems(list);
-      ui->comboBoxA5->addItems(list);
 
-      ui->comboBoxA6->addItems(list);
-      ui->comboBoxA6->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA6->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA6->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA6->setItemData(4, 0, Qt::UserRole - 1);
-
-
-      ui->comboBoxA7->addItems(list);
-      ui->comboBoxA7->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA7->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA7->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA7->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxA8->addItems(list);
-      ui->comboBoxA8->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA8->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA8->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA8->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxA9->addItems(list);
-      ui->comboBoxA9->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA9->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA9->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA9->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxA10->addItems(list);
-      ui->comboBoxA10->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA10->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA10->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA10->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxA11->addItems(list);
-      ui->comboBoxA11->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA11->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA11->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA11->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxA12->addItems(list);
-      ui->comboBoxA12->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxA12->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxA12->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxA12->setItemData(4, 0, Qt::UserRole - 1);
+      QString name_template("comboBoxA%1");
+      for(int i = 0; i < 13; i++) {
+         QComboBox *pinComboBox = ui->tabWidget->findChild<QComboBox *>(name_template.arg(i));
+         pinComboBox->addItems(list);
+            if (i > 6) {
+                pinComboBox->setItemData(1, 0, Qt::UserRole - 1);
+                pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
+                pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
+                pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+            }
+      }
 
       ui->comboBoxA15->addItems(list);
       ui->comboBoxA15->setItemData(1, 0, Qt::UserRole - 1);
@@ -239,114 +212,27 @@ OSHStudio::OSHStudio(QWidget *parent) :
       ui->comboBoxA15->setItemData(3, 0, Qt::UserRole - 1);
       ui->comboBoxA15->setItemData(4, 0, Qt::UserRole - 1);
 
-      ui->comboBoxB0->addItems(list);
-      ui->comboBoxB0->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB0->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB0->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB0->setItemData(4, 0, Qt::UserRole - 1);
+      name_template="comboBoxB%1";
+      for(int i = 0; i < 16; i++) {
+         if (i !=2 ) {
+          QComboBox *pinComboBox = ui->tabWidget->findChild<QComboBox *>(name_template.arg(i));
+          pinComboBox->addItems(list);
+          pinComboBox->setItemData(1, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+         }
+      }
 
-      ui->comboBoxB1->addItems(list);
-      ui->comboBoxB1->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB1->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB1->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB1->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB3->addItems(list);
-      ui->comboBoxB3->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB3->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB3->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB3->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB4->addItems(list);
-      ui->comboBoxB4->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB4->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB4->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB4->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB5->addItems(list);
-      ui->comboBoxB5->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB5->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB5->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB5->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB6->addItems(list);
-      ui->comboBoxB6->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB6->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB6->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB6->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB7->addItems(list);
-      ui->comboBoxB7->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB7->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB7->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB7->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB8->addItems(list);
-      ui->comboBoxB8->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB8->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB8->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB8->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB9->addItems(list);
-      ui->comboBoxB9->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB9->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB9->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB9->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB10->addItems(list);
-      ui->comboBoxB10->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB10->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB10->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB10->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB11->addItems(list);
-      ui->comboBoxB11->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB11->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB11->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB11->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB12->addItems(list);
-      ui->comboBoxB12->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB12->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB12->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB12->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB13->addItems(list);
-      ui->comboBoxB13->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB13->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB13->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB13->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB14->addItems(list);
-      ui->comboBoxB14->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB14->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB14->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB14->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxB15->addItems(list);
-      ui->comboBoxB15->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxB15->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxB15->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxB15->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxC13->addItems(list);
-      ui->comboBoxC13->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxC14->addItems(list);
-      ui->comboBoxC14->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxC14->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxC14->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxC14->setItemData(4, 0, Qt::UserRole - 1);
-
-      ui->comboBoxC15->addItems(list);
-      ui->comboBoxC15->setItemData(1, 0, Qt::UserRole - 1);
-      ui->comboBoxC15->setItemData(2, 0, Qt::UserRole - 1);
-      ui->comboBoxC15->setItemData(3, 0, Qt::UserRole - 1);
-      ui->comboBoxC15->setItemData(4, 0, Qt::UserRole - 1);
-
+      name_template="comboBoxC%1";
+      for(int i = 13; i < 16; i++) {
+          QComboBox *pinComboBox = ui->tabWidget->findChild<QComboBox *>(name_template.arg(i));
+          pinComboBox->addItems(list);
+          pinComboBox->setItemData(1, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+      }
 }
 
 OSHStudio::~OSHStudio()
@@ -427,6 +313,16 @@ void OSHStudio::writeConfig_Slot()
     buf[61]=HIBYTE(ui->horiSliderAxis6Max->value());
     buf[62]=0; //Reserved
 
+    if (ui->checkBox_POV1->isChecked()) buf[63]|=0x1;
+    if (ui->checkBox_POV2->isChecked()) buf[63]|=0x2;
+    if (ui->checkBox_POV3->isChecked()) buf[63]|=0x4;
+    if (ui->checkBox_POV4->isChecked()) buf[63]|=0x8;
+
+//    buf[63]=(uint8_t)(ui->label_POV1->isEnabled())    ||
+//                     (ui->label_POV2->isEnabled())<<1 ||
+//                     (ui->label_POV3->isEnabled())<<2 ||
+//                     (ui->label_POV4->isEnabled())<<3 ;
+
     res=hid_write(handle_read, buf, BUFFSIZE);
 
 }
@@ -496,6 +392,15 @@ void OSHStudio::getConfig_Slot()
         ui->horiSliderAxis6Min->setValue((buf[59]<<8) | buf[58]);
         ui->horiSliderAxis6Max->setValue((buf[61]<<8) | buf[60]);
 
+        if (buf[63] & 0x1) ui->checkBox_POV1->setChecked(true);
+                else ui->checkBox_POV1->setChecked(false);
+        if (buf[63] & 0x2) ui->checkBox_POV2->setChecked(true);
+                else ui->checkBox_POV2->setChecked(false);
+        if (buf[63] & 0x4) ui->checkBox_POV3->setChecked(true);
+                else ui->checkBox_POV3->setChecked(false);
+        if (buf[63] & 0x8) ui->checkBox_POV4->setChecked(true);
+                else ui->checkBox_POV4->setChecked(false);
+
 }
 
 QString OSHStudio::DrawTypeComboBox(pintype i) {
@@ -542,6 +447,36 @@ void OSHStudio::drawAxis6Value(uint16_t axis_value) {
     ui->progressBarAxis6->setValue(axis_value);
 }
 
+void OSHStudio::drawPOVSvalue(uint64_t POVS_value) {
+    uint8_t value;
+    QString name_template("label_POV%1");
+    QPixmap povTop (":/Images/dpad_ct.png");
+    QPixmap povRight (":/Images/dpad_cr.png");
+    QPixmap povBottom (":/Images/dpad_cb.png");
+    QPixmap povLeft (":/Images/dpad_cl.png");
+    QPixmap povTopRight (":/Images/dpad_ctr.png");
+    QPixmap povRightBottom (":/Images/dpad_crb.png");
+    QPixmap povBottomLeft (":/Images/dpad_cbl.png");
+    QPixmap povLeftTop (":/Images/dpad_clt.png");
+    QPixmap povNull (":/Images/dpad.png");
+
+
+    for (int i=0; i<4; i++) {
+        QLabel *povLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i+1));
+        value=0xFF & (POVS_value >> (i*8));
+        switch (value) {
+            case 0: povLabel->setPixmap(povTop); break;
+            case 1: povLabel->setPixmap(povTopRight); break;
+            case 2: povLabel->setPixmap(povRight); break;
+            case 3: povLabel->setPixmap(povRightBottom); break;
+            case 4: povLabel->setPixmap(povBottom); break;
+            case 5: povLabel->setPixmap(povBottomLeft); break;
+            case 6: povLabel->setPixmap(povLeft); break;
+            case 7: povLabel->setPixmap(povLeftTop); break;
+            default: povLabel->setPixmap(povNull);
+        }
+    }
+}
 
 void OSHStudio::drawButtons2Value(uint64_t buttons_value) {
     QPixmap buttOn (":/Images/ON_2.png");
@@ -549,7 +484,6 @@ void OSHStudio::drawButtons2Value(uint64_t buttons_value) {
 
     QString name_template("labelButt_%1");
 
- //    QList<QLabel *> list = ui->tabWidget->children();
 
     for(int i =32; i < 64; ++i)
     {
@@ -576,6 +510,56 @@ void OSHStudio::drawButtons1Value(uint64_t buttons_value) {
         } else buttLabel->setPixmap(buttOff);
     }
 }
+
+void OSHStudio::checkBoxPOV1Changed(int state) {
+    bool chk;
+
+    if (state) chk=true; else chk=false;
+
+    ui->label_POV1->setEnabled(chk);
+    ui->labelButt_0->setEnabled(!chk);
+    ui->labelButt_1->setEnabled(!chk);
+    ui->labelButt_2->setEnabled(!chk);
+    ui->labelButt_3->setEnabled(!chk);
+}
+
+void OSHStudio::checkBoxPOV2Changed(int state) {
+    bool chk;
+
+    if (state) chk=true; else chk=false;
+
+    ui->label_POV2->setEnabled(chk);
+    ui->labelButt_4->setEnabled(!chk);
+    ui->labelButt_5->setEnabled(!chk);
+    ui->labelButt_6->setEnabled(!chk);
+    ui->labelButt_7->setEnabled(!chk);
+}
+
+void OSHStudio::checkBoxPOV3Changed(int state) {
+    bool chk;
+
+    if (state) chk=true; else chk=false;
+
+    ui->label_POV3->setEnabled(chk);
+    ui->labelButt_8->setEnabled(!chk);
+    ui->labelButt_9->setEnabled(!chk);
+    ui->labelButt_10->setEnabled(!chk);
+    ui->labelButt_11->setEnabled(!chk);
+}
+
+void OSHStudio::checkBoxPOV4Changed(int state) {
+    bool chk;
+
+    if (state) chk=true; else chk=false;
+
+    ui->label_POV4->setEnabled(chk);
+    ui->labelButt_12->setEnabled(!chk);
+    ui->labelButt_13->setEnabled(!chk);
+    ui->labelButt_14->setEnabled(!chk);
+    ui->labelButt_15->setEnabled(!chk);
+}
+
+
 
 
 void OSHStudio::showConnectDeviceInfo() {
@@ -929,6 +913,19 @@ void OSHStudio::loadFromFile()
             line = in.readLine();
             value = line.section('=',1,1);
             ui->horiSliderAxis6Max->setValue(value.toUInt());
+            line = in.readLine(); // "Reserved="
+
+            line = in.readLine();
+            value = line.section('=',1,1);
+            if (value.toUInt() & 0x1) ui->checkBox_POV1->setChecked(true);
+                    else ui->checkBox_POV1->setChecked(false);
+            if (value.toUInt() & 0x2) ui->checkBox_POV2->setChecked(true);
+                    else ui->checkBox_POV2->setChecked(false);
+            if (value.toUInt() & 0x4) ui->checkBox_POV3->setChecked(true);
+                    else ui->checkBox_POV3->setChecked(false);
+            if (value.toUInt() & 0x8) ui->checkBox_POV4->setChecked(true);
+                    else ui->checkBox_POV4->setChecked(false);
+
 
             file.close();
     }
@@ -1002,7 +999,15 @@ void OSHStudio::saveToFile()
         << "axis5Max=" << ui->horiSliderAxis5Max->value() << "\n"
         << "Reserved="   << "\n"
         << "Axis6Min=" << ui->horiSliderAxis6Min->value() << "\n"
-        << "Axis6Max=" << ui->horiSliderAxis6Max->value() << "\n";
+        << "Axis6Max=" << ui->horiSliderAxis6Max->value() << "\n"
+        << "Reserved="   << "\n";
+
+    int POVConf=0;
+    if (ui->checkBox_POV1->isChecked()) POVConf|=0x1;
+    if (ui->checkBox_POV2->isChecked()) POVConf|=0x2;
+    if (ui->checkBox_POV3->isChecked()) POVConf|=0x4;
+    if (ui->checkBox_POV4->isChecked()) POVConf|=0x8;
+     out << "POVConfig=" << POVConf;
 
        file.close();
     }

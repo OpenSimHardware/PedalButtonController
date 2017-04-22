@@ -31,6 +31,7 @@
 
 extern struct pin_conf pins[USEDPINS];
 extern struct axis_conf axises[AXISES];
+extern uint8_t POV_config;
 
 
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
@@ -66,6 +67,7 @@ void get_config(void) {
 		axises[i].calib_min=(axises[i].calib_min_hibyte << 8) | axises[i].calib_min_lowbyte;
 		axises[i].calib_max=(axises[i].calib_max_hibyte << 8) | axises[i].calib_max_lowbyte;
 	}
+	POV_config = (uint8_t)*curradr;
 
 }
 
@@ -124,6 +126,7 @@ void write_flash(void) {
 		      ;
 		     curradr++;
 	}
+	*curradr = POV_config;
 
 
 

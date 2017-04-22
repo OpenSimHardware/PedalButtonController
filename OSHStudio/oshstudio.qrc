@@ -5,5 +5,14 @@
         <file>Images/openhardware.ico</file>
         <file>Images/OFF.png</file>
         <file>Images/ON_2.png</file>
+        <file>Images/dpad.png</file>
+        <file>Images/dpad_cb.png</file>
+        <file>Images/dpad_cbl.png</file>
+        <file>Images/dpad_cl.png</file>
+        <file>Images/dpad_clt.png</file>
+        <file>Images/dpad_cr.png</file>
+        <file>Images/dpad_crb.png</file>
+        <file>Images/dpad_ct.png</file>
+        <file>Images/dpad_ctr.png</file>
     </qresource>
 </RCC>

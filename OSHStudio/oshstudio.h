@@ -8,7 +8,7 @@
 #include<QTextStream>
 
 //Input/output usb packet
-#define BUFFSIZE 63
+#define BUFFSIZE 64
 #define PINS 32
 #define AXISES 6
 
@@ -59,6 +59,7 @@ private slots:
   void drawAxis6Value(uint16_t axis_value);
   void drawButtons1Value(uint64_t buttons_value);
   void drawButtons2Value(uint64_t buttons_value);
+  void drawPOVSvalue(uint64_t POVS_value);
   void showConnectDeviceInfo();
   void hideConnectDeviceInfo();
   QString DrawTypeComboBox(pintype i);
@@ -94,6 +95,10 @@ private slots:
   void drawHelp();
   void gatherAllConf();
   void gatherPinConfig(pintype i);
+  void checkBoxPOV1Changed(int state);
+  void checkBoxPOV2Changed(int state);
+  void checkBoxPOV3Changed(int state);
+  void checkBoxPOV4Changed(int state);
 };
 
 class Worker : public QObject {
@@ -111,6 +116,7 @@ signals:
     void putAxis6Value(uint16_t axis_value);
     void putButtons1Value(uint64_t buttons_value);
     void putButtons2Value(uint64_t buttons_value);
+    void putPOVSvalue(uint64_t buttons_value);
     void putDisconnectedDeviceInfo(void);
     void putConnectedDeviceInfo(void);
 

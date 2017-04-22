@@ -79,8 +79,8 @@ if (((*Rot_PINB_IDR) & Rot_PINB_pin) != 0) {
   return (RotaryStore[i].state & 0x30);
 }
 
-volatile uint32_t tmp;
-volatile uint8_t tmpi;
+//volatile uint32_t tmp;
+//volatile uint8_t tmpi;
 
 void CheckRotaries(void){
 	uint8_t res,j=0;

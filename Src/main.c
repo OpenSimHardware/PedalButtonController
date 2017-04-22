@@ -44,11 +44,13 @@ int main(void)
     extern uint8_t Number_Buttons;
     extern uint8_t Number_RotSwitches;
 //    extern uint8_t Number_RotSwitches;
-    extern uint8_t buttons_offset;
+//    extern uint8_t buttons_offset;
+    extern uint8_t encoders_offset;
     extern volatile uint64_t millis;
     extern struct keypad buttons[MAXBUTTONS];
     uint8_t chk=0;
     extern USBD_HandleTypeDef  *hUsbDevice_0;
+    extern uint8_t POV_config;
 
 	const uint8_t ButtonsCodes[8] = {
 			0x01,	//b00000001,
@@ -60,6 +62,13 @@ int main(void)
 			0x40,	//b01000000,
 			0x80,	//b10000000,
 	};
+
+	// Null point for Hat Switches
+	USBSendBuffer[21] = 8;
+	USBSendBuffer[22] = 8;
+	USBSendBuffer[23] = 8;
+	USBSendBuffer[24] = 8;
+
 
 	uint64_t diff;
 
@@ -77,14 +86,14 @@ int main(void)
 
 		//	USBSendBuffer structure:
 		//	[0] - report id (1)
-		//	[1] - 4 encoders (8 buttons)
-		//	[2] - 4 encoders (8 buttons)
-		//	[3] - 3 encoders (6 buttons) + 2 not used buttons
-		//	[4] - 8 buttons
-		//	[5] - 8 buttons
-		//	[6] - 8 buttons
-		//	[7]	- 8 buttons
-		//	[8] - 8 buttons
+		//	[1] - 8 buttons / 4 encoders
+		//	[2] - 8 buttons / 4 encoders
+		//	[3] - 8 buttons / 4 encoders
+		//	[4] - 8 buttons / 4 encoders
+		//	[5] - 8 buttons / 4 encoders
+		//	[6] - 8 buttons / 4 encoders
+		//	[7]	- 8 buttons / 4 encoders
+		//	[8] - 8 buttons / 4 encoders
 		//	[9] - LOWBYTE from 1st axis
 		//	[10]- HIGHBYTE from 1st axis
 		//	[11]- LOWBYTE from 2nd axis
@@ -97,18 +106,44 @@ int main(void)
 		//	[18]- HIGHBYTE from 5th axis
 		//	[19]- LOWBYTE from 6th axis
 		//	[20]- HIGHBYTE from 6th axis
+	  	//	[21]- 1 Hat Switch
+	    //  [22]- 2 Hat Switch
+	    //	[23]- 3 Hat Switch
+	    //	[24]- 4 Hat Switch
 
 
 
 	  	 fill_buffer_4_axises();
 	  	 CheckRotaries();
 
+	  	 for (uint8_t i=0;i<4;i++) {
+	  		 if (POV_config & (0x1<<i)) {
+	  			 chk = buttons[i*4].pressed<<3 |
+	  					 (buttons[i*4+1].pressed<<2) |
+	  					 (buttons[i*4+2].pressed<<1) |
+	  					 (buttons[i*4+3].pressed);
+	  			 switch (chk) {
+	  			 	 case (8)	: USBSendBuffer[21+i]=0; break;
+	  			 	 case (12)	: USBSendBuffer[21+i]=1; break;
+	  			 	 case (4)	: USBSendBuffer[21+i]=2; break;
+	  			 	 case (6)	: USBSendBuffer[21+i]=3; break;
+	  			 	 case (2)	: USBSendBuffer[21+i]=4; break;
+	  			 	 case (3)	: USBSendBuffer[21+i]=5; break;
+	  			 	 case (1)	: USBSendBuffer[21+i]=6; break;
+	  			 	 case (9)	: USBSendBuffer[21+i]=7; break;
+	  			 	 default	: USBSendBuffer[21+i]=8; break;
+	  			 }
+
+	  		 } else {
+	  			USBSendBuffer[21+i]=8;
+	  		 }
+	  	 }
 
 		 for (uint8_t i=0;i<Number_Buttons+Number_RotSwitches;i++) {
-			if (buttons[i].pressed) {
-			 USBSendBuffer[buttons_offset+i/8] |= ButtonsCodes[i%8];
+			if ((buttons[i].pressed) && !(POV_config & (0x1<<(i/4)))){
+				USBSendBuffer[i/8+1] |= ButtonsCodes[i%8];
 			 } else {
-			 USBSendBuffer[buttons_offset+i/8] &= ~ButtonsCodes[i%8];
+				 USBSendBuffer[i/8+1] &= ~ButtonsCodes[i%8];
 			 }
 		}
 
@@ -118,21 +153,21 @@ int main(void)
 				  diff = millis - RotaryStore[i].time_pressed;
 
 				  if (RotaryStore[i].pressed == DIR_CW) {
-						  if ( diff > ROTTIME){
-						  USBSendBuffer[(uint8_t)(i/4)+1] &= ~ButtonsCodes[(i%4)*2];
+					  if ( diff > ROTTIME){
+						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
 						  RotaryStore[i].pressed = 0;
 					  }
 				  		 else
-				  			 USBSendBuffer[(uint8_t)(i/4)+1] |= ButtonsCodes[(i%4)*2];
+				  			 USBSendBuffer[(i/4)+encoders_offset] |= ButtonsCodes[(i%4)*2];
 				  	 }
 
 				  if (RotaryStore[i].pressed == DIR_CCW) {
 					  if (diff > ROTTIME){
-						  USBSendBuffer[(uint8_t)(i/4)+1] &= ~ButtonsCodes[(i%4)*2+1];
+						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
 						  RotaryStore[i].pressed = 0;
 					  }
 				  		  else
-				  			  USBSendBuffer[(uint8_t)(i/4)+1] |= ButtonsCodes[(i%4)*2+1];
+				  			  USBSendBuffer[(i/4)+encoders_offset] |= ButtonsCodes[(i%4)*2+1];
 				  		}
 			  }
 

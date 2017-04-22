@@ -74,6 +74,8 @@ volatile struct axis_conf axises[AXISES] =
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 };
 
+volatile uint8_t POV_config=0;
+
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0,
@@ -84,7 +86,8 @@ uint8_t Number_Rotaries=0,
 		Number_Poles=0,
 		Number_Wires=0,
 		Number_RotSwitches=0;
-uint8_t buttons_offset=0;
+//uint8_t buttons_offset=0;
+uint8_t encoders_offset=0;
 volatile uint32_t ADC1Values[ADC_BUFF_SIZE];
 uint32_t ADC1Prevs_Values[ADC_BUFF_SIZE]={0};
 volatile uint64_t millis;
@@ -190,9 +193,11 @@ void gpio_ports_config(void) {
 			tmp=pins[i].pin_number;
 		};
 
-		buttons_offset=Number_Rotaries*2/8 + 2;
+//		buttons_offset=Number_Rotaries*2/8 + 2;
 		Number_Buttons = Number_Columns*Number_Rows + Number_Simple_Buttons;
-		Number_RotSwitches = Number_Poles*Number_Wires;
+		Number_RotSwitches = Number_Poles * Number_Wires;
+		encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
+		if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
 
 		tmpregmask = (uint32_t)(0b1111 << (tmp*4));
 		*pins[i].conf_reg_addr = (*(pins[i].conf_reg_addr) & (~tmpregmask)) | (tmpconfvalue << (tmp*4));
