@@ -4,13 +4,16 @@ STM32F103C8T6-based Pedals & Buttons Controller (Joystick/GamePad interface) for
 
 Capabilities:
 - 6x 12-bit (4096 steps) axises
-- up to 11 rotary encoders
-- up to 36 buttons
+- support rotary encoders
+- support buttons in matrix
+- support single buttons
+- support rotary switches
+- support POV Hat Switches
 - 1kHz exchange rate with PC
 
 
 <pre>
-Pinout:
+Default Pinout:
 		 STM32F103C8T6
 		  -----------------
 		- |3VB		 +3.3V| -
@@ -37,6 +40,5 @@ Pinout:
 		  
 </pre>
 		  
-Wiring Scheme in file Wiring_Scheme.jpg
 
 Project URL - https://opensimhardware.wordpress.com/pedal-button-controller/
