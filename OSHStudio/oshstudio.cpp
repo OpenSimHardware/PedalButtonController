@@ -191,8 +191,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
       QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
                         <<"Analog Medium Smooth"<<"Analog High Smooting"<<"Rotary Encoder PINA"
                         <<"Rotary Encoder PINB"<<"Rotary Encoder"<<"Button Matrix ROW"
-                        <<"Button Matrix COLUMN"<<"Single Button"<<"Rotary Switch Pole"
-                        <<"Rotary Switch Wire");
+                        <<"Button Matrix COLUMN"<<"Single Button +3.3V"<<"Single Button GND"
+                        <<"Rotary Switch Pole"<<"Rotary Switch Wire");
 
       QString name_template("comboBoxA%1");
       for(int i = 0; i < 13; i++) {
@@ -415,6 +415,7 @@ QString OSHStudio::DrawTypeComboBox(pintype i) {
         case Button_ROW:        return "QComboBox { color: white; background-color: green; }";
         case Button_COLUMN:     return "QComboBox { color: white; background-color: darkGreen; }";
         case Button:            return "QComboBox { color: white; background-color: blue; }";
+        case Button_GND:        return "QComboBox { color: white; background-color: blue; }";
         case RotSwPole:         return "QComboBox { color: white; background-color: magenta; }";
         case RotSwWire:         return "QComboBox { color: white; background-color: darkMagenta; }";
         case Not_Used:          return "QComboBox { color: black; background-color: light gray; }";
@@ -1016,19 +1017,20 @@ void OSHStudio::saveToFile()
 void OSHStudio::gatherPinConfig(pintype i)
 {
     switch (i) {
-        case (0): break;
-        case (1):
-        case (2):
-        case (3):
-        case (4): NumberAnalogInputs ++; break;
-        case (5): PinA++; break;
-        case (6): PinB++; break;
-        case (7): Rotaries++; break;
-        case (8): ButtonsRows++; break;
-        case (9): ButtonsColumns++; break;
-        case (10): Buttons++; break;
-        case (11): RotSwitchPoles++; break;
-        case (12): RotSwitchWires++; break;
+        case (Not_Used): break;
+        case (AnalogNoSmooth):
+        case (AnalogLowSmooth):
+        case (AnalogMedSmooth):
+        case (AnalogHighSmooth): NumberAnalogInputs ++; break;
+        case (Rotary_PINA): PinA++; break;
+        case (Rotary_PINB): PinB++; break;
+        case (Rotary_Enc): Rotaries++; break;
+        case (Button_ROW): ButtonsRows++; break;
+        case (Button_COLUMN): ButtonsColumns++; break;
+        case (Button):
+        case (Button_GND): Buttons++; break;
+        case (RotSwPole): RotSwitchPoles++; break;
+        case (RotSwWire): RotSwitchWires++; break;
     }
 };
 

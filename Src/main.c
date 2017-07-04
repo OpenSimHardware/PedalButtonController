@@ -48,9 +48,10 @@ int main(void)
     extern uint8_t encoders_offset;
     extern volatile uint64_t millis;
     extern struct keypad buttons[MAXBUTTONS];
-    uint8_t chk=0;
+    uint8_t chk=0, packet_counter=0;
     extern USBD_HandleTypeDef  *hUsbDevice_0;
     extern uint8_t POV_config;
+
 
 	const uint8_t ButtonsCodes[8] = {
 			0x01,	//b00000001,
@@ -172,14 +173,19 @@ int main(void)
 			  }
 
 
-			  for (uint8_t i=1;i<USEDPINS+1;i++) {
+	  //We should send report only if some action exist
+			  for (uint8_t i=1;i<21;i++) {
 				  chk |= USBSendBuffer[i];
 			  }
-
-			  if (chk) {
-				  USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+			  for (uint8_t i=21;i<25;i++) {
+				  if (USBSendBuffer[i] != 8) chk |= USBSendBuffer[i];
 			  }
-
-
+			  if (chk) {
+				 USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+				 packet_counter=0;
+			  } else {
+				  packet_counter++;
+				  if (packet_counter < 6) USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+			  }
   }
 }

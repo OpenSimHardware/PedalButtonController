@@ -44,8 +44,9 @@ private:
       Button_ROW = 8,
       Button_COLUMN = 9,
       Button = 10,
-      RotSwPole = 11,
-      RotSwWire = 12,
+      Button_GND = 11,
+      RotSwPole = 12,
+      RotSwWire = 13,
 } pintype;
 
 private slots:

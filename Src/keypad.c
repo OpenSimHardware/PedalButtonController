@@ -53,14 +53,21 @@ void CheckButtons(void) {
 			  } else {
 				rowstate = 0;
 			  };
-			button++;
-			SetButtonState(button,rowstate);
+			SetButtonState(button++,rowstate);
+		}
+		if (pins[i].pin_type == Button_GND) {
+			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
+				rowstate = 0;
+			  } else {
+				rowstate = 1;
+			  };
+			SetButtonState(button++,rowstate);
 		}
 	}
 }
 
 void CheckWires(uint8_t pole) {
-	uint8_t rowstate=0, button=0, wire=0;
+	volatile uint8_t rowstate=0, button=0, wire=0;
 	extern uint8_t Number_Wires;
 	extern uint8_t Number_Buttons;
 	extern uint8_t Number_Simple_Buttons;
@@ -73,13 +80,14 @@ void CheckWires(uint8_t pole) {
 			  } else {
 				rowstate = 0;
 			  };
-			button = pole*Number_Wires + wire + Number_Simple_Buttons + Number_Buttons;
+			button = pole*Number_Wires + wire + Number_Buttons; //Number_Simple_Buttons;
 			if ((buttons[button].pressed == 1) &&  //if already pressed and longer then presstime
 					 (millis - buttons[button].time_pressed  > ROTSWITCHTIME)) { //then reset
 						buttons[button].pressed = 0;
 						} else {
-							SetButtonState(button,rowstate);
+							//SetButtonState(button,rowstate);
 						}
+			SetButtonState(button,rowstate);
 			wire++;
 		}
 	}
@@ -98,7 +106,7 @@ void CheckRows(uint8_t column) {
 			  } else {
 				rowstate = 0;
 			  };
-			button = row*Number_Columns + column + Number_Simple_Buttons;
+			button = row*Number_Columns + column;// + Number_Simple_Buttons;
 			SetButtonState(button,rowstate);
 			row++;
 		}
