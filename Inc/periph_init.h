@@ -46,15 +46,23 @@ typedef enum {
 	AnalogLowSmooth = 2,
 	AnalogMedSmooth = 3,
 	AnalogHighSmooth = 4,
-	Rotary_PINA = 5,
-	Rotary_PINB = 6,
-	Rotary_Enc = 7,
-	Button_ROW = 8,
-	Button_COLUMN = 9,
-	Button = 10,
-	Button_GND = 11,
-	RotSwPole = 12,
-	RotSwWire = 13,
+	Chain_Rotary_PINA = 5,
+	Chain_Rotary_PINB = 6,
+	Chain_Rotary_Enc_1 = 7,
+	Chain_Rotary_Enc_2 = 8,
+	Chain_Rotary_Enc_4 = 9,
+	Single_Rotary_PINA_1 = 10,
+	Single_Rotary_PINB_1 = 11,
+	Single_Rotary_PINA_2 = 12,
+	Single_Rotary_PINB_2 = 13,
+	Single_Rotary_PINA_4 = 14,
+	Single_Rotary_PINB_4 = 15,
+	Button_ROW = 16,
+	Button_COLUMN = 17,
+	Button = 18,
+	Button_GND = 19,
+	RotSwPole = 20,
+	RotSwWire = 21,
 } pintype;
 
 
@@ -64,6 +72,15 @@ struct pin_conf {
 		uint32_t * bsrr_reg_addr;
 		uint32_t * idr_reg_addr;
 		uint8_t pin_number;
+	};
+
+struct rot_conf {
+		pintype PINA_Type;
+		pintype PINB_Type;
+		uint32_t * PINA_IDR;
+		uint32_t * PINB_IDR;
+		uint16_t PINA;
+		uint16_t PINB;
 	};
 
 struct axis_conf {

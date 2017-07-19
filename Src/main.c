@@ -40,7 +40,7 @@ int main(void)
 
 {
 	extern volatile struct rots RotaryStore[USEDPINS];
-    extern uint8_t Number_Rotaries;
+    extern uint8_t Number_Rotaries, Number_Single_Rotaries;
     extern uint8_t Number_Buttons;
     extern uint8_t Number_RotSwitches;
 //    extern uint8_t Number_RotSwitches;
@@ -149,9 +149,15 @@ int main(void)
 		}
 
 
-	  for (uint8_t i=0;i<Number_Rotaries;i++){
+	  for (uint8_t i=0;i<Number_Rotaries + Number_Single_Rotaries;i++){
 
 				  diff = millis - RotaryStore[i].time_pressed;
+
+				  if (!RotaryStore[i].pressed) {
+					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
+					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
+				  }
+
 
 				  if (RotaryStore[i].pressed == DIR_CW) {
 					  if ( diff > ROTTIME){

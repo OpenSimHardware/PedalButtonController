@@ -36,16 +36,16 @@ volatile struct pin_conf pins[USEDPINS] = {
 		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
 		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
 		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
-		{Rotary_Enc, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
 		{Button_COLUMN, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, //A7
-		{Rotary_Enc, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},	//A8
-		{Rotary_Enc, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 	//A9
-		{Rotary_Enc, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},	//A10
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},	//A8
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 	//A9
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},	//A10
 		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},	//A11
 		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},	//A12
-		{Rotary_Enc, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},	//A15
-		{Rotary_Enc, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},	//B0
-		{Rotary_Enc, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 	//B1
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},	//A15
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},	//B0
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 	//B1
 		{Button_COLUMN, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},	//B3
 		{Button_ROW,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, //B4
 		{Button_ROW,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, //B5
@@ -53,12 +53,12 @@ volatile struct pin_conf pins[USEDPINS] = {
 		{Button_ROW, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 	//B7
 		{Button_ROW, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 	//B8
 		{Button_ROW, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 	//B9
-		{Rotary_PINA, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},	//B10
-		{Rotary_PINB, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},	//B11
+		{Chain_Rotary_PINA, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},	//B10
+		{Chain_Rotary_PINB, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},	//B11
 		{Button_COLUMN, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},//B12
-		{Rotary_Enc, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
-		{Rotary_Enc, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
-		{Rotary_Enc, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
+		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
 		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
 		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},//C14
 		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
@@ -107,11 +107,14 @@ volatile struct axis_conf axises[AXISES] =
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 };
 
+volatile struct rot_conf Single_rotaries[USEDPINS] = {0};
+
 volatile uint8_t POV_config=0;
 
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0,
+		Number_Single_Rotaries=0,
 		Number_Rows=0,
 		Number_Columns=0,
 		Number_Buttons=0,
@@ -136,8 +139,6 @@ void gpio_init(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
 	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
 
-//	erase_flash();
-//	write_flash();
 	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
 		write_flash();
 	} else {
@@ -152,7 +153,12 @@ void gpio_init(void) {
 void gpio_ports_config(void) {
 
 	uint32_t tmpregmask;
-	uint8_t tmpconfvalue=0x4,tmpbsrrvalue=0,i,tmp=0;
+	uint8_t tmpconfvalue=0x4,
+			tmpbsrrvalue=0,
+			i,
+			tmp=0;
+	uint8_t Number_Single_Rotaries_PINA=0,
+			Number_Single_Rotaries_PINB=0;
 
 	// Reset all prevs states
 	GPIOA->CRL=0x44444444;
@@ -181,9 +187,17 @@ void gpio_ports_config(void) {
 							tmpconfvalue=0x0;
 							tmpbsrrvalue=0x10;
 							break;
-		case Rotary_PINA:
-		case Rotary_PINB:	tmpconfvalue=0x8;
+		case Chain_Rotary_PINA:
+							tmpconfvalue=0x8;
 							tmpbsrrvalue=0x10;
+							Rot_PINA_IDR=pins[i].idr_reg_addr;
+							Rot_PINA_pin=0x1<<pins[i].pin_number;
+							break;
+		case Chain_Rotary_PINB:
+							tmpconfvalue=0x8;
+							tmpbsrrvalue=0x10;
+							Rot_PINB_IDR=pins[i].idr_reg_addr;
+							Rot_PINB_pin=0x1<<pins[i].pin_number;
 							break;
 		case Button_ROW: 	Number_Rows++;
 							tmpconfvalue=0x8;
@@ -197,7 +211,30 @@ void gpio_ports_config(void) {
 							tmpconfvalue=0x8;
 							tmpbsrrvalue=0x00;
 							break;
-		case Rotary_Enc:	Number_Rotaries++;
+		case Chain_Rotary_Enc_1:
+		case Chain_Rotary_Enc_2:
+		case Chain_Rotary_Enc_4:
+							Number_Rotaries++;
+							tmpconfvalue=0x02;
+							tmpbsrrvalue=0x10;
+							break;
+		case Single_Rotary_PINA_1:
+		case Single_Rotary_PINA_2:
+		case Single_Rotary_PINA_4:
+							Single_rotaries[Number_Single_Rotaries_PINA].PINA=(0x1<<pins[i].pin_number);
+							Single_rotaries[Number_Single_Rotaries_PINA].PINA_IDR=pins[i].idr_reg_addr;
+							Single_rotaries[Number_Single_Rotaries_PINA].PINA_Type=pins[i].pin_type;
+							Number_Single_Rotaries_PINA++;
+							tmpconfvalue=0x02;
+							tmpbsrrvalue=0x10;
+							break;
+		case Single_Rotary_PINB_1:
+		case Single_Rotary_PINB_2:
+		case Single_Rotary_PINB_4:
+							Single_rotaries[Number_Single_Rotaries_PINB].PINB=(0x1<<pins[i].pin_number);
+							Single_rotaries[Number_Single_Rotaries_PINB].PINB_IDR=pins[i].idr_reg_addr;
+							Single_rotaries[Number_Single_Rotaries_PINB].PINB_Type=pins[i].pin_type;
+							Number_Single_Rotaries_PINB++;
 							tmpconfvalue=0x02;
 							tmpbsrrvalue=0x10;
 							break;
@@ -215,14 +252,14 @@ void gpio_ports_config(void) {
 							break;
 		}
 
-		if (pins[i].pin_type == Rotary_PINA) {
-			Rot_PINA_IDR=pins[i].idr_reg_addr;
-			Rot_PINA_pin=0x1<<pins[i].pin_number;
-		};
-		if (pins[i].pin_type == Rotary_PINB) {
-			Rot_PINB_IDR=pins[i].idr_reg_addr;
-			Rot_PINB_pin=0x1<<pins[i].pin_number;
-		};
+//		if (pins[i].pin_type == Rotary_PINA) {
+//			Rot_PINA_IDR=pins[i].idr_reg_addr;
+//			Rot_PINA_pin=0x1<<pins[i].pin_number;
+//		};
+//		if (pins[i].pin_type == Rotary_PINB) {
+//			Rot_PINB_IDR=pins[i].idr_reg_addr;
+//			Rot_PINB_pin=0x1<<pins[i].pin_number;
+//		};
 
 		if (pins[i].pin_number>7) {
 			tmp=pins[i].pin_number-8;
@@ -231,6 +268,7 @@ void gpio_ports_config(void) {
 		};
 
 //		buttons_offset=Number_Rotaries*2/8 + 2;
+		Number_Single_Rotaries = Number_Single_Rotaries_PINA;
 		Number_Buttons = Number_Columns*Number_Rows + Number_Simple_Buttons;
 		Number_RotSwitches = Number_Poles * Number_Wires;
 		encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
