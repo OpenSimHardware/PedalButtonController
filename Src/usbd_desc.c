@@ -60,10 +60,14 @@
 #define USBD_LANGID_STRING     1033
 #define USBD_MANUFACTURER_STRING     "OpenSimHardware"
 #define USBD_PID_FS     0x3100
-#define USBD_PRODUCT_STRING_FS     "OSH PB Controller "
-#define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
+//#define USBD_PRODUCT_STRING_FS     "OSH PB Controller "
+//#define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
 #define USBD_CONFIGURATION_STRING_FS     "OSH PB Controller Config"
 #define USBD_INTERFACE_STRING_FS     "OSH PB Controller Interface"
+#define FIRMWARERELEASE 12
+
+extern uint8_t * USBD_PRODUCT_STRING_FS;
+extern uint8_t * USBD_SERIALNUMBER_STRING_FS;
 
 /* USER CODE BEGIN 0 */
 
@@ -123,8 +127,8 @@ __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
     HIBYTE(USBD_VID),           /*idVendor*/
     LOBYTE(USBD_PID_FS),           /*idVendor*/
     HIBYTE(USBD_PID_FS),           /*idVendor*/
-    0x01,                       /*bcdDevice rel. 2.00*/
-    0x03,
+    FIRMWARERELEASE,                       /*bcdDevice rel. 2.00*/
+    0x00,
     USBD_IDX_MFC_STR,           /*Index of manufacturer  string*/
     USBD_IDX_PRODUCT_STR,       /*Index of product string*/
     USBD_IDX_SERIAL_STR,        /*Index of serial number string*/

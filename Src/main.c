@@ -34,7 +34,7 @@
 
 DMA_HandleTypeDef hdma_adc1;
 volatile uint8_t USBSendBuffer[USEDPINS+1]={1,0};			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
-
+volatile extern uint16_t Rot_Press_Time;
 
 int main(void)
 
@@ -160,7 +160,7 @@ int main(void)
 
 
 				  if (RotaryStore[i].pressed == DIR_CW) {
-					  if ( diff > ROTTIME){
+					  if ( diff > Rot_Press_Time){
 						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
 						  RotaryStore[i].pressed = 0;
 					  }
@@ -169,7 +169,7 @@ int main(void)
 				  	 }
 
 				  if (RotaryStore[i].pressed == DIR_CCW) {
-					  if (diff > ROTTIME){
+					  if (diff > Rot_Press_Time){
 						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
 						  RotaryStore[i].pressed = 0;
 					  }

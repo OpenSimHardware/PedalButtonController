@@ -36,8 +36,8 @@
 #include <stdint.h>
 #include "periph_init.h"
 
-#define ROTTIME 50
-#define ROTDEBOUNCE 10
+//#define ROTTIME 50
+//#define ROTDEBOUNCE 10
 
 #define DIR_CCW 0x10
 #define DIR_CW 0x20

@@ -106,5 +106,6 @@ void NVIC_init(void);
 void processing_axises(uint8_t axis, uint8_t Kstab);
 void fill_buffer_4_axises(void);
 uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
+void custom_usb_config(void);
 
 #endif /* PERIPH_INIT_H_ */

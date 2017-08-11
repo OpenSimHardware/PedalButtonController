@@ -7,9 +7,17 @@
 hid_device *handle_read, *handle_write;
 
 uint8_t NumberAnalogInputs,
-        PinA,
-        PinB,
-        Rotaries,
+        Chain_PinA,
+        Chain_PinB,
+        Chain_Rotaries_1,
+        Chain_Rotaries_2,
+        Chain_Rotaries_4,
+        Single_Rotaries_PINA_1,
+        Single_Rotaries_PINB_1,
+        Single_Rotaries_PINA_2,
+        Single_Rotaries_PINB_2,
+        Single_Rotaries_PINA_4,
+        Single_Rotaries_PINB_4,
         ButtonsRows,
         ButtonsColumns,
         Buttons,
@@ -18,9 +26,10 @@ uint8_t NumberAnalogInputs,
 
 void Worker::processData(void) {
     uint8_t buf[BUFFSIZE]={0};
-//    uint8_t bufrep2[2]={3,1};
+    struct hid_device_info *cur_dev;
     int8_t res=0;
     uint64_t buttonsState=0;
+
 
 while (1) {
      if (!handle_read) {
@@ -39,7 +48,9 @@ while (1) {
           QThread::sleep(1);
       } else {
         res=hid_set_nonblocking(handle_read, 1);
-        emit putConnectedDeviceInfo();
+
+        cur_dev = hid_enumerate(0x1209, 0x3100);
+        emit putConnectedDeviceInfo(cur_dev->release_number);
         }
      }
 
@@ -76,41 +87,48 @@ OSHStudio::OSHStudio(QWidget *parent) :
     ui(new Ui::OSHStudio)
 {
     ui->setupUi(this);
+    ui->label_Stud_version->setText("0." + QString::number(OSHSTUDIOVERSION));
+
       connect(ui->getConfig_button, SIGNAL(clicked()), SLOT(getConfig_Slot()));
       connect(ui->saveConfig_Button, SIGNAL(clicked()), SLOT(writeConfig_Slot()));
+      connect(ui->resetConfig_button, SIGNAL(clicked()), SLOT(resetConfig_Slot()));
+      connect(ui->restoreConfig_button, SIGNAL(clicked()), SLOT(restoreConfig_Slot()));
 
-      connect(ui->comboBoxA0, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA1, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA2, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA3, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA4, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA5, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA6, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA7, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA8, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA9, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA10, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA11, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA12, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxA15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB0, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB1, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB3, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB4, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB5, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB6, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB7, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB8, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB9, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB10, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB11, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB12, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB13, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB14, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxB15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxC13, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxC14, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
-      connect(ui->comboBoxC15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaint()));
+      connect(ui->lineEdit_Device_ident, SIGNAL(textEdited(QString)), SLOT(show_USB_ident_uniq(QString)));
+      connect(ui->spinBox_USB_exchange, SIGNAL(valueChanged(int)), SLOT(show_USB_exch_rate(int)));
+
+      connect(ui->comboBoxA0, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA0()));
+      connect(ui->comboBoxA1, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA1()));
+      connect(ui->comboBoxA2, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA2()));
+      connect(ui->comboBoxA3, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA3()));
+      connect(ui->comboBoxA4, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA4()));
+      connect(ui->comboBoxA5, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA5()));
+      connect(ui->comboBoxA6, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA6()));
+      connect(ui->comboBoxA7, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA7()));
+      connect(ui->comboBoxA8, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA8()));
+      connect(ui->comboBoxA9, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA9()));
+      connect(ui->comboBoxA10, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA10()));
+      connect(ui->comboBoxA11, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA11()));
+      connect(ui->comboBoxA12, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA12()));
+      connect(ui->comboBoxA15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintA15()));
+      connect(ui->comboBoxB0, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB0()));
+      connect(ui->comboBoxB1, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB1()));
+      connect(ui->comboBoxB3, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB3()));
+      connect(ui->comboBoxB4, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB4()));
+      connect(ui->comboBoxB5, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB5()));
+      connect(ui->comboBoxB6, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB6()));
+      connect(ui->comboBoxB7, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB7()));
+      connect(ui->comboBoxB8, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB8()));
+      connect(ui->comboBoxB9, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB9()));
+      connect(ui->comboBoxB10, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB10()));
+      connect(ui->comboBoxB11, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB11()));
+      connect(ui->comboBoxB12, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB12()));
+      connect(ui->comboBoxB13, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB13()));
+      connect(ui->comboBoxB14, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB14()));
+      connect(ui->comboBoxB15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintB15()));
+      connect(ui->comboBoxC13, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintC13()));
+      connect(ui->comboBoxC14, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintC14()));
+      connect(ui->comboBoxC15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintC15()));
 
 
       connect(ui->horiSliderAxis1Min, SIGNAL(valueChanged(int)), SLOT(lineEditAxis1Min_Slot(int)));
@@ -154,6 +172,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
       qRegisterMetaType<uint16_t>("uint16_t");
       qRegisterMetaType<uint64_t>("uint64_t");
+      qRegisterMetaType<uint16_t>("uint8_t");
+
 
       QThread* thread = new QThread;
       Worker* worker = new Worker();
@@ -178,8 +198,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(drawButtons2Value(uint64_t)));
       connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
                             SLOT(drawPOVSvalue(uint64_t)));
-      connect(worker, SIGNAL(putConnectedDeviceInfo()),
-                            SLOT(showConnectDeviceInfo()));
+      connect(worker, SIGNAL(putConnectedDeviceInfo(uint8_t)),
+                            SLOT(showConnectDeviceInfo(uint8_t)));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
                             SLOT(hideConnectDeviceInfo()));
 
@@ -187,12 +207,21 @@ OSHStudio::OSHStudio(QWidget *parent) :
       thread->start();
 
 
-
       QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
-                        <<"Analog Medium Smooth"<<"Analog High Smooting"<<"Rotary Encoder PINA"
-                        <<"Rotary Encoder PINB"<<"Rotary Encoder"<<"Button Matrix ROW"
-                        <<"Button Matrix COLUMN"<<"Single Button +3.3V"<<"Single Button GND"
-                        <<"Rotary Switch Pole"<<"Rotary Switch Wire");
+                        <<"Analog Medium Smooth"<<"Analog High Smooting"
+                        <<"Chd Rot Enc PINA"<<"Chd Rot Enc PINB"
+                        <<"Chd Rot Enc 1/1"<<"Chd Rot Enc 1/2"<<"Chd Rot Enc 1/4"
+                        <<"Sng Rot Enc PINA 1/1"<<"Sng Rot Enc PINB 1/1"
+                        <<"Sng Rot Enc PINA 1/2"<<"Sng Rot Enc PINB 1/2"
+                        <<"Sng Rot Enc PINA 1/4"<<"Sng Rot Enc PINB 1/4"
+                        <<"Button Matrix ROW"<<"Button Matrix COLUMN"
+                        <<"Single Button +3.3V"<<"Single Button GND"
+                        <<"Rotary Switch Pole"
+                        <<"Rotary Switch Wire");
+
+      ui->comboBoxA11->setEnabled(false);
+      ui->comboBoxA12->setEnabled(false);
+//      ui->comboBoxC13->setEnabled(false);
 
       QString name_template("comboBoxA%1");
       for(int i = 0; i < 13; i++) {
@@ -233,6 +262,24 @@ OSHStudio::OSHStudio(QWidget *parent) :
           pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
           pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
       }
+
+      ui->comboBoxC13->setItemData(5, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(6, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(10, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(11, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(12, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(13, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(14, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(15, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(16, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(18, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(19, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(21, 0, Qt::UserRole - 1);
+
+
+      // fake assignment for making slot active;
+      ui->spinBox_USB_exchange->setValue(2);
+      ui->spinBox_USB_exchange->setValue(1);
 }
 
 OSHStudio::~OSHStudio()
@@ -318,29 +365,43 @@ void OSHStudio::writeConfig_Slot()
     if (ui->checkBox_POV3->isChecked()) buf[63]|=0x4;
     if (ui->checkBox_POV4->isChecked()) buf[63]|=0x8;
 
-//    buf[63]=(uint8_t)(ui->label_POV1->isEnabled())    ||
-//                     (ui->label_POV2->isEnabled())<<1 ||
-//                     (ui->label_POV3->isEnabled())<<2 ||
-//                     (ui->label_POV4->isEnabled())<<3 ;
-
     res=hid_write(handle_read, buf, BUFFSIZE);
 
+    QThread::sleep(1);
+    buf[0]=6;
+    buf[1]=LOBYTE(ui->spinBox__Rot_Press_time->value());
+    buf[2]=HIBYTE(ui->spinBox__Rot_Press_time->value());
+    buf[3]=LOBYTE(ui->spinBox_Rot_Debounce_time->value());
+    buf[4]=HIBYTE(ui->spinBox_Rot_Debounce_time->value());
+    buf[5]=LOBYTE(ui->spinBox_Button_Debounce_time->value());
+    buf[6]=HIBYTE(ui->spinBox_Button_Debounce_time->value());
+    buf[7]=ui->spinBox_USB_exchange->value();
+    buf[9]=LOBYTE(ui->spinBox_RotSwitch_Press_time->value());
+    buf[10]=HIBYTE(ui->spinBox_RotSwitch_Press_time->value());
+
+    QString USB_PS_Uniq =ui->lineEdit_Device_ident->text();
+    for(uint8_t i=0; i <10; i++){
+        if (USB_PS_Uniq.at(i) != 0) {
+          buf[11+i] = (uint8_t)USB_PS_Uniq.at(i).toLatin1();
+        } else {
+            buf[11+i] = 0;
+            }
+    }
+
+    QString USB_SN_Uniq = ui->lineEdit_Serial_Number->text();
+    for (uint8_t i=0; i<10; i++) {
+        buf[21+i] = (uint8_t)USB_SN_Uniq.at(i).toLatin1();
+    }
+
+    res=hid_write(handle_read, buf, BUFFSIZE);
 }
 
-void OSHStudio::getConfig_Slot()
-{
-    uint8_t buf[BUFFSIZE]={0};
-    uint8_t bufrep2[2]={3,1};
-    uint8_t res=0,j=0;
+void OSHStudio::setConfig_Slot(uint8_t buf[BUFFSIZE], uint8_t op_code){
+    wchar_t tmp[10];
+    wchar_t * USB_PS_Uniq;
+    wchar_t * USB_SN_Uniq;
 
-    do {
-        res=hid_write(handle_read, bufrep2, 2);
-        res=hid_read(handle_read, buf, BUFFSIZE);
-//        res=hid_read_timeout(handle_read, buf, BUFFSIZE,100);
-//        ui->textEdit->append(QString::number(buf[0]));
-        j++;
-       } while ((buf[0] != 4) || j<50 );
-
+    if (op_code == 1) {
         ui->comboBoxA0->setCurrentIndex(buf[1]);
         ui->comboBoxA1->setCurrentIndex(buf[2]);
         ui->comboBoxA2->setCurrentIndex(buf[3]);
@@ -393,14 +454,177 @@ void OSHStudio::getConfig_Slot()
         ui->horiSliderAxis6Max->setValue((buf[61]<<8) | buf[60]);
 
         if (buf[63] & 0x1) ui->checkBox_POV1->setChecked(true);
-                else ui->checkBox_POV1->setChecked(false);
+            else ui->checkBox_POV1->setChecked(false);
         if (buf[63] & 0x2) ui->checkBox_POV2->setChecked(true);
-                else ui->checkBox_POV2->setChecked(false);
+            else ui->checkBox_POV2->setChecked(false);
         if (buf[63] & 0x4) ui->checkBox_POV3->setChecked(true);
-                else ui->checkBox_POV3->setChecked(false);
+            else ui->checkBox_POV3->setChecked(false);
         if (buf[63] & 0x8) ui->checkBox_POV4->setChecked(true);
-                else ui->checkBox_POV4->setChecked(false);
+            else ui->checkBox_POV4->setChecked(false);
+    }
 
+    if (op_code == 2) {
+        ui->spinBox__Rot_Press_time->setValue((buf[2]<<8)+buf[1]);
+        ui->spinBox_Rot_Debounce_time->setValue((buf[4]<<8)+buf[3]);
+        ui->spinBox_Button_Debounce_time->setValue((buf[6]<<8)+buf[5]);
+        ui->spinBox_USB_exchange->setValue(buf[7]);
+        ui->spinBox_RotSwitch_Press_time->setValue((buf[10]<<8)+buf[9]);
+
+
+        for (uint8_t i=0; i<10; i++) {
+            tmp[i]=(wchar_t)buf[11+i];
+        }
+        USB_PS_Uniq=tmp;
+        ui->lineEdit_Device_ident->setText(QString::fromWCharArray(USB_PS_Uniq));
+
+        for (uint8_t i=0; i<10; i++) {
+            tmp[i]=(wchar_t)buf[21+i];
+        }
+        USB_SN_Uniq=tmp;
+        ui->lineEdit_Serial_Number->setText(QString::fromWCharArray(USB_SN_Uniq));
+    }
+
+}
+
+void OSHStudio::resetConfig_Slot(){
+    uint8_t buf[BUFFSIZE]={0};
+
+    setConfig_Slot(buf,1);
+//    setConfig_Slot(buf,2);
+}
+
+void OSHStudio::restoreConfig_Slot(){
+    uint8_t buf[BUFFSIZE]={0};
+
+    for (uint8_t i=1; i<7; i++){
+        buf[i]=AnalogMedSmooth;
+    }
+    buf[7]=Chain_Rotary_Enc_1;
+    buf[8]=Button_COLUMN;
+    buf[9]=Chain_Rotary_Enc_1;
+    buf[10]=Chain_Rotary_Enc_1;
+    buf[11]=Chain_Rotary_Enc_1;
+    buf[14]=Chain_Rotary_Enc_1;
+    buf[15]=Chain_Rotary_Enc_1;
+    buf[16]=Chain_Rotary_Enc_1;
+    buf[17]=Button_COLUMN;
+    for (uint8_t i=18; i<24; i++){
+        buf[i]=Button_ROW;
+    }
+    buf[24]=Chain_Rotary_PINA;
+    buf[25]=Chain_Rotary_PINB;
+    buf[26]=Button_COLUMN;
+    buf[27]=Chain_Rotary_Enc_1;
+    buf[28]=Chain_Rotary_Enc_1;
+    buf[29]=Chain_Rotary_Enc_1;
+    buf[30]=Button_COLUMN;
+    buf[31]=Button_COLUMN;
+    buf[32]=Button_COLUMN;
+
+    buf[33]=0;
+    buf[34]=0;
+    buf[35]=0xFF;
+    buf[36]=0x0F;
+
+    buf[38]=0;
+    buf[39]=0;
+    buf[40]=0xFF;
+    buf[41]=0x0F;
+
+    buf[43]=0;
+    buf[44]=0;
+    buf[45]=0xFF;
+    buf[46]=0x0F;
+
+    buf[48]=0;
+    buf[49]=0;
+    buf[50]=0xFF;
+    buf[51]=0x0F;
+
+    buf[53]=0;
+    buf[54]=0;
+    buf[55]=0xFF;
+    buf[56]=0x0F;
+
+    buf[58]=0;
+    buf[59]=0;
+    buf[60]=0xFF;
+    buf[61]=0x0F;
+
+    buf[63]=0;
+
+    setConfig_Slot(buf,1);
+
+    buf[1]=50;
+    buf[2]=0;
+    buf[3]=10;
+    buf[4]=0;
+    buf[5]=50;
+    buf[6]=0;\
+    buf[7]=0x10;
+    buf[8]=0;
+    buf[9]=100;
+    buf[10]=0;
+    buf[11]=0;
+    buf[21]=48;
+    buf[22]=48;
+    buf[23]=48;
+    buf[24]=48;
+    buf[25]=48;
+    buf[26]=48;
+    buf[27]=48;
+    buf[28]=48;
+    buf[29]=49;
+    buf[30]=66;
+
+
+    setConfig_Slot(buf,2);
+
+}
+
+void OSHStudio::getConfig_Slot()
+{
+    uint8_t buf[BUFFSIZE]={0};
+    uint8_t bufrep2[2]={3,2};
+    uint8_t res=0,j=0;
+
+
+
+    do {
+        res=hid_write(handle_read, bufrep2, 2);
+        res=hid_read(handle_read, buf, BUFFSIZE);
+        j++;
+       } while ((buf[0] != 5) || j<50 );
+    if (buf[0] == 5) {
+        setConfig_Slot(buf,2);
+    }
+
+    j=0;
+    bufrep2[1]=1;
+    do {
+        res=hid_write(handle_read, bufrep2, 2);
+        res=hid_read(handle_read, buf, BUFFSIZE);
+        j++;
+       } while ((buf[0] != 4) || j<50 );
+
+    if (buf[0] == 4) {
+        setConfig_Slot(buf,1);
+    }
+
+}
+
+void OSHStudio::show_USB_ident_uniq(QString ident) {
+    QString const_desc="Your identifier for the device, it will appear in Windows as \"OSH PB Controller";
+    if (ident.length()) {
+        ui->label_60->setText(const_desc + "(" + ident + ")\"");
+    } else ui->label_60->setText(const_desc + "\"");
+}
+
+
+void OSHStudio::show_USB_exch_rate(int interval) {
+    QString const_desc="USB polling interval, ms. Current value means USB exchange frequency of ";
+    interval=(int)1000/interval;
+    ui->label_59->setText(const_desc + QString::number(interval) + " Hz");
 }
 
 QString OSHStudio::DrawTypeComboBox(pintype i) {
@@ -409,9 +633,17 @@ QString OSHStudio::DrawTypeComboBox(pintype i) {
         case AnalogLowSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogMedSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogHighSmooth:  return "QComboBox { color: white; background-color: black; }";
-        case Rotary_PINA:       return "QComboBox { color: white; background-color: darkRed; }";
-        case Rotary_PINB:       return "QComboBox { color: white; background-color: darkRed; }";
-        case Rotary_Enc:        return "QComboBox { color: black; background-color: red; }";
+        case Chain_Rotary_PINA: return "QComboBox { color: white; background-color: darkRed; }";
+        case Chain_Rotary_PINB: return "QComboBox { color: white; background-color: darkRed; }";
+        case Chain_Rotary_Enc_1:return "QComboBox { color: black; background-color: darkRed; }";
+        case Chain_Rotary_Enc_2:return "QComboBox { color: black; background-color: darkRed; }";
+        case Chain_Rotary_Enc_4:return "QComboBox { color: black; background-color: darkRed; }";
+        case Single_Rotary_PINA_1:return "QComboBox { color: black; background-color: Red; }";
+        case Single_Rotary_PINB_1:return "QComboBox { color: black; background-color: Red; }";
+        case Single_Rotary_PINA_2:return "QComboBox { color: black; background-color: #FF3333; }";
+        case Single_Rotary_PINB_2:return "QComboBox { color: black; background-color: #FF3333; }";
+        case Single_Rotary_PINA_4:return "QComboBox { color: black; background-color: #FF6666; }";
+        case Single_Rotary_PINB_4:return "QComboBox { color: black; background-color: #FF6666; }";
         case Button_ROW:        return "QComboBox { color: white; background-color: green; }";
         case Button_COLUMN:     return "QComboBox { color: white; background-color: darkGreen; }";
         case Button:            return "QComboBox { color: white; background-color: blue; }";
@@ -563,12 +795,24 @@ void OSHStudio::checkBoxPOV4Changed(int state) {
 
 
 
-void OSHStudio::showConnectDeviceInfo() {
+void OSHStudio::showConnectDeviceInfo(uint8_t firmware_release) {
+    QString firmware_correctness="";
+
     ui->label_DevDescImg->setVisible(true);
     ui->label_DevDesc->setVisible(true);
     ui->getConfig_button->setEnabled(true);
     ui->saveConfig_Button->setEnabled(true);
-
+    if (!firmware_release) ui->label_Firmware_Vers->setText("") ;
+            else ui->label_Firmware_Vers->setText("0."+QString::number(firmware_release));
+    if (firmware_release == OSHSTUDIOVERSION) {
+        firmware_correctness="color : green";
+    } else {
+        firmware_correctness="color : red";
+        }
+        ui->label_Firmware_Vers->setStyleSheet(firmware_correctness);
+        ui->label_58->setStyleSheet(firmware_correctness);
+        ui->label_34->setStyleSheet(firmware_correctness);
+        ui->label_Stud_version->setStyleSheet(firmware_correctness);
 }
 
 void OSHStudio::hideConnectDeviceInfo() {
@@ -576,6 +820,11 @@ void OSHStudio::hideConnectDeviceInfo() {
     ui->label_DevDesc->setVisible(false);
     ui->getConfig_button->setEnabled(false);
     ui->saveConfig_Button->setEnabled(false);
+    ui->label_Firmware_Vers->setText("") ;
+    ui->label_Firmware_Vers->setStyleSheet("color : black");
+    ui->label_58->setStyleSheet("color : black");
+    ui->label_34->setStyleSheet("color : black");
+    ui->label_Stud_version->setStyleSheet("color : black");
 }
 
 QString OSHStudio::convertIntToString(int i) {
@@ -682,72 +931,196 @@ void OSHStudio::horiSliderAxis6Max_Slot(QString str) {
     ui->horiSliderAxis6Max->setValue(str.toInt());
 }
 
-void OSHStudio::comboBoxPaint() {
+
+void OSHStudio::comboBoxPaintA0() {
     ui->comboBoxA0->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA0->currentIndex()));
     ui->comboBoxA0->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA1() {
     ui->comboBoxA1->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA1->currentIndex()));
     ui->comboBoxA1->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA2() {
     ui->comboBoxA2->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA2->currentIndex()));
     ui->comboBoxA2->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA3() {
     ui->comboBoxA3->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA3->currentIndex()));
     ui->comboBoxA3->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA4() {
     ui->comboBoxA4->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA4->currentIndex()));
     ui->comboBoxA4->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA5() {
     ui->comboBoxA5->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA5->currentIndex()));
     ui->comboBoxA5->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA6() {
     ui->comboBoxA6->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA6->currentIndex()));
     ui->comboBoxA6->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA7() {
     ui->comboBoxA7->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA7->currentIndex()));
     ui->comboBoxA7->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA8() {
     ui->comboBoxA8->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA8->currentIndex()));
     ui->comboBoxA8->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA9() {
     ui->comboBoxA9->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA9->currentIndex()));
     ui->comboBoxA9->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA10() {
     ui->comboBoxA10->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA10->currentIndex()));
     ui->comboBoxA10->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA11() {
     ui->comboBoxA11->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA11->currentIndex()));
     ui->comboBoxA11->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA12() {
     ui->comboBoxA12->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA12->currentIndex()));
     ui->comboBoxA12->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintA15() {
     ui->comboBoxA15->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA15->currentIndex()));
     ui->comboBoxA15->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB0() {
     ui->comboBoxB0->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB0->currentIndex()));
     ui->comboBoxB0->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB1() {
     ui->comboBoxB1->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB1->currentIndex()));
     ui->comboBoxB1->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB3() {
     ui->comboBoxB3->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB3->currentIndex()));
     ui->comboBoxB3->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB4() {
     ui->comboBoxB4->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB4->currentIndex()));
     ui->comboBoxB4->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB5() {
     ui->comboBoxB5->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB5->currentIndex()));
     ui->comboBoxB5->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB6() {
     ui->comboBoxB6->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB6->currentIndex()));
     ui->comboBoxB6->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB7() {
     ui->comboBoxB7->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB7->currentIndex()));
     ui->comboBoxB7->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB8() {
     ui->comboBoxB8->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB8->currentIndex()));
     ui->comboBoxB8->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB9() {
     ui->comboBoxB9->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB9->currentIndex()));
     ui->comboBoxB9->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB10() {
     ui->comboBoxB10->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB10->currentIndex()));
     ui->comboBoxB10->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB11() {
     ui->comboBoxB11->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB11->currentIndex()));
     ui->comboBoxB11->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB12() {
     ui->comboBoxB12->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB12->currentIndex()));
     ui->comboBoxB12->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB13() {
     ui->comboBoxB13->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB13->currentIndex()));
     ui->comboBoxB13->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB14() {
     ui->comboBoxB14->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB14->currentIndex()));
     ui->comboBoxB14->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintB15() {
     ui->comboBoxB15->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxB15->currentIndex()));
     ui->comboBoxB15->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintC13() {
     ui->comboBoxC13->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxC13->currentIndex()));
     ui->comboBoxC13->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintC14() {
     ui->comboBoxC14->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxC14->currentIndex()));
     ui->comboBoxC14->clearFocus();
+    drawHelp();
+}
+
+void OSHStudio::comboBoxPaintC15() {
     ui->comboBoxC15->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxC15->currentIndex()));
     ui->comboBoxC15->clearFocus();
-
     drawHelp();
 }
 
@@ -927,6 +1300,28 @@ void OSHStudio::loadFromFile()
             if (value.toUInt() & 0x8) ui->checkBox_POV4->setChecked(true);
                     else ui->checkBox_POV4->setChecked(false);
 
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->lineEdit_Device_ident->setText(value);
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->lineEdit_Serial_Number->setText(value);
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox_USB_exchange->setValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox__Rot_Press_time->setValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox_RotSwitch_Press_time->setValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox_Rot_Debounce_time->setValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox_Button_Debounce_time->setValue(value.toUInt());
+
 
             file.close();
     }
@@ -1008,11 +1403,20 @@ void OSHStudio::saveToFile()
     if (ui->checkBox_POV2->isChecked()) POVConf|=0x2;
     if (ui->checkBox_POV3->isChecked()) POVConf|=0x4;
     if (ui->checkBox_POV4->isChecked()) POVConf|=0x8;
-     out << "POVConfig=" << POVConf;
+     out << "POVConfig=" << POVConf << "\n";
+
+     out << "USB_custom_string=" << ui->lineEdit_Device_ident->text() << "\n"
+         << "USB_serial_number=" << ui->lineEdit_Serial_Number->text() << "\n"
+         << "USB_poll_interval=" << ui->spinBox_USB_exchange->value() << "\n"
+         << "Encoders_press_time=" << ui->spinBox__Rot_Press_time->value() << "\n"
+         << "RotSwitch_press_time="<< ui->spinBox_RotSwitch_Press_time->value() << "\n"
+         << "Encoders_debounce=" << ui->spinBox_Rot_Debounce_time->value() << "\n"
+         << "Buttons_debounce=" << ui->spinBox_Button_Debounce_time->value();
 
        file.close();
     }
 }
+
 
 void OSHStudio::gatherPinConfig(pintype i)
 {
@@ -1021,14 +1425,22 @@ void OSHStudio::gatherPinConfig(pintype i)
         case (AnalogNoSmooth):
         case (AnalogLowSmooth):
         case (AnalogMedSmooth):
-        case (AnalogHighSmooth): NumberAnalogInputs ++; break;
-        case (Rotary_PINA): PinA++; break;
-        case (Rotary_PINB): PinB++; break;
-        case (Rotary_Enc): Rotaries++; break;
-        case (Button_ROW): ButtonsRows++; break;
-        case (Button_COLUMN): ButtonsColumns++; break;
+        case (AnalogHighSmooth):    NumberAnalogInputs ++; break;
+        case (Chain_Rotary_PINA):         Chain_PinA++; break;
+        case (Chain_Rotary_PINB):         Chain_PinB++; break;
+        case (Chain_Rotary_Enc_1):          Chain_Rotaries_1++; break;
+        case (Chain_Rotary_Enc_2):          Chain_Rotaries_2++; break;
+        case (Chain_Rotary_Enc_4):          Chain_Rotaries_4++; break;
+        case (Single_Rotary_PINA_1):          Single_Rotaries_PINA_1++; break;
+        case (Single_Rotary_PINB_1):          Single_Rotaries_PINB_1++; break;
+        case (Single_Rotary_PINA_2):          Single_Rotaries_PINA_2++; break;
+        case (Single_Rotary_PINB_2):          Single_Rotaries_PINB_2++; break;
+        case (Single_Rotary_PINA_4):          Single_Rotaries_PINA_4++; break;
+        case (Single_Rotary_PINB_4):          Single_Rotaries_PINB_4++; break;
+        case (Button_ROW):          ButtonsRows++; break;
+        case (Button_COLUMN):       ButtonsColumns++; break;
         case (Button):
-        case (Button_GND): Buttons++; break;
+        case (Button_GND):              Buttons++; break;
         case (RotSwPole): RotSwitchPoles++; break;
         case (RotSwWire): RotSwitchWires++; break;
     }
@@ -1037,9 +1449,17 @@ void OSHStudio::gatherPinConfig(pintype i)
 void OSHStudio::gatherAllConf()
 {
     NumberAnalogInputs=0;
-    PinA=0;
-    PinB=0;
-    Rotaries=0;
+    Chain_PinA=0;
+    Chain_PinB=0;
+    Chain_Rotaries_1=0;
+    Chain_Rotaries_2=0;
+    Chain_Rotaries_4=0;
+    Single_Rotaries_PINA_1=0;
+    Single_Rotaries_PINB_1=0;
+    Single_Rotaries_PINA_2=0;
+    Single_Rotaries_PINB_2=0;
+    Single_Rotaries_PINA_4=0;
+    Single_Rotaries_PINB_4=0;
     ButtonsRows=0;
     ButtonsColumns=0;
     Buttons=0;
@@ -1089,13 +1509,23 @@ void OSHStudio::drawHelp()
     if (NumberAnalogInputs > 0) {
         HelpText = "<br />" + QString::number(NumberAnalogInputs) + " analog inputs <br />";
         if (NumberAnalogInputs > 6)
-            HelpText = HelpText + "<font color='red'>Sorry, not more than 6 analog inputs</font><br />";
+            HelpText = HelpText + "<font color='red'>Sorry, no more than 6 analog inputs</font><br />";
     }
 
-    if (Rotaries > 0) {
-        HelpText = HelpText + "<br />" + QString::number(Rotaries) + " rotary encoders <br />";
-        if ((PinA != 1) || (PinB != 1))
-            HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB encoder's pins</font><br /><br />";
+    if ((Chain_Rotaries_1 > 0) ||(Chain_Rotaries_2 > 0) || (Chain_Rotaries_4 > 0)) {
+        HelpText = HelpText + "<br />" +
+                QString::number(Chain_Rotaries_1 + Chain_Rotaries_2 + Chain_Rotaries_4) + " chained rotary encoders <br />";
+        if ((Chain_PinA != 1) || (Chain_PinB != 1))
+            HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of chained encoders</font><br /><br />";
+    }
+
+    if ((Single_Rotaries_PINA_1 > 0) || (Single_Rotaries_PINB_1 > 0) || (Single_Rotaries_PINA_2) || (Single_Rotaries_PINB_2 > 0) ||
+            (Single_Rotaries_PINA_4 > 0) || (Single_Rotaries_PINB_4 > 0)) {
+        HelpText = HelpText + "<br />" + QString::number(Single_Rotaries_PINA_1 + Single_Rotaries_PINA_2 +
+                                                         Single_Rotaries_PINA_4) + " single rotary encoders <br />";
+        if ((Single_Rotaries_PINA_1 != Single_Rotaries_PINB_1) || (Single_Rotaries_PINA_2 != Single_Rotaries_PINB_2) ||
+                (Single_Rotaries_PINA_4 != Single_Rotaries_PINB_4))
+            HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of single encoders</font><br /><br />";
     }
 
     if ((ButtonsRows>0) && (ButtonsColumns>0))
@@ -1108,7 +1538,7 @@ void OSHStudio::drawHelp()
         HelpText = HelpText + "<font color='red'>You have to add at least 1 row to matrix</font><br />";
 
     if (Buttons>0)
-        HelpText = HelpText + "<br />" + QString::number(Buttons) + " single buttons (2nd leg to +3.3V) <br />";
+        HelpText = HelpText + "<br />" + QString::number(Buttons) + " single buttons <br />";
 
 
     if ((RotSwitchWires>0) && (RotSwitchPoles>0))

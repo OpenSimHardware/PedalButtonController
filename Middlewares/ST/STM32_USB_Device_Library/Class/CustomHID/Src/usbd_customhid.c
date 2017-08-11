@@ -88,7 +88,6 @@
   * @{
   */
 
-
 static uint8_t  USBD_CUSTOM_HID_Init (USBD_HandleTypeDef *pdev, 
                                uint8_t cfgidx);
 
@@ -133,7 +132,7 @@ USBD_ClassTypeDef  USBD_CUSTOM_HID =
 };
 
 /* USB CUSTOM_HID device Configuration Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_CfgDesc[USB_CUSTOM_HID_CONFIG_DESC_SIZ] __ALIGN_END =
+__ALIGN_BEGIN  uint8_t USBD_CUSTOM_HID_CfgDesc[USB_CUSTOM_HID_CONFIG_DESC_SIZ] __ALIGN_END =
 {
   0x09, /* bLength: Configuration Descriptor size */
   USB_DESC_TYPE_CONFIGURATION, /* bDescriptorType: Configuration */

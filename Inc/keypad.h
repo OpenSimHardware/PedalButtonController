@@ -34,10 +34,10 @@
 #include <stdint.h>
 #include "periph_init.h"
 
-#define DEBOUNCETIME 50
-#define PRESSTIME 500
+//#define DEBOUNCETIME 50
+//#define PRESSTIME 500
 #define MAXBUTTONS 64
-#define ROTSWITCHTIME 100
+//#define ROTSWITCHTIME 100
 
 
 struct keypad {

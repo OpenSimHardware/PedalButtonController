@@ -32,6 +32,8 @@ extern struct pin_conf pins[USEDPINS];
 extern uint8_t Number_Rows, Number_Columns;
 uint64_t millis;
 struct keypad buttons[MAXBUTTONS];
+volatile extern uint16_t Button_Debounce_Time;
+volatile extern uint16_t RotSwitch_Press_Time;
 
 
 void CheckButtons(void) {
@@ -70,7 +72,7 @@ void CheckWires(uint8_t pole) {
 	volatile uint8_t rowstate=0, button=0, wire=0;
 	extern uint8_t Number_Wires;
 	extern uint8_t Number_Buttons;
-	extern uint8_t Number_Simple_Buttons;
+//	extern uint8_t Number_Simple_Buttons;
 
 
 	for (uint8_t i=0;i<USEDPINS;i++){
@@ -82,7 +84,7 @@ void CheckWires(uint8_t pole) {
 			  };
 			button = pole*Number_Wires + wire + Number_Buttons; //Number_Simple_Buttons;
 			if ((buttons[button].pressed == 1) &&  //if already pressed and longer then presstime
-					 (millis - buttons[button].time_pressed  > ROTSWITCHTIME)) { //then reset
+					 (millis - buttons[button].time_pressed  > RotSwitch_Press_Time)) { //then reset
 						buttons[button].pressed = 0;
 						} else {
 							//SetButtonState(button,rowstate);
@@ -97,7 +99,7 @@ void CheckWires(uint8_t pole) {
 void CheckRows(uint8_t column) {
 	uint8_t row=0,rowstate,button=0;
 	extern uint8_t Number_Columns;
-	extern uint8_t Number_Simple_Buttons;
+//	extern uint8_t Number_Simple_Buttons;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if (pins[i].pin_type == Button_ROW) {
@@ -134,7 +136,7 @@ void SetButtonState(uint8_t i, uint8_t rowstate) {
 
 		if ((buttons[i].prev_state == 1) &&			//if previous state is HIGH and time since 1st push is
 				(!(buttons[i].current_state)) && 	//more than debounce time then button is pressed
-			 (millis - buttons[i].time_pressed  > DEBOUNCETIME)) {
+			 (millis - buttons[i].time_pressed  > Button_Debounce_Time)) {
 				buttons[i].pressed = 1;
 				buttons[i].current_state = 1;
 				buttons[i].time_pressed = millis;

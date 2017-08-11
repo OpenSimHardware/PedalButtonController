@@ -7,6 +7,8 @@
 #include<QFileDialog>
 #include<QTextStream>
 
+#define OSHSTUDIOVERSION 12
+
 //Input/output usb packet
 #define BUFFSIZE 64
 #define PINS 32
@@ -38,20 +40,33 @@ private:
       AnalogLowSmooth = 2,
       AnalogMedSmooth = 3,
       AnalogHighSmooth = 4,
-      Rotary_PINA = 5,
-      Rotary_PINB = 6,
-      Rotary_Enc = 7,
-      Button_ROW = 8,
-      Button_COLUMN = 9,
-      Button = 10,
-      Button_GND = 11,
-      RotSwPole = 12,
-      RotSwWire = 13,
+      Chain_Rotary_PINA = 5,
+      Chain_Rotary_PINB = 6,
+      Chain_Rotary_Enc_1 = 7,
+      Chain_Rotary_Enc_2 = 8,
+      Chain_Rotary_Enc_4 = 9,
+      Single_Rotary_PINA_1 = 10,
+      Single_Rotary_PINB_1 = 11,
+      Single_Rotary_PINA_2 = 12,
+      Single_Rotary_PINB_2 = 13,
+      Single_Rotary_PINA_4 = 14,
+      Single_Rotary_PINB_4 = 15,
+      Button_ROW = 16,
+      Button_COLUMN = 17,
+      Button = 18,
+      Button_GND = 19,
+      RotSwPole = 20,
+      RotSwWire = 21,
 } pintype;
 
 private slots:
   void getConfig_Slot();
   void writeConfig_Slot();
+  void resetConfig_Slot();
+  void setConfig_Slot(uint8_t buff[BUFFSIZE], uint8_t);
+  void restoreConfig_Slot();
+  void show_USB_ident_uniq(QString ident);
+  void show_USB_exch_rate(int interval);
   void drawAxis1Value(uint16_t axis_value);
   void drawAxis2Value(uint16_t axis_value);
   void drawAxis3Value(uint16_t axis_value);
@@ -61,7 +76,7 @@ private slots:
   void drawButtons1Value(uint64_t buttons_value);
   void drawButtons2Value(uint64_t buttons_value);
   void drawPOVSvalue(uint64_t POVS_value);
-  void showConnectDeviceInfo();
+  void showConnectDeviceInfo(uint8_t firmware_release);
   void hideConnectDeviceInfo();
   QString DrawTypeComboBox(pintype i);
   QString convertIntToString(int i);
@@ -90,7 +105,7 @@ private slots:
   void horiSliderAxis6Min_Slot(QString str);
   void lineEditAxis6Max_Slot(int i);
   void horiSliderAxis6Max_Slot(QString str);
-  void comboBoxPaint();
+//  void comboBoxPaint(QString combobb);
   void loadFromFile();
   void saveToFile();
   void drawHelp();
@@ -100,6 +115,39 @@ private slots:
   void checkBoxPOV2Changed(int state);
   void checkBoxPOV3Changed(int state);
   void checkBoxPOV4Changed(int state);
+  void comboBoxPaintA0();
+  void comboBoxPaintA1();
+  void comboBoxPaintA2();
+  void comboBoxPaintA3();
+  void comboBoxPaintA4();
+  void comboBoxPaintA5();
+  void comboBoxPaintA6();
+  void comboBoxPaintA7();
+  void comboBoxPaintA8();
+  void comboBoxPaintA9();
+  void comboBoxPaintA10();
+  void comboBoxPaintA11();
+  void comboBoxPaintA12();
+  void comboBoxPaintA15();
+  void comboBoxPaintB0();
+  void comboBoxPaintB1();
+  void comboBoxPaintB3();
+  void comboBoxPaintB4();
+  void comboBoxPaintB5();
+  void comboBoxPaintB6();
+  void comboBoxPaintB7();
+  void comboBoxPaintB8();
+  void comboBoxPaintB9();
+  void comboBoxPaintB10();
+  void comboBoxPaintB11();
+  void comboBoxPaintB12();
+  void comboBoxPaintB13();
+  void comboBoxPaintB14();
+  void comboBoxPaintB15();
+  void comboBoxPaintC13();
+  void comboBoxPaintC14();
+  void comboBoxPaintC15();
+
 };
 
 class Worker : public QObject {
@@ -119,7 +167,7 @@ signals:
     void putButtons2Value(uint64_t buttons_value);
     void putPOVSvalue(uint64_t buttons_value);
     void putDisconnectedDeviceInfo(void);
-    void putConnectedDeviceInfo(void);
+    void putConnectedDeviceInfo(uint8_t firmware_release);
 
 private:
     uint16_t adc_value=0;

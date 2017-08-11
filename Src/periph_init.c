@@ -59,7 +59,7 @@ volatile struct pin_conf pins[USEDPINS] = {
 		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
 		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
 		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
-		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
+		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
 		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},//C14
 		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
 //Config for Beano :)
@@ -97,6 +97,7 @@ volatile struct pin_conf pins[USEDPINS] = {
 //		{Button, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
 };
 
+//default axises configuration
 volatile struct axis_conf axises[AXISES] =
 {
 		{0,0,0xFF,0x0F,0,0,0xFFF},
@@ -106,6 +107,41 @@ volatile struct axis_conf axises[AXISES] =
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 };
+
+//default parameters
+volatile uint16_t Rot_Press_Time=50;
+volatile uint16_t Rot_Debounce_Time=10;
+volatile uint16_t Button_Debounce_Time=50;
+volatile uint16_t Button_Press_time=500;
+volatile uint16_t RotSwitch_Press_Time=100;
+
+uint8_t * USBD_PRODUCT_STRING_FS;
+uint8_t * USBD_SERIALNUMBER_STRING_FS;
+volatile uint8_t USB_Product_String_Unique[10] = {0};
+volatile uint8_t USB_Serial_Number_Unique[13] = {48,48,48,48,48,48,48,48,48,48,49,66,0};
+volatile uint8_t USB_polling_interval=0x10;
+
+uint8_t USB_Product_String[31] = {
+		79, // O
+		83, // S
+		72, // H
+		32, // Space
+		80, // P
+		66, // B
+		32, // Space
+		67, // C
+		111, // o
+		110, // n
+		116, // t
+		114, // r
+		111, // o
+		108, // l
+		108, // l
+		101, // e
+		114, // r
+};
+
+
 
 volatile struct rot_conf Single_rotaries[USEDPINS] = {0};
 
@@ -130,6 +166,8 @@ volatile uint64_t millis;
 uint8_t Number_Channels=0;
 extern volatile uint8_t USBSendBuffer[USEDPINS+1];
 
+extern uint8_t USBD_CUSTOM_HID_CfgDesc[41];
+
 
 void gpio_init(void) {
 
@@ -148,6 +186,31 @@ void gpio_init(void) {
 
 	gpio_ports_config();
 
+	custom_usb_config();
+
+}
+
+void custom_usb_config(void) {
+volatile	uint8_t i=0;
+
+	if (USB_Product_String_Unique[0]) {
+		USB_Product_String[17] = 32; // Space
+		USB_Product_String[18] = 40; // (
+		while ((USB_Product_String_Unique[i]) && (i < 10)) {
+			USB_Product_String[19+i] = USB_Product_String_Unique[i];
+			i++;
+		}
+
+		USB_Product_String[19+i] = 41; // )
+		USB_Product_String[19+i+1] = 0;
+	}
+
+	USBD_PRODUCT_STRING_FS = USB_Product_String;
+
+	USB_Serial_Number_Unique[12]=0;
+	USBD_SERIALNUMBER_STRING_FS = USB_Serial_Number_Unique;
+
+	USBD_CUSTOM_HID_CfgDesc[33]=USB_polling_interval;
 }
 
 void gpio_ports_config(void) {

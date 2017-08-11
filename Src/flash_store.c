@@ -32,6 +32,14 @@
 extern struct pin_conf pins[USEDPINS];
 extern struct axis_conf axises[AXISES];
 extern uint8_t POV_config;
+volatile extern uint16_t Rot_Press_Time;
+volatile extern uint16_t Rot_Debounce_Time;
+volatile extern uint16_t Button_Debounce_Time;
+volatile extern uint16_t Button_Press_time;
+volatile extern uint16_t RotSwitch_Press_Time;
+volatile extern uint8_t USB_Product_String_Unique[10];
+volatile extern uint8_t USB_Serial_Number_Unique[13];
+volatile extern uint8_t USB_polling_interval;
 
 
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
@@ -46,6 +54,7 @@ uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
 
 void get_config(void) {
 	uint16_t * curradr;
+	uint8_t tmp_low,tmp_high;
 
 	curradr = get_lastpage_addr((uint16_t *)FLASHSIZEREG);
 
@@ -68,7 +77,32 @@ void get_config(void) {
 		axises[i].calib_max=(axises[i].calib_max_hibyte << 8) | axises[i].calib_max_lowbyte;
 	}
 	POV_config = (uint8_t)*curradr;
+	curradr++;
 
+	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+	Rot_Press_Time=(tmp_high<<8)+tmp_low;
+
+	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+	Rot_Debounce_Time=(tmp_high<<8)+tmp_low;
+
+	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+	Button_Debounce_Time=(tmp_high<<8)+tmp_low;
+
+//	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+//	Button_Press_time=(tmp_high<<8)+tmp_low;
+	USB_polling_interval=(uint8_t)*curradr; curradr++;
+	curradr++;
+
+	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+	RotSwitch_Press_Time=(tmp_high<<8)+tmp_low;
+
+	for (uint8_t i=0; i<10; i++) {
+		USB_Product_String_Unique[i]=(uint8_t)*curradr; curradr++;
+	}
+
+	for (uint8_t i=0; i<10; i++) {
+		USB_Serial_Number_Unique[i+2] = (uint8_t)*curradr; curradr++;
+	}
 }
 
 void erase_flash(void) {
@@ -127,7 +161,32 @@ void write_flash(void) {
 		     curradr++;
 	}
 	*curradr = POV_config;
+	curradr++;
 
+	*curradr=LOBYTE(Rot_Press_Time); curradr++;
+	*curradr=HIBYTE(Rot_Press_Time); curradr++;
+
+	*curradr=LOBYTE(Rot_Debounce_Time); curradr++;
+	*curradr=HIBYTE(Rot_Debounce_Time); curradr++;
+
+	*curradr=LOBYTE(Button_Debounce_Time); curradr++;
+	*curradr=HIBYTE(Button_Debounce_Time); curradr++;
+
+//	*curradr=LOBYTE(Button_Press_time); curradr++;
+//	*curradr=HIBYTE(Button_Press_time); curradr++;
+	*curradr=USB_polling_interval; curradr++;
+	curradr++;
+
+	*curradr=LOBYTE(RotSwitch_Press_Time); curradr++;
+	*curradr=HIBYTE(RotSwitch_Press_Time); curradr++;
+
+	for (uint8_t i=0; i<10; i++) {
+		*curradr=USB_Product_String_Unique[i]; curradr++;
+	}
+
+	for (uint8_t i=0; i<10; i++) {
+		*curradr=USB_Serial_Number_Unique[i+2]; curradr++;
+	}
 
 
   FLASH->CR &= ~FLASH_CR_PG; /* Reset the flag back !!!! */

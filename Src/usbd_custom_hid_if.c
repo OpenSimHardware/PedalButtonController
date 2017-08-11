@@ -132,6 +132,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
+	    0x85, 0x06,                    //   REPORT_ID (6)
+	    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
+	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
+	    0x75, 0x08,                    //   REPORT_SIZE (8)
+	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 	    0x85, 0x03,                    //   REPORT_ID (3)
 	    0x09, 0x02,                    //   USAGE (Vendor Usage 2)
 	    0x95, 0x01,                    //   REPORT_COUNT (1)
@@ -142,6 +147,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
+	    0x85, 0x05,                    // 	REPORT_ID (5)
+	    0x09, 0x03,                    // 	USAGE (Vendor Usage 3)
+	    0x95, 0x3F, //0x20,                    // 	REPORT_COUNT (32)
+	    0x75, 0x08,                    // 	REPORT_SIZE (8)
+	    0x81, 0x82,                    // 	INPUT (Data,Var,Abs,Vol)
 	    0xc0                           // END_COLLECTION
 
 }; 
@@ -153,6 +163,14 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   extern struct pin_conf pins[USEDPINS];
   extern struct axis_conf axises[AXISES];
   extern uint8_t POV_config;
+  volatile extern uint16_t Rot_Press_Time;
+  volatile extern uint16_t Rot_Debounce_Time;
+  volatile extern uint16_t Button_Debounce_Time;
+  volatile extern uint16_t Button_Press_time;
+  volatile extern uint16_t RotSwitch_Press_Time;
+  volatile extern uint8_t USB_Product_String_Unique[10];
+  volatile extern uint8_t USB_Serial_Number_Unique[13];
+  volatile extern uint8_t USB_polling_interval;
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -234,6 +252,34 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 	code = hhid->Report_buf[1];
 
 	if (report_id == 3) {
+		if (code == 2) {
+			send_buffer[0] = 5;
+			send_buffer[1]=LOBYTE(Rot_Press_Time);
+			send_buffer[2]=HIBYTE(Rot_Press_Time);
+			send_buffer[3]=LOBYTE(Rot_Debounce_Time);
+			send_buffer[4]=HIBYTE(Rot_Debounce_Time);
+			send_buffer[5]=LOBYTE(Button_Debounce_Time);
+			send_buffer[6]=HIBYTE(Button_Debounce_Time);
+//			send_buffer[7]=LOBYTE(Button_Press_time);
+//			send_buffer[8]=HIBYTE(Button_Press_time);
+			send_buffer[7]=USB_polling_interval;
+			send_buffer[9]=LOBYTE(RotSwitch_Press_Time);
+			send_buffer[10]=HIBYTE(RotSwitch_Press_Time);
+
+			for (uint8_t i=0; i<10; i++) {
+				send_buffer[11+i]=USB_Product_String_Unique[i];
+			}
+
+			for (uint8_t i=0; i<10; i++) {
+				send_buffer[21+i]=USB_Serial_Number_Unique[i+2];
+			}
+
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+
+			for (uint8_t i=0;i<USBD_CUSTOMHID_OUTREPORT_BUF_SIZE;i++) {
+				send_buffer[i]=0;
+			}
+		}
 		if (code == 1) {
 			send_buffer[0] = 4;
 			for (uint8_t i=1;i<USEDPINS+1;i++){
@@ -253,18 +299,36 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		}
 	}
 
-	if (report_id == 2) {
-		for (uint8_t i=0;i<USEDPINS;i++) {
+	if ((report_id == 2) || (report_id == 6)){
+		if (report_id == 2){
+			for (uint8_t i=0;i<USEDPINS;i++) {
 				pins[i].pin_type = hhid->Report_buf[i+1];
 			}
-		for (uint8_t i=0;i<AXISES;i++) {
-			axises[i].calib_min_lowbyte = hhid->Report_buf[USEDPINS+1+i*5];
-			axises[i].calib_min_hibyte = hhid->Report_buf[USEDPINS+2+i*5];
-			axises[i].calib_max_lowbyte = hhid->Report_buf[USEDPINS+3+i*5];
-			axises[i].calib_max_hibyte = hhid->Report_buf[USEDPINS+4+i*5];
-			axises[i].special = hhid->Report_buf[USEDPINS+5+i*5];
+			for (uint8_t i=0;i<AXISES;i++) {
+				axises[i].calib_min_lowbyte = hhid->Report_buf[USEDPINS+1+i*5];
+				axises[i].calib_min_hibyte = hhid->Report_buf[USEDPINS+2+i*5];
+				axises[i].calib_max_lowbyte = hhid->Report_buf[USEDPINS+3+i*5];
+				axises[i].calib_max_hibyte = hhid->Report_buf[USEDPINS+4+i*5];
+				axises[i].special = hhid->Report_buf[USEDPINS+5+i*5];
+			}
+			POV_config = hhid->Report_buf[63];
 		}
-		POV_config = hhid->Report_buf[63];
+		if (report_id == 6) {
+			Rot_Press_Time=(hhid->Report_buf[2]<<8)+hhid->Report_buf[1];
+			Rot_Debounce_Time=(hhid->Report_buf[4]<<8)+hhid->Report_buf[3] ;
+			Button_Debounce_Time=(hhid->Report_buf[6]<<8)+hhid->Report_buf[5];
+//			Button_Press_time=(hhid->Report_buf[8]<<8)+hhid->Report_buf[7];
+			USB_polling_interval=hhid->Report_buf[7];
+			RotSwitch_Press_Time=(hhid->Report_buf[10]<<8)+hhid->Report_buf[9];
+
+			for (uint8_t i=0; i<10; i++) {
+				USB_Product_String_Unique[i]=hhid->Report_buf[11+i];
+			}
+
+			for (uint8_t i=0; i<10; i++) {
+				USB_Serial_Number_Unique[i+2]=hhid->Report_buf[21+i];
+			}
+		}
 		erase_flash();
 		write_flash();
 		NVIC_SystemReset();
