@@ -81,6 +81,8 @@ struct rot_conf {
 		uint32_t * PINB_IDR;
 		uint16_t PINA;
 		uint16_t PINB;
+		uint16_t PINAmask;
+		uint16_t PINBmask;
 	};
 
 struct axis_conf {

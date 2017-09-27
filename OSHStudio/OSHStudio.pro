@@ -14,7 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         oshstudio.cpp \
-    hid.c
+    hid.c \
+    file_ops.cpp \
+    board_types.cpp
 
 HEADERS  += oshstudio.h \
     hidapi.h

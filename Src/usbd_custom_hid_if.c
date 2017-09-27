@@ -93,9 +93,9 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x09, 0x33,                    //     USAGE (Rx)
 	    0x09, 0x34,                    //     USAGE (Ry)
 	    0x09, 0x35,                    //     USAGE (Rz)
-	    0x09, 0x43,                    //     USAGE (Vbrx)
-	    0x09, 0x44,                    //     USAGE (Vbry)
-	    0x09, 0x45,                    //     USAGE (Vbrx)
+	    0x09, 0x36,                    //     USAGE (Slider1)
+	    0x09, 0x36,                    //     USAGE (Slider2)
+	    0x09, 0x32,                    //     USAGE (Z)
 	    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x0f,              //     LOGICAL_MAXIMUM (4095)
 	    0x75, 0x10,                    //     REPORT_SIZE (16)
@@ -171,6 +171,8 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   volatile extern uint8_t USB_Product_String_Unique[10];
   volatile extern uint8_t USB_Serial_Number_Unique[13];
   volatile extern uint8_t USB_polling_interval;
+  volatile extern struct rot_conf Single_rotaries[USEDPINS];
+  extern uint8_t Number_Single_Rotaries;
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -252,6 +254,23 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 	code = hhid->Report_buf[1];
 
 	if (report_id == 3) {
+		if (code == 1) {
+			send_buffer[0] = 4;
+			for (uint8_t i=1;i<USEDPINS+1;i++){
+				send_buffer[i] = pins[i-1].pin_type;
+			}
+			index=USEDPINS+1;
+			for (uint8_t i=0;i<AXISES;i++) {
+				send_buffer[index++] = axises[i].calib_min_lowbyte;
+				send_buffer[index++] = axises[i].calib_min_hibyte;
+				send_buffer[index++] = axises[i].calib_max_lowbyte;
+				send_buffer[index++] = axises[i].calib_max_hibyte;
+				send_buffer[index++] = axises[i].special;
+			}
+			send_buffer[index] = POV_config;
+
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+		}
 		if (code == 2) {
 			send_buffer[0] = 5;
 			send_buffer[1]=LOBYTE(Rot_Press_Time);
@@ -274,29 +293,19 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 				send_buffer[21+i]=USB_Serial_Number_Unique[i+2];
 			}
 
+			send_buffer[31]=Number_Single_Rotaries;
+			for (uint8_t i=0; i<14; i++) {
+				send_buffer[32+(i*2)]=Single_rotaries[i].PINA;
+				send_buffer[33+(i*2)]=Single_rotaries[i].PINB;
+			}
+
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
 
 			for (uint8_t i=0;i<USBD_CUSTOMHID_OUTREPORT_BUF_SIZE;i++) {
 				send_buffer[i]=0;
 			}
 		}
-		if (code == 1) {
-			send_buffer[0] = 4;
-			for (uint8_t i=1;i<USEDPINS+1;i++){
-				send_buffer[i] = pins[i-1].pin_type;
-			}
-			index=USEDPINS+1;
-			for (uint8_t i=0;i<AXISES;i++) {
-				send_buffer[index++] = axises[i].calib_min_lowbyte;
-				send_buffer[index++] = axises[i].calib_min_hibyte;
-				send_buffer[index++] = axises[i].calib_max_lowbyte;
-				send_buffer[index++] = axises[i].calib_max_hibyte;
-				send_buffer[index++] = axises[i].special;
-			}
-			send_buffer[index] = POV_config;
 
-			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-		}
 	}
 
 	if ((report_id == 2) || (report_id == 6)){
@@ -328,6 +337,13 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 			for (uint8_t i=0; i<10; i++) {
 				USB_Serial_Number_Unique[i+2]=hhid->Report_buf[21+i];
 			}
+
+			Number_Single_Rotaries=hhid->Report_buf[31];
+			for (uint8_t i=0; i<14; i++) {
+				Single_rotaries[i].PINA=hhid->Report_buf[32+(i*2)];
+				Single_rotaries[i].PINB=hhid->Report_buf[33+(i*2)];
+			}
+
 		}
 		erase_flash();
 		write_flash();

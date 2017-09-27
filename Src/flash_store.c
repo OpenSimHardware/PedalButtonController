@@ -40,6 +40,10 @@ volatile extern uint16_t RotSwitch_Press_Time;
 volatile extern uint8_t USB_Product_String_Unique[10];
 volatile extern uint8_t USB_Serial_Number_Unique[13];
 volatile extern uint8_t USB_polling_interval;
+volatile extern struct rot_conf Single_rotaries[USEDPINS];
+extern uint8_t Number_Single_Rotaries;
+
+
 
 
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
@@ -103,6 +107,13 @@ void get_config(void) {
 	for (uint8_t i=0; i<10; i++) {
 		USB_Serial_Number_Unique[i+2] = (uint8_t)*curradr; curradr++;
 	}
+
+	Number_Single_Rotaries = (uint8_t)*curradr; curradr++;
+	for (uint8_t i=0; i<14; i++) {
+		Single_rotaries[i].PINA=(uint8_t)*curradr; curradr++;
+		Single_rotaries[i].PINB=(uint8_t)*curradr; curradr++;
+	}
+
 }
 
 void erase_flash(void) {
@@ -186,6 +197,12 @@ void write_flash(void) {
 
 	for (uint8_t i=0; i<10; i++) {
 		*curradr=USB_Serial_Number_Unique[i+2]; curradr++;
+	}
+
+	*curradr=Number_Single_Rotaries; curradr++;
+	for (uint8_t i=0; i<14; i++) {
+		*curradr=Single_rotaries[i].PINA; curradr++;
+		*curradr=Single_rotaries[i].PINB; curradr++;
 	}
 
 

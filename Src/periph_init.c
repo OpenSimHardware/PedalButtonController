@@ -220,8 +220,8 @@ void gpio_ports_config(void) {
 			tmpbsrrvalue=0,
 			i,
 			tmp=0;
-	uint8_t Number_Single_Rotaries_PINA=0,
-			Number_Single_Rotaries_PINB=0;
+//	uint8_t Number_Single_Rotaries_PINA=0,
+//			Number_Single_Rotaries_PINB=0;
 
 	// Reset all prevs states
 	GPIOA->CRL=0x44444444;
@@ -284,20 +284,20 @@ void gpio_ports_config(void) {
 		case Single_Rotary_PINA_1:
 		case Single_Rotary_PINA_2:
 		case Single_Rotary_PINA_4:
-							Single_rotaries[Number_Single_Rotaries_PINA].PINA=(0x1<<pins[i].pin_number);
-							Single_rotaries[Number_Single_Rotaries_PINA].PINA_IDR=pins[i].idr_reg_addr;
-							Single_rotaries[Number_Single_Rotaries_PINA].PINA_Type=pins[i].pin_type;
-							Number_Single_Rotaries_PINA++;
+//							Single_rotaries[Number_Single_Rotaries_PINA].PINA=(0x1<<pins[i].pin_number);
+//							Single_rotaries[Number_Single_Rotaries_PINA].PINA_IDR=pins[i].idr_reg_addr;
+//							Single_rotaries[Number_Single_Rotaries_PINA].PINA_Type=pins[i].pin_type;
+//							Number_Single_Rotaries_PINA++;
 							tmpconfvalue=0x02;
 							tmpbsrrvalue=0x10;
 							break;
 		case Single_Rotary_PINB_1:
 		case Single_Rotary_PINB_2:
 		case Single_Rotary_PINB_4:
-							Single_rotaries[Number_Single_Rotaries_PINB].PINB=(0x1<<pins[i].pin_number);
-							Single_rotaries[Number_Single_Rotaries_PINB].PINB_IDR=pins[i].idr_reg_addr;
-							Single_rotaries[Number_Single_Rotaries_PINB].PINB_Type=pins[i].pin_type;
-							Number_Single_Rotaries_PINB++;
+//							Single_rotaries[Number_Single_Rotaries_PINB].PINB=(0x1<<pins[i].pin_number);
+//							Single_rotaries[Number_Single_Rotaries_PINB].PINB_IDR=pins[i].idr_reg_addr;
+//							Single_rotaries[Number_Single_Rotaries_PINB].PINB_Type=pins[i].pin_type;
+//							Number_Single_Rotaries_PINB++;
 							tmpconfvalue=0x02;
 							tmpbsrrvalue=0x10;
 							break;
@@ -315,32 +315,31 @@ void gpio_ports_config(void) {
 							break;
 		}
 
-//		if (pins[i].pin_type == Rotary_PINA) {
-//			Rot_PINA_IDR=pins[i].idr_reg_addr;
-//			Rot_PINA_pin=0x1<<pins[i].pin_number;
-//		};
-//		if (pins[i].pin_type == Rotary_PINB) {
-//			Rot_PINB_IDR=pins[i].idr_reg_addr;
-//			Rot_PINB_pin=0x1<<pins[i].pin_number;
-//		};
-
 		if (pins[i].pin_number>7) {
 			tmp=pins[i].pin_number-8;
 		} else {
 			tmp=pins[i].pin_number;
 		};
 
-//		buttons_offset=Number_Rotaries*2/8 + 2;
-		Number_Single_Rotaries = Number_Single_Rotaries_PINA;
-		Number_Buttons = Number_Columns*Number_Rows + Number_Simple_Buttons;
-		Number_RotSwitches = Number_Poles * Number_Wires;
-		encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
-		if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
-
 		tmpregmask = (uint32_t)(0b1111 << (tmp*4));
 		*pins[i].conf_reg_addr = (*(pins[i].conf_reg_addr) & (~tmpregmask)) | (tmpconfvalue << (tmp*4));
 		*pins[i].bsrr_reg_addr 	= 1 << (pins[i].pin_number+tmpbsrrvalue);
 	}
+
+	for (uint8_t i=0; i<Number_Single_Rotaries; i++) {
+		Single_rotaries[i].PINA_IDR=pins[Single_rotaries[i].PINA].idr_reg_addr;
+		Single_rotaries[i].PINA_Type=pins[Single_rotaries[i].PINA].pin_type;
+		Single_rotaries[i].PINAmask=(0x1<<pins[Single_rotaries[i].PINA].pin_number);
+		Single_rotaries[i].PINB_IDR=pins[Single_rotaries[i].PINB].idr_reg_addr;
+		Single_rotaries[i].PINB_Type=pins[Single_rotaries[i].PINB].pin_type;
+		Single_rotaries[i].PINBmask=(0x1<<pins[Single_rotaries[i].PINB].pin_number);
+	}
+
+	Number_Buttons = Number_Columns*Number_Rows + Number_Simple_Buttons;
+	Number_RotSwitches = Number_Poles * Number_Wires;
+	encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
+	if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
+
 
 	adc_init();
 }

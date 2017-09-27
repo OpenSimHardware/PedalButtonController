@@ -1,7 +1,7 @@
 #include "oshstudio.h"
 #include "ui_oshstudio.h"
-#include<QMessageBox>
 #include<QTextEdit>
+#include<QMessageBox>
 
 
 hid_device *handle_read, *handle_write;
@@ -23,6 +23,45 @@ uint8_t NumberAnalogInputs,
         Buttons,
         RotSwitchPoles,
         RotSwitchWires;
+uint8_t Total_Single_encoders=0;
+struct single_encoders_pins single_encoders_store[14] = {0,0,0,0};
+
+const QString pin_names[PINS] = {
+ {"A0"},
+ {"A1"},
+ {"A2"},
+ {"A3"},
+ {"A4"},
+ {"A5"},
+ {"A6"},
+ {"A7"},
+ {"A8"},
+ {"A9"},
+ {"A10"},
+ {"A11"},
+ {"A12"},
+ {"A15"},
+ {"B0"},
+ {"B1"},
+ {"B3"},
+ {"B4"},
+ {"B5"},
+ {"B6"},
+ {"B7"},
+ {"B8"},
+ {"B9"},
+ {"B10"},
+ {"B11"},
+ {"B12"},
+ {"B13"},
+ {"B14"},
+ {"B15"},
+ {"C13"},
+ {"C14"},
+ {"C15"},
+};
+
+QStringList PINAlist, PINBlist;
 
 void Worker::processData(void) {
     uint8_t buf[BUFFSIZE]={0};
@@ -88,6 +127,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->label_Stud_version->setText("0." + QString::number(OSHSTUDIOVERSION));
+
+    connect (ui->comboBox_BoardType, SIGNAL(currentIndexChanged(int)), SLOT(showBoardType(int)));
 
       connect(ui->getConfig_button, SIGNAL(clicked()), SLOT(getConfig_Slot()));
       connect(ui->saveConfig_Button, SIGNAL(clicked()), SLOT(writeConfig_Slot()));
@@ -170,6 +211,37 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->checkBox_POV4, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV4Changed(int)));
 
 
+      connect(ui->comboBox_SEA1, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB1, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA2, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB2, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA3, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB3, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA4, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB4, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA5, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB5, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA6, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB6, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA7, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB7, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA8, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB8, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA9, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB9, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA10, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB10, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA11, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB11, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA12, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB12, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA13, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB13, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEA14, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+      connect(ui->comboBox_SEB14, SIGNAL(activated(int)),  SLOT(comboBoxSEManualConfig()));
+
+
+
       qRegisterMetaType<uint16_t>("uint16_t");
       qRegisterMetaType<uint64_t>("uint64_t");
       qRegisterMetaType<uint16_t>("uint8_t");
@@ -205,6 +277,25 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
 
       thread->start();
+
+      //hide all single encoders config for now
+      QString name_template_Pix("label_SE%1");
+      QString name_template_CBBA("comboBox_SEA%1");
+      QString name_template_CBBB("comboBox_SEB%1");
+      QString name_template_Pow("label_SE%1_CPin");
+       for(int i =1; i < 15; i++)
+      {
+          QLabel *SEpic_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pix.arg(i));
+          QLabel *SEpow_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pow.arg(i));
+          QComboBox *SEcbba = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+          QComboBox *SEcbbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+          SEpic_Label->setVisible(false);
+          SEpow_Label->setVisible(false);
+          SEcbba->setVisible(false);
+          SEcbbb->setVisible(false);
+        }
+       ui->label_ZeroSglEncoders->setVisible(false);
+
 
 
       QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
@@ -280,6 +371,10 @@ OSHStudio::OSHStudio(QWidget *parent) :
       // fake assignment for making slot active;
       ui->spinBox_USB_exchange->setValue(2);
       ui->spinBox_USB_exchange->setValue(1);
+
+      ui->comboBox_BoardType->addItem("BluePill Board");
+      ui->comboBox_BoardType->addItem("BlackPill Board");
+      ui->comboBox_BoardType->setCurrentIndex(0);
 }
 
 OSHStudio::~OSHStudio()
@@ -393,6 +488,11 @@ void OSHStudio::writeConfig_Slot()
         buf[21+i] = (uint8_t)USB_SN_Uniq.at(i).toLatin1();
     }
 
+    buf[31] = Total_Single_encoders;
+    for (uint8_t i=0; i<14; i++) {
+        buf[32+(i*2)] = single_encoders_store[i].pinA;
+        buf[33+(i*2)] = single_encoders_store[i].pinB;
+    }
     res=hid_write(handle_read, buf, BUFFSIZE);
 }
 
@@ -400,6 +500,12 @@ void OSHStudio::setConfig_Slot(uint8_t buf[BUFFSIZE], uint8_t op_code){
     wchar_t tmp[10];
     wchar_t * USB_PS_Uniq;
     wchar_t * USB_SN_Uniq;
+//    struct sgl_enc_pins {
+//        uint8_t pinA;
+//        uint8_t pinB;
+//        uint8_t pinA_type;
+//        uint8_t pinB_type;
+    struct single_encoders_pins sgl_enc_tmp[14]={0,0,0,0};
 
     if (op_code == 1) {
         ui->comboBoxA0->setCurrentIndex(buf[1]);
@@ -482,6 +588,29 @@ void OSHStudio::setConfig_Slot(uint8_t buf[BUFFSIZE], uint8_t op_code){
         }
         USB_SN_Uniq=tmp;
         ui->lineEdit_Serial_Number->setText(QString::fromWCharArray(USB_SN_Uniq));
+
+        Total_Single_encoders=buf[31];
+        for (uint8_t i=0; i<14; i++) {
+            sgl_enc_tmp[i].pinA=buf[32+(i*2)] ;
+            sgl_enc_tmp[i].pinB=buf[33+(i*2)] ;
+        }
+        for (uint8_t i=0; i<Total_Single_encoders; i++){
+            for (uint8_t j=0; j<Total_Single_encoders; j++) {
+                if (sgl_enc_tmp[i].pinA == single_encoders_store[j].pinA) {
+                    sgl_enc_tmp[i].pinA_type=single_encoders_store[j].pinA_type;
+                }
+                if (sgl_enc_tmp[i].pinB == single_encoders_store[j].pinB) {
+                    sgl_enc_tmp[i].pinB_type=single_encoders_store[j].pinB_type;
+                }
+            }
+        }
+        for (uint8_t i=0; i<Total_Single_encoders; i++) {
+            single_encoders_store[i].pinA=sgl_enc_tmp[i].pinA;
+            single_encoders_store[i].pinB=sgl_enc_tmp[i].pinB;
+            single_encoders_store[i].pinA_type=sgl_enc_tmp[i].pinA_type;
+            single_encoders_store[i].pinB_type=sgl_enc_tmp[i].pinB_type;
+        }
+        showSingleEncodersTab();
     }
 
 }
@@ -555,6 +684,10 @@ void OSHStudio::restoreConfig_Slot(){
 
     setConfig_Slot(buf,1);
 
+    for (uint8_t i=0; i<BUFFSIZE; i++){
+        buf[i]=0;
+    }
+
     buf[1]=50;
     buf[2]=0;
     buf[3]=10;
@@ -585,11 +718,25 @@ void OSHStudio::restoreConfig_Slot(){
 void OSHStudio::getConfig_Slot()
 {
     uint8_t buf[BUFFSIZE]={0};
-    uint8_t bufrep2[2]={3,2};
+    uint8_t bufrep2[2]={3,1};
     uint8_t res=0,j=0;
 
 
+    do {
+        res=hid_write(handle_read, bufrep2, 2);
+        res=hid_read(handle_read, buf, BUFFSIZE);
+        j++;
+       } while ((buf[0] != 4) || j<50 );
+    if (buf[0] == 4) {
+        setConfig_Slot(buf,1);
+    }
 
+    for (uint8_t i=1; i<BUFFSIZE; i++) {
+        buf[i]=0;
+    }
+
+    bufrep2[1]=2;
+    j=0;
     do {
         res=hid_write(handle_read, bufrep2, 2);
         res=hid_read(handle_read, buf, BUFFSIZE);
@@ -598,19 +745,6 @@ void OSHStudio::getConfig_Slot()
     if (buf[0] == 5) {
         setConfig_Slot(buf,2);
     }
-
-    j=0;
-    bufrep2[1]=1;
-    do {
-        res=hid_write(handle_read, bufrep2, 2);
-        res=hid_read(handle_read, buf, BUFFSIZE);
-        j++;
-       } while ((buf[0] != 4) || j<50 );
-
-    if (buf[0] == 4) {
-        setConfig_Slot(buf,1);
-    }
-
 }
 
 void OSHStudio::show_USB_ident_uniq(QString ident) {
@@ -718,7 +852,7 @@ void OSHStudio::drawButtons2Value(uint64_t buttons_value) {
     QString name_template("labelButt_%1");
 
 
-    for(int i =32; i < 64; ++i)
+    for(int i =32; i < 64; i++)
     {
         QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
         if (buttons_value & (0x1<<(i-32))) {
@@ -735,7 +869,7 @@ void OSHStudio::drawButtons1Value(uint64_t buttons_value) {
     QString name_template("labelButt_%1");
 
 
-    for(int i = 0; i < 32; ++i)
+    for(int i = 0; i < 32; i++)
     {
         QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
         if (buttons_value & (0x1<<i)) {
@@ -1124,327 +1258,8 @@ void OSHStudio::comboBoxPaintC15() {
     drawHelp();
 }
 
-void OSHStudio::loadFromFile()
-{
-    QString line;
-    QString value;
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open Config File"), "",
-        tr("OSH Config Files (*.osh);;All Files (*)"));
-
-    if (fileName.isEmpty())
-            return;
-        else {
-            QFile file(fileName);
-                if (!file.open(QIODevice::ReadOnly)) {
-                QMessageBox::information(this, tr("Unable to open file"),
-                    file.errorString());
-                return;
-                }
-            QTextStream in(&file);
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA0->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA1->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA2->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA3->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA4->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA5->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA6->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA7->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA8->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA9->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA10->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA11->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA12->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxA15->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB0->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB1->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB3->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB4->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB5->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB6->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB7->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB8->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB9->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB10->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB11->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB12->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB13->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB14->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxB15->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxC13->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxC14->setCurrentIndex(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->comboBoxC15->setCurrentIndex(value.toUInt());
 
 
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis1Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis1Max->setValue(value.toUInt());
-            line = in.readLine(); //"Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis2Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis2Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis3Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis3Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis4Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis4Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis5Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis5Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis6Min->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSliderAxis6Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            if (value.toUInt() & 0x1) ui->checkBox_POV1->setChecked(true);
-                    else ui->checkBox_POV1->setChecked(false);
-            if (value.toUInt() & 0x2) ui->checkBox_POV2->setChecked(true);
-                    else ui->checkBox_POV2->setChecked(false);
-            if (value.toUInt() & 0x4) ui->checkBox_POV3->setChecked(true);
-                    else ui->checkBox_POV3->setChecked(false);
-            if (value.toUInt() & 0x8) ui->checkBox_POV4->setChecked(true);
-                    else ui->checkBox_POV4->setChecked(false);
-
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->lineEdit_Device_ident->setText(value);
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->lineEdit_Serial_Number->setText(value);
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->spinBox_USB_exchange->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->spinBox__Rot_Press_time->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->spinBox_RotSwitch_Press_time->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->spinBox_Rot_Debounce_time->setValue(value.toUInt());
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->spinBox_Button_Debounce_time->setValue(value.toUInt());
-
-
-            file.close();
-    }
-}
-
-void OSHStudio::saveToFile()
-{
-    QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save Config File"), "",
-        tr("OSH Config Files (*.osh);;All Files (*)"));
-
-    if (fileName.isEmpty())
-            return;
-        else {
-            QFile file(fileName);
-            if (!file.open(QIODevice::WriteOnly)) {
-                QMessageBox::information(this, tr("Unable to open file"),
-                    file.errorString());
-                return;
-                }
-
-
-    QTextStream out(&file);
-
-    out << "A0=" << ui->comboBoxA0->currentIndex() << "\n"
-        << "A1=" << ui->comboBoxA1->currentIndex() << "\n"
-        << "A2=" << ui->comboBoxA2->currentIndex() << "\n"
-        << "A3=" << ui->comboBoxA3->currentIndex() << "\n"
-        << "A4=" << ui->comboBoxA4->currentIndex() << "\n"
-        << "A5=" << ui->comboBoxA5->currentIndex() << "\n"
-        << "A6=" << ui->comboBoxA6->currentIndex() << "\n"
-        << "A7=" << ui->comboBoxA7->currentIndex() << "\n"
-        << "A8=" << ui->comboBoxA8->currentIndex() << "\n"
-        << "A9=" << ui->comboBoxA9->currentIndex() << "\n"
-        << "A10=" << ui->comboBoxA10->currentIndex() << "\n"
-        << "A11=" << ui->comboBoxA11->currentIndex() << "\n"
-        << "A12=" << ui->comboBoxA12->currentIndex() << "\n"
-        << "A15=" << ui->comboBoxA15->currentIndex() << "\n"
-        << "B0=" << ui->comboBoxB0->currentIndex() << "\n"
-        << "B1=" << ui->comboBoxB1->currentIndex() << "\n"
-        << "B3=" << ui->comboBoxB3->currentIndex() << "\n"
-        << "B4=" << ui->comboBoxB4->currentIndex() << "\n"
-        << "B5=" << ui->comboBoxB5->currentIndex() << "\n"
-        << "B6=" << ui->comboBoxB6->currentIndex() << "\n"
-        << "B7=" << ui->comboBoxB7->currentIndex() << "\n"
-        << "B8=" << ui->comboBoxB8->currentIndex() << "\n"
-        << "B9=" << ui->comboBoxB9->currentIndex() << "\n"
-        << "B10=" << ui->comboBoxB10->currentIndex() << "\n"
-        << "B11=" << ui->comboBoxB11->currentIndex() << "\n"
-        << "B12=" << ui->comboBoxB12->currentIndex() << "\n"
-        << "B13=" << ui->comboBoxB13->currentIndex() << "\n"
-        << "B14=" << ui->comboBoxB14->currentIndex() << "\n"
-        << "B15=" << ui->comboBoxB15->currentIndex() << "\n"
-        << "C13=" << ui->comboBoxC13->currentIndex() << "\n"
-        << "C14=" << ui->comboBoxC14->currentIndex() << "\n"
-        << "C15=" << ui->comboBoxC15->currentIndex() << "\n"
-
-        << "Axis1Min=" << ui->horiSliderAxis1Min->value() << "\n"
-        << "Axis1Max=" << ui->horiSliderAxis1Max->value() << "\n"
-        << "Reserved="    << "\n"
-        << "Axis2Min=" << ui->horiSliderAxis2Min->value() << "\n"
-        << "Axis2Max=" << ui->horiSliderAxis2Max->value() << "\n"
-        << "Reserved="    << "\n"
-        << "Axis3Min=" << ui->horiSliderAxis3Min->value() << "\n"
-        << "Axis3Max=" << ui->horiSliderAxis3Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis4Min=" << ui->horiSliderAxis4Min->value() << "\n"
-        << "Axis4Max=" << ui->horiSliderAxis4Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis5Min=" << ui->horiSliderAxis5Min->value() << "\n"
-        << "axis5Max=" << ui->horiSliderAxis5Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis6Min=" << ui->horiSliderAxis6Min->value() << "\n"
-        << "Axis6Max=" << ui->horiSliderAxis6Max->value() << "\n"
-        << "Reserved="   << "\n";
-
-    int POVConf=0;
-    if (ui->checkBox_POV1->isChecked()) POVConf|=0x1;
-    if (ui->checkBox_POV2->isChecked()) POVConf|=0x2;
-    if (ui->checkBox_POV3->isChecked()) POVConf|=0x4;
-    if (ui->checkBox_POV4->isChecked()) POVConf|=0x8;
-     out << "POVConfig=" << POVConf << "\n";
-
-     out << "USB_custom_string=" << ui->lineEdit_Device_ident->text() << "\n"
-         << "USB_serial_number=" << ui->lineEdit_Serial_Number->text() << "\n"
-         << "USB_poll_interval=" << ui->spinBox_USB_exchange->value() << "\n"
-         << "Encoders_press_time=" << ui->spinBox__Rot_Press_time->value() << "\n"
-         << "RotSwitch_press_time="<< ui->spinBox_RotSwitch_Press_time->value() << "\n"
-         << "Encoders_debounce=" << ui->spinBox_Rot_Debounce_time->value() << "\n"
-         << "Buttons_debounce=" << ui->spinBox_Button_Debounce_time->value();
-
-       file.close();
-    }
-}
-
-
-void OSHStudio::gatherPinConfig(pintype i)
-{
-    switch (i) {
-        case (Not_Used): break;
-        case (AnalogNoSmooth):
-        case (AnalogLowSmooth):
-        case (AnalogMedSmooth):
-        case (AnalogHighSmooth):    NumberAnalogInputs ++; break;
-        case (Chain_Rotary_PINA):         Chain_PinA++; break;
-        case (Chain_Rotary_PINB):         Chain_PinB++; break;
-        case (Chain_Rotary_Enc_1):          Chain_Rotaries_1++; break;
-        case (Chain_Rotary_Enc_2):          Chain_Rotaries_2++; break;
-        case (Chain_Rotary_Enc_4):          Chain_Rotaries_4++; break;
-        case (Single_Rotary_PINA_1):          Single_Rotaries_PINA_1++; break;
-        case (Single_Rotary_PINB_1):          Single_Rotaries_PINB_1++; break;
-        case (Single_Rotary_PINA_2):          Single_Rotaries_PINA_2++; break;
-        case (Single_Rotary_PINB_2):          Single_Rotaries_PINB_2++; break;
-        case (Single_Rotary_PINA_4):          Single_Rotaries_PINA_4++; break;
-        case (Single_Rotary_PINB_4):          Single_Rotaries_PINB_4++; break;
-        case (Button_ROW):          ButtonsRows++; break;
-        case (Button_COLUMN):       ButtonsColumns++; break;
-        case (Button):
-        case (Button_GND):              Buttons++; break;
-        case (RotSwPole): RotSwitchPoles++; break;
-        case (RotSwWire): RotSwitchWires++; break;
-    }
-};
 
 void OSHStudio::gatherAllConf()
 {
@@ -1465,39 +1280,268 @@ void OSHStudio::gatherAllConf()
     Buttons=0;
     RotSwitchPoles=0;
     RotSwitchWires=0;
+    PINAlist.clear();
+    PINBlist.clear();
+    Total_Single_encoders=0;
 
-    gatherPinConfig((pintype)ui->comboBoxA0->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA1->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA2->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA3->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA4->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA5->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA6->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA7->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA8->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA9->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA10->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA11->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA12->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxA15->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB0->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB1->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB3->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB4->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB5->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB6->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB7->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB8->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB9->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB10->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB11->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB12->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB13->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB14->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxB15->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxC13->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxC14->currentIndex());
-    gatherPinConfig((pintype)ui->comboBoxC15->currentIndex());
+    uint8_t pin_number=0;
+    uint8_t Single_Rotaries_PINA=0;
+    uint8_t Single_Rotaries_PINB=0;
+
+    pintype curr_pin_type;
+
+    QString base_name_template("comboBox");
+    for (char port='A'; port < 'D'; port++) {
+        QString port_name_template=base_name_template + port;
+        port_name_template+="%1";
+        for(uint8_t i =0; i < 16; i++) {
+            QComboBox *comboBox_ptr = ui->tabWidget->findChild<QComboBox *>(port_name_template.arg(i));
+            if (comboBox_ptr) {
+                curr_pin_type=(pintype)(comboBox_ptr->currentIndex());
+                switch (curr_pin_type) {
+                    case (Not_Used): break;
+                    case (AnalogNoSmooth):
+                    case (AnalogLowSmooth):
+                    case (AnalogMedSmooth):
+                    case (AnalogHighSmooth):        NumberAnalogInputs ++; break;
+                    case (Chain_Rotary_PINA):       Chain_PinA++; break;
+                    case (Chain_Rotary_PINB):       Chain_PinB++; break;
+                    case (Chain_Rotary_Enc_1):      Chain_Rotaries_1++; break;
+                    case (Chain_Rotary_Enc_2):      Chain_Rotaries_2++; break;
+                    case (Chain_Rotary_Enc_4):      Chain_Rotaries_4++; break;
+                    case (Single_Rotary_PINA_1):    single_encoders_store[Single_Rotaries_PINA].pinA=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINA].pinA_type=Single_Rotary_PINA_1;
+                                                    Single_Rotaries_PINA++;
+                                                    Single_Rotaries_PINA_1++;
+                                                    break;
+                    case (Single_Rotary_PINB_1):    Single_Rotaries_PINB_1++;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB_type=Single_Rotary_PINA_1;
+                                                    Single_Rotaries_PINB++;
+                                                    break;
+                    case (Single_Rotary_PINA_2):    Single_Rotaries_PINA_2++;
+                                                    single_encoders_store[Single_Rotaries_PINA].pinA=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINA].pinA_type=Single_Rotary_PINA_2;
+                                                    Single_Rotaries_PINA++;
+                                                    break;
+                    case (Single_Rotary_PINB_2):    Single_Rotaries_PINB_2++;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB_type=Single_Rotary_PINA_2;
+                                                    Single_Rotaries_PINB++;
+                                                    break;
+                    case (Single_Rotary_PINA_4):    Single_Rotaries_PINA_4++;
+                                                    single_encoders_store[Single_Rotaries_PINA].pinA=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINA].pinA_type=Single_Rotary_PINA_4;
+                                                    Single_Rotaries_PINA++;
+                                                    break;
+                    case (Single_Rotary_PINB_4):    Single_Rotaries_PINB_4++;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB=pin_number;
+                                                    single_encoders_store[Single_Rotaries_PINB].pinB_type=Single_Rotary_PINA_4;
+                                                    Single_Rotaries_PINB++;
+                                                    break;
+                    case (Button_ROW):              ButtonsRows++; break;
+                    case (Button_COLUMN):           ButtonsColumns++; break;
+                    case (Button):
+                    case (Button_GND):              Buttons++; break;
+                    case (RotSwPole):               RotSwitchPoles++; break;
+                    case (RotSwWire):               RotSwitchWires++; break;
+                    default:                        break;
+                }
+                pin_number++;
+            }
+        }
+    }
+
+    if (Single_Rotaries_PINA_1>Single_Rotaries_PINB_1) {
+        Total_Single_encoders+=Single_Rotaries_PINB_1 ;
+    }
+        else {
+        Total_Single_encoders+=Single_Rotaries_PINA_1 ;
+    }
+
+    if (Single_Rotaries_PINA_2>Single_Rotaries_PINB_2) {
+        Total_Single_encoders+=Single_Rotaries_PINB_2 ;
+    }
+        else {
+        Total_Single_encoders+=Single_Rotaries_PINA_2 ;
+    }
+
+    if (Single_Rotaries_PINA_4>Single_Rotaries_PINB_4) {
+        Total_Single_encoders+=Single_Rotaries_PINB_4 ;
+    }
+        else {
+        Total_Single_encoders+=Single_Rotaries_PINA_4 ;
+    }
+
+    showSingleEncodersTab();
+}
+
+void OSHStudio::showSingleEncodersTab(void) {
+    QString name_template_Pix("label_SE%1");
+    QString name_template_CBBA("comboBox_SEA%1");
+    QString name_template_CBBB("comboBox_SEB%1");
+    QString name_template_Pow("label_SE%1_CPin");
+    PINAlist.clear();
+    PINBlist.clear();
+
+    for(uint8_t i =1; i < 15; i++)
+    {
+        QLabel *SEpic_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pix.arg(i));
+        QLabel *SEpow_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pow.arg(i));
+        QComboBox *SEcbba = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+        QComboBox *SEcbbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+        SEpic_Label->setVisible(false);
+        SEpow_Label->setVisible(false);
+        SEcbba->setVisible(false);
+        SEcbbb->setVisible(false);
+        SEcbba->clear();
+        SEcbbb->clear();
+      }
+
+    if (!Total_Single_encoders) {
+        ui->label_ZeroSglEncoders->setVisible(true);
+    }
+        else {
+        ui->label_ZeroSglEncoders->setVisible(false);
+        for (uint8_t k=0; k<Total_Single_encoders; k++){
+          if (single_encoders_store[k].pinA_type!=single_encoders_store[k].pinB_type) {
+            for (uint8_t j=k; j<Total_Single_encoders; j++) {
+              if (single_encoders_store[k].pinA_type==single_encoders_store[j].pinB_type) {
+                uint8_t tmp_pin=single_encoders_store[k].pinB;
+                uint8_t tmp_pintype=single_encoders_store[k].pinB_type;
+                single_encoders_store[k].pinB=single_encoders_store[j].pinB;
+                single_encoders_store[k].pinB_type=single_encoders_store[j].pinB_type;
+                single_encoders_store[j].pinB=tmp_pin;
+                single_encoders_store[j].pinB_type=tmp_pintype;
+                j=Total_Single_encoders;
+                }
+            }
+          }
+        }
+        for (uint8_t k=0; k<Total_Single_encoders; k++){
+            QString tmp_str;
+            switch (single_encoders_store[k].pinA_type) {
+                case (Single_Rotary_PINA_1): tmp_str="1/1 step - "; break;
+                case (Single_Rotary_PINA_2): tmp_str="1/2 step - "; break;
+                case (Single_Rotary_PINA_4): tmp_str="1/4 step - "; break;
+                default:                     tmp_str=" ";
+            };
+         PINAlist+=(tmp_str+pin_names[single_encoders_store[k].pinA]);
+         PINBlist+=(tmp_str+pin_names[single_encoders_store[k].pinB]);
+        }
+
+        for(uint8_t i =1; i <= Total_Single_encoders; i++)
+        {
+            QLabel *SEpic_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pix.arg(i));
+            QLabel *SEpow_Label = ui->tabWidget->findChild<QLabel *>(name_template_Pow.arg(i));
+            QComboBox *SEcbba = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+            QComboBox *SEcbbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+            SEpic_Label->setVisible(true);
+            SEpow_Label->setVisible(true);
+            SEcbba->setVisible(true);
+            SEcbbb->setVisible(true);
+            SEcbba->blockSignals(true);
+            SEcbbb->blockSignals(true);
+            SEcbba->addItems(PINAlist);
+            SEcbba->setCurrentIndex(i-1);
+            SEcbbb->addItems(PINBlist);
+            SEcbbb->setCurrentIndex(i-1);
+            SEcbba->setStyleSheet("QComboBox { color: black; background-color: light gray; }");
+            SEcbbb->setStyleSheet("QComboBox { color: black; background-color: light gray; }");
+            SEcbba->blockSignals(false);
+            SEcbbb->blockSignals(false);
+          }
+
+    }
+}
+
+void OSHStudio::comboBoxSEManualConfig() {
+    QString name_template_CBBA("comboBox_SEA%1");
+    QString name_template_CBBB("comboBox_SEB%1");
+//    QString debugstr="";
+
+    for(uint8_t i =1; i <= Total_Single_encoders; i++) {
+        QComboBox *SEcbba = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+        QComboBox *SEcbbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+        SEcbba->setStyleSheet("QComboBox { color: black; background-color: light gray; }");
+        SEcbbb->setStyleSheet("QComboBox { color: black; background-color: light gray; }");
+        SEcbba->clearFocus();
+        SEcbbb->clearFocus();
+        QString cbb_value=SEcbba->currentText();
+        QChar se_type=cbb_value.at(2);
+        single_encoders_store[i-1].pinA_type=convertCharToSEType(se_type);
+        QString pin_name=cbb_value.section(' ',3,3);
+        single_encoders_store[i-1].pinA=convertPinnameToIndex(pin_name);
+        cbb_value=SEcbbb->currentText();
+        se_type=cbb_value.at(2);
+        single_encoders_store[i-1].pinB_type=convertCharToSEType(se_type);
+        pin_name=cbb_value.section(' ',3,3);
+        single_encoders_store[i-1].pinB=convertPinnameToIndex(pin_name);
+//        debugstr+= QString::number(single_encoders_store[i-1].pinA_type) + " " +
+//                           QString::number(single_encoders_store[i-1].pinA) + " ; " +
+//                           QString::number(single_encoders_store[i-1].pinB_type) + " " +
+//                           QString::number(single_encoders_store[i-1].pinB) + "\n ";
+    }
+//    ui->label_2->setText(debugstr);
+    drawHelpSE();
+}
+
+void OSHStudio::drawHelpSE() {
+    QString name_template_CBBA("comboBox_SEA%1");
+    QString name_template_CBBB("comboBox_SEB%1");
+    QComboBox *SEcbb;
+
+    for(uint8_t i =1; i < Total_Single_encoders; i++) {
+        if (single_encoders_store[i-1].pinA_type != single_encoders_store[i-1].pinB_type) {
+            SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+            SEcbb->setStyleSheet("QComboBox { color: black; background-color: magenta; }");
+            SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+            SEcbb->setStyleSheet("QComboBox { color: black; background-color: magenta; }");
+            SEcbb->clearFocus();
+        }
+        for(uint8_t j =i+1; j <= Total_Single_encoders; j++) {
+            if (single_encoders_store[i-1].pinA == single_encoders_store[j-1].pinA) {
+                SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(i));
+                SEcbb->setStyleSheet("QComboBox { color: black; background-color: red; }");
+                SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(j));
+                SEcbb->setStyleSheet("QComboBox { color: black; background-color: red; }");
+                SEcbb->clearFocus();
+            }
+            if (single_encoders_store[i-1].pinB == single_encoders_store[j-1].pinB) {
+                SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(i));
+                SEcbb->setStyleSheet("QComboBox { color: black; background-color: red; }");
+                SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(j));
+                SEcbb->setStyleSheet("QComboBox { color: black; background-color: red; }");
+                SEcbb->clearFocus();
+            }
+        }
+
+    }
+    //and for the last one
+    if (single_encoders_store[Total_Single_encoders-1].pinA_type != single_encoders_store[Total_Single_encoders-1].pinB_type) {
+        SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBA.arg(Total_Single_encoders));
+        SEcbb->setStyleSheet("QComboBox { color: black; background-color: magenta; }");
+        SEcbb = ui->tabWidget->findChild<QComboBox *>(name_template_CBBB.arg(Total_Single_encoders));
+        SEcbb->setStyleSheet("QComboBox { color: black; background-color: magenta; }");
+        SEcbb->clearFocus();
+    }
+}
+
+
+uint8_t OSHStudio::convertCharToSEType (QChar ch) {
+    switch (ch.toLatin1()) {
+        case ('1'):   return (Single_Rotary_PINA_1);
+        case ('2'):   return (Single_Rotary_PINA_2);
+        case ('4'):   return (Single_Rotary_PINA_4);
+        default :     return 0;
+    }
+}
+
+uint8_t OSHStudio::convertPinnameToIndex (QString pname) {
+    for(uint8_t i =0; i < PINS; i++) {
+        if (pin_names[i]==pname) return i;
+    }
+    return 255;
 }
 
 void OSHStudio::drawHelp()
@@ -1519,10 +1563,8 @@ void OSHStudio::drawHelp()
             HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of chained encoders</font><br /><br />";
     }
 
-    if ((Single_Rotaries_PINA_1 > 0) || (Single_Rotaries_PINB_1 > 0) || (Single_Rotaries_PINA_2) || (Single_Rotaries_PINB_2 > 0) ||
-            (Single_Rotaries_PINA_4 > 0) || (Single_Rotaries_PINB_4 > 0)) {
-        HelpText = HelpText + "<br />" + QString::number(Single_Rotaries_PINA_1 + Single_Rotaries_PINA_2 +
-                                                         Single_Rotaries_PINA_4) + " single rotary encoders <br />";
+    if (Total_Single_encoders > 0) {
+        HelpText = HelpText + "<br />" + QString::number(Total_Single_encoders) + " single rotary encoders <br />";
         if ((Single_Rotaries_PINA_1 != Single_Rotaries_PINB_1) || (Single_Rotaries_PINA_2 != Single_Rotaries_PINB_2) ||
                 (Single_Rotaries_PINA_4 != Single_Rotaries_PINB_4))
             HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of single encoders</font><br /><br />";
@@ -1553,3 +1595,4 @@ void OSHStudio::drawHelp()
 
     ui->labelHelp->setText(HelpText);
 }
+

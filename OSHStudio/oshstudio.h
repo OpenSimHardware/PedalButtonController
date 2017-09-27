@@ -7,7 +7,7 @@
 #include<QFileDialog>
 #include<QTextStream>
 
-#define OSHSTUDIOVERSION 12
+#define OSHSTUDIOVERSION 13
 
 //Input/output usb packet
 #define BUFFSIZE 64
@@ -21,6 +21,23 @@ namespace Ui {
 class OSHStudio;
 //class WorkerThread;
 }
+
+struct single_encoders_pins {
+    uint8_t pinA;
+    uint8_t pinB;
+    uint8_t pinA_type;
+    uint8_t pinB_type;
+};
+
+struct pin_comp_geometry {
+    QString Label_name;
+    uint16_t Label_X;
+    uint16_t Label_Y;
+    QString ComboBox_name;
+    uint16_t ComboBox_X;
+    uint16_t ComboBox_Y;
+};
+
 
 class OSHStudio : public QMainWindow
 {
@@ -59,6 +76,8 @@ private:
       RotSwWire = 21,
 } pintype;
 
+
+
 private slots:
   void getConfig_Slot();
   void writeConfig_Slot();
@@ -67,6 +86,11 @@ private slots:
   void restoreConfig_Slot();
   void show_USB_ident_uniq(QString ident);
   void show_USB_exch_rate(int interval);
+  void comboBoxSEManualConfig();
+  void showBoardType(int boardtype);
+  uint8_t convertCharToSEType (QChar ch);
+  uint8_t convertPinnameToIndex (QString pname);
+  void drawHelpSE();
   void drawAxis1Value(uint16_t axis_value);
   void drawAxis2Value(uint16_t axis_value);
   void drawAxis3Value(uint16_t axis_value);
@@ -110,7 +134,8 @@ private slots:
   void saveToFile();
   void drawHelp();
   void gatherAllConf();
-  void gatherPinConfig(pintype i);
+  void showSingleEncodersTab(void);
+//  void gatherPinConfig(pintype i);
   void checkBoxPOV1Changed(int state);
   void checkBoxPOV2Changed(int state);
   void checkBoxPOV3Changed(int state);

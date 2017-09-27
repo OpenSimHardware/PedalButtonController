@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>520</height>
+    <width>1029</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,8 +101,8 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>10</y>
-      <width>821</width>
+      <y>30</y>
+      <width>851</width>
       <height>491</height>
      </rect>
     </property>
@@ -132,11 +132,11 @@
      <attribute name="title">
       <string>Pins Configuration</string>
      </attribute>
-     <widget class="QLabel" name="label_16">
+     <widget class="QLabel" name="label_B11">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>330</y>
+        <x>550</x>
+        <y>60</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -158,8 +158,8 @@
      <widget class="QComboBox" name="comboBoxA12">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>240</y>
+        <x>60</x>
+        <y>220</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -168,11 +168,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_26">
+     <widget class="QLabel" name="label_A11">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>260</y>
+        <x>20</x>
+        <y>200</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -191,11 +191,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_8">
+     <widget class="QLabel" name="label_A3">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>170</y>
+        <x>550</x>
+        <y>220</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -218,7 +218,7 @@
       <property name="geometry">
        <rect>
         <x>400</x>
-        <y>100</y>
+        <y>350</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -227,11 +227,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_32">
+     <widget class="QLabel" name="label_B13">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>380</y>
+        <x>20</x>
+        <y>80</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -253,8 +253,8 @@
      <widget class="QComboBox" name="comboBoxA4">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>190</y>
+        <x>400</x>
+        <y>200</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -266,8 +266,8 @@
      <widget class="QComboBox" name="comboBoxA2">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>150</y>
+        <x>400</x>
+        <y>240</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -279,8 +279,8 @@
      <widget class="QComboBox" name="comboBoxB6">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>140</y>
+        <x>60</x>
+        <y>320</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -292,8 +292,8 @@
      <widget class="QComboBox" name="comboBoxB13">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>380</y>
+        <x>60</x>
+        <y>80</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -305,8 +305,8 @@
      <widget class="QComboBox" name="comboBoxC13">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>50</y>
+        <x>400</x>
+        <y>310</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -315,11 +315,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_11">
+     <widget class="QLabel" name="label_A6">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>230</y>
+        <x>550</x>
+        <y>160</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -338,11 +338,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_30">
+     <widget class="QLabel" name="label_B15">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>340</y>
+        <x>20</x>
+        <y>120</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -361,11 +361,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_23">
+     <widget class="QLabel" name="label_B3">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>200</y>
+        <x>20</x>
+        <y>260</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -384,11 +384,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_21">
+     <widget class="QLabel" name="label_B5">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>160</y>
+        <x>20</x>
+        <y>300</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -407,11 +407,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_24">
+     <widget class="QLabel" name="label_A15">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>220</y>
+        <x>20</x>
+        <y>240</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -433,10 +433,10 @@
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
-        <x>620</x>
-        <y>30</y>
+        <x>630</x>
+        <y>70</y>
         <width>181</width>
-        <height>271</height>
+        <height>341</height>
        </rect>
       </property>
       <property name="font">
@@ -480,11 +480,11 @@
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="label_C14">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>70</y>
+        <y>420</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -506,8 +506,8 @@
      <widget class="QComboBox" name="comboBoxB11">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>330</y>
+        <x>400</x>
+        <y>60</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -516,11 +516,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_20">
+     <widget class="QLabel" name="label_B6">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>140</y>
+        <x>20</x>
+        <y>320</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -542,8 +542,8 @@
      <widget class="QComboBox" name="comboBoxA5">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>210</y>
+        <x>400</x>
+        <y>180</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -552,11 +552,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_7">
+     <widget class="QLabel" name="label_A2">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>150</y>
+        <x>550</x>
+        <y>240</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -575,11 +575,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_14">
+     <widget class="QLabel" name="label_B1">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>290</y>
+        <x>550</x>
+        <y>100</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -598,11 +598,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_19">
+     <widget class="QLabel" name="label_B7">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>120</y>
+        <x>20</x>
+        <y>340</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -624,8 +624,8 @@
      <widget class="QComboBox" name="comboBoxA1">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>130</y>
+        <x>400</x>
+        <y>260</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -634,11 +634,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="label_A0">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>110</y>
+        <x>550</x>
+        <y>280</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -657,11 +657,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_9">
+     <widget class="QLabel" name="label_A4">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>190</y>
+        <x>550</x>
+        <y>200</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -680,11 +680,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_12">
+     <widget class="QLabel" name="label_A7">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>250</y>
+        <x>550</x>
+        <y>140</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -706,8 +706,8 @@
      <widget class="QComboBox" name="comboBoxB15">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>340</y>
+        <x>60</x>
+        <y>120</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -719,8 +719,8 @@
      <widget class="QComboBox" name="comboBoxA0">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>110</y>
+        <x>400</x>
+        <y>280</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -732,11 +732,11 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_18">
+     <widget class="QLabel" name="label_B8">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>100</y>
+        <x>560</x>
+        <y>350</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -758,8 +758,8 @@
      <widget class="QComboBox" name="comboBoxB10">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>310</y>
+        <x>400</x>
+        <y>80</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -768,11 +768,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_28">
+     <widget class="QLabel" name="label_A9">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>300</y>
+        <x>20</x>
+        <y>160</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -791,11 +791,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_13">
+     <widget class="QLabel" name="label_B0">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>270</y>
+        <x>550</x>
+        <y>120</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -817,8 +817,8 @@
      <widget class="QComboBox" name="comboBoxA11">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>260</y>
+        <x>60</x>
+        <y>200</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -840,26 +840,13 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/MDB_pic.jpg</pixmap>
+       <pixmap resource="oshstudio.qrc">:/Images/boardTypeII.jpg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
      </widget>
      <widget class="QComboBox" name="comboBoxA3">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>170</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA15">
       <property name="geometry">
        <rect>
         <x>400</x>
@@ -872,11 +859,24 @@
        <number>25</number>
       </property>
      </widget>
+     <widget class="QComboBox" name="comboBoxA15">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>240</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="maxVisibleItems">
+       <number>25</number>
+      </property>
+     </widget>
      <widget class="QComboBox" name="comboBoxC14">
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>70</y>
+        <y>420</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -888,8 +888,8 @@
      <widget class="QComboBox" name="comboBoxB4">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>180</y>
+        <x>60</x>
+        <y>280</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -902,7 +902,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>90</y>
+        <y>400</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -914,8 +914,8 @@
      <widget class="QComboBox" name="comboBoxB3">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>200</y>
+        <x>60</x>
+        <y>260</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -927,8 +927,8 @@
      <widget class="QComboBox" name="comboBoxA8">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>320</y>
+        <x>60</x>
+        <y>140</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -940,8 +940,8 @@
      <widget class="QComboBox" name="comboBoxB7">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>120</y>
+        <x>60</x>
+        <y>340</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -953,8 +953,8 @@
      <widget class="QComboBox" name="comboBoxB1">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>290</y>
+        <x>400</x>
+        <y>100</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -967,7 +967,7 @@
       <property name="geometry">
        <rect>
         <x>400</x>
-        <y>80</y>
+        <y>330</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -976,11 +976,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="label_C15">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>90</y>
+        <y>400</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1002,8 +1002,8 @@
      <widget class="QComboBox" name="comboBoxB5">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>160</y>
+        <x>60</x>
+        <y>300</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1015,8 +1015,8 @@
      <widget class="QComboBox" name="comboBoxA10">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>280</y>
+        <x>60</x>
+        <y>180</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1028,8 +1028,8 @@
      <widget class="QComboBox" name="comboBoxB12">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>400</y>
+        <x>60</x>
+        <y>60</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1038,11 +1038,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="label_A5">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>210</y>
+        <x>550</x>
+        <y>180</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1064,8 +1064,8 @@
      <widget class="QComboBox" name="comboBoxB14">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>360</y>
+        <x>60</x>
+        <y>100</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1077,8 +1077,8 @@
      <widget class="QComboBox" name="comboBoxB0">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>270</y>
+        <x>400</x>
+        <y>120</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1087,11 +1087,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_22">
+     <widget class="QLabel" name="label_B4">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>180</y>
+        <x>20</x>
+        <y>280</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1110,11 +1110,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_33">
+     <widget class="QLabel" name="label_B12">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>400</y>
+        <x>20</x>
+        <y>60</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1133,11 +1133,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_29">
+     <widget class="QLabel" name="label_A8">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>320</y>
+        <x>20</x>
+        <y>140</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1156,11 +1156,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_31">
+     <widget class="QLabel" name="label_B14">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>360</y>
+        <x>20</x>
+        <y>100</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1179,11 +1179,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="label_A1">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>130</y>
+        <x>550</x>
+        <y>260</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1205,8 +1205,8 @@
      <widget class="QComboBox" name="comboBoxA6">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>230</y>
+        <x>400</x>
+        <y>160</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1215,11 +1215,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_17">
+     <widget class="QLabel" name="label_B9">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>80</y>
+        <x>560</x>
+        <y>330</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1241,8 +1241,8 @@
      <widget class="QComboBox" name="comboBoxA9">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>300</y>
+        <x>60</x>
+        <y>160</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1251,11 +1251,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_27">
+     <widget class="QLabel" name="label_A10">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>280</y>
+        <x>20</x>
+        <y>180</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1277,8 +1277,8 @@
      <widget class="QComboBox" name="comboBoxA7">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>250</y>
+        <x>400</x>
+        <y>140</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -1287,11 +1287,11 @@
        <number>25</number>
       </property>
      </widget>
-     <widget class="QLabel" name="label_25">
+     <widget class="QLabel" name="label_A12">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>240</y>
+        <x>20</x>
+        <y>220</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1310,11 +1310,11 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="label_C13">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>50</y>
+        <x>550</x>
+        <y>310</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1333,11 +1333,11 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_15">
+     <widget class="QLabel" name="label_B10">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>310</y>
+        <x>550</x>
+        <y>80</y>
         <width>31</width>
         <height>16</height>
        </rect>
@@ -1356,6 +1356,97 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>10</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Your board's type:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_BoardType">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>30</y>
+        <width>141</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <zorder>label_B12</zorder>
+     <zorder>label_B14</zorder>
+     <zorder>label_A10</zorder>
+     <zorder>label_A8</zorder>
+     <zorder>label_B11</zorder>
+     <zorder>comboBoxA12</zorder>
+     <zorder>label_A11</zorder>
+     <zorder>label_A3</zorder>
+     <zorder>comboBoxB8</zorder>
+     <zorder>label_B13</zorder>
+     <zorder>comboBoxA4</zorder>
+     <zorder>comboBoxA2</zorder>
+     <zorder>comboBoxB6</zorder>
+     <zorder>comboBoxB13</zorder>
+     <zorder>comboBoxC13</zorder>
+     <zorder>label_A6</zorder>
+     <zorder>label_B15</zorder>
+     <zorder>label_B3</zorder>
+     <zorder>label_B5</zorder>
+     <zorder>label_A15</zorder>
+     <zorder>groupBox</zorder>
+     <zorder>label_C14</zorder>
+     <zorder>comboBoxB11</zorder>
+     <zorder>label_B6</zorder>
+     <zorder>comboBoxA5</zorder>
+     <zorder>label_A2</zorder>
+     <zorder>label_B1</zorder>
+     <zorder>label_B7</zorder>
+     <zorder>comboBoxA1</zorder>
+     <zorder>label_A0</zorder>
+     <zorder>label_A4</zorder>
+     <zorder>label_A7</zorder>
+     <zorder>comboBoxB15</zorder>
+     <zorder>comboBoxA0</zorder>
+     <zorder>label_B8</zorder>
+     <zorder>comboBoxB10</zorder>
+     <zorder>label_A9</zorder>
+     <zorder>label_B0</zorder>
+     <zorder>comboBoxA11</zorder>
+     <zorder>label</zorder>
+     <zorder>comboBoxA3</zorder>
+     <zorder>comboBoxA15</zorder>
+     <zorder>comboBoxC14</zorder>
+     <zorder>comboBoxB4</zorder>
+     <zorder>comboBoxC15</zorder>
+     <zorder>comboBoxB3</zorder>
+     <zorder>comboBoxA8</zorder>
+     <zorder>comboBoxB7</zorder>
+     <zorder>comboBoxB1</zorder>
+     <zorder>comboBoxB9</zorder>
+     <zorder>label_C15</zorder>
+     <zorder>comboBoxB5</zorder>
+     <zorder>comboBoxA10</zorder>
+     <zorder>comboBoxB12</zorder>
+     <zorder>label_A5</zorder>
+     <zorder>comboBoxB14</zorder>
+     <zorder>comboBoxB0</zorder>
+     <zorder>label_B4</zorder>
+     <zorder>label_A1</zorder>
+     <zorder>comboBoxA6</zorder>
+     <zorder>label_B9</zorder>
+     <zorder>comboBoxA9</zorder>
+     <zorder>comboBoxA7</zorder>
+     <zorder>label_A12</zorder>
+     <zorder>label_C13</zorder>
+     <zorder>label_B10</zorder>
+     <zorder>label_3</zorder>
+     <zorder>comboBox_BoardType</zorder>
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -3815,6 +3906,765 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_5">
+     <attribute name="title">
+      <string>Single Encoders Config</string>
+     </attribute>
+     <widget class="QLabel" name="label_SE1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA1">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>30</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB1">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>80</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE1_CPin">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>60</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA2">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>140</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE2_CPin">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>170</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB2">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>190</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>250</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA3">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>250</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE3_CPin">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>280</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB3">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>300</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>360</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA4">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>360</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB4">
+      <property name="geometry">
+       <rect>
+        <x>108</x>
+        <y>410</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE4_CPin">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>390</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE6_CPin">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>170</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA5">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>30</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE5_CPin">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>60</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA7">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>250</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE8">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>360</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB5">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>80</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB6">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>190</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE7_CPin">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>280</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE8_CPin">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>390</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB7">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>300</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE6">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>140</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA8">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>360</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA6">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>140</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB8">
+      <property name="geometry">
+       <rect>
+        <x>318</x>
+        <y>410</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE7">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>250</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE5">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>30</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE10_CPin">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>170</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA9">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>30</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE9_CPin">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>60</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA11">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>250</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE12">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>360</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB9">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>80</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB10">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>190</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE11_CPin">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>280</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE12_CPin">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>390</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB11">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>300</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE10">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>140</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA12">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>360</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA10">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>140</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB12">
+      <property name="geometry">
+       <rect>
+        <x>528</x>
+        <y>410</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE11">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>250</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE9">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>30</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE14_CPin">
+      <property name="geometry">
+       <rect>
+        <x>742</x>
+        <y>390</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA13">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>250</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE13_CPin">
+      <property name="geometry">
+       <rect>
+        <x>742</x>
+        <y>280</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB13">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>300</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEB14">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>410</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE14">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>360</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_SEA14">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>360</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_SE13">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>250</y>
+        <width>91</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_ZeroSglEncoders">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>10</y>
+        <width>451</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>You don't have configured single encoders in &quot;Pins Configuration&quot; Tab. </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>20</y>
+        <width>161</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="tab_4">
      <attribute name="title">
       <string>Tuning</string>
@@ -4066,7 +4916,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>450</y>
+      <y>470</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -4085,7 +4935,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>400</y>
+      <y>420</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -4103,7 +4953,7 @@
    <widget class="QLabel" name="label_34">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>880</x>
       <y>0</y>
       <width>101</width>
       <height>20</height>
@@ -4117,7 +4967,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>290</y>
+      <y>310</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -4136,7 +4986,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>340</y>
+      <y>360</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -4154,7 +5004,7 @@
    <widget class="QLabel" name="label_Stud_version">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>980</x>
       <y>0</y>
       <width>31</width>
       <height>21</height>
@@ -4167,8 +5017,8 @@
    <widget class="QLabel" name="label_58">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>0</y>
+      <x>890</x>
+      <y>20</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -4180,8 +5030,8 @@
    <widget class="QLabel" name="label_Firmware_Vers">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>0</y>
+      <x>980</x>
+      <y>20</y>
       <width>31</width>
       <height>21</height>
      </rect>

@@ -125,7 +125,7 @@ void CheckRotaries(void){
 
 	j=Number_Rotaries;
 	for (uint8_t i=0; i < Number_Single_Rotaries; i++){
-		res = rotary_process(j, Single_rotaries[i].PINA_Type, Single_rotaries[i].PINA_IDR, Single_rotaries[i].PINB_IDR, Single_rotaries[i].PINA, Single_rotaries[i].PINB);
+		res = rotary_process(j, Single_rotaries[i].PINA_Type, Single_rotaries[i].PINA_IDR, Single_rotaries[i].PINB_IDR, Single_rotaries[i].PINAmask, Single_rotaries[i].PINBmask);
 		if ((res) && (millis-RotaryStore[j].time_pressed)>Rot_Debounce_Time) {RotaryStore[j].pressed = res; RotaryStore[j].time_pressed=millis;}
 		j++;
 	}
