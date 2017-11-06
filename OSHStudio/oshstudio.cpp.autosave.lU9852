@@ -4,7 +4,6 @@
 #include<QMessageBox>
 
 
-
 hid_device *handle_read, *handle_write;
 
 uint8_t NumberAnalogInputs,
@@ -25,11 +24,42 @@ uint8_t NumberAnalogInputs,
         RotSwitchPoles,
         RotSwitchWires;
 uint8_t Total_Single_encoders=0;
-uint8_t AxisComb_StartPin=0,
-        AxisComb_EndPin=0,
-        AxisComb_Percent=0;
 struct single_encoders_pins single_encoders_store[14] = {0,0,0,0};
 
+const QString pin_names[PINS] = {
+ {"A0"},
+ {"A1"},
+ {"A2"},
+ {"A3"},
+ {"A4"},
+ {"A5"},
+ {"A6"},
+ {"A7"},
+ {"A8"},
+ {"A9"},
+ {"A10"},
+ {"A11"},
+ {"A12"},
+ {"A15"},
+ {"B0"},
+ {"B1"},
+ {"B3"},
+ {"B4"},
+ {"B5"},
+ {"B6"},
+ {"B7"},
+ {"B8"},
+ {"B9"},
+ {"B10"},
+ {"B11"},
+ {"B12"},
+ {"B13"},
+ {"B14"},
+ {"B15"},
+ {"C13"},
+ {"C14"},
+ {"C15"},
+};
 
 QStringList PINAlist, PINBlist;
 
@@ -98,8 +128,6 @@ OSHStudio::OSHStudio(QWidget *parent) :
     ui->setupUi(this);
     ui->label_Stud_version->setText("0." + QString::number(OSHSTUDIOVERSION));
 
-
-
     connect (ui->comboBox_BoardType, SIGNAL(currentIndexChanged(int)), SLOT(showBoardType(int)));
 
       connect(ui->getConfig_button, SIGNAL(clicked()), SLOT(getConfig_Slot()));
@@ -143,7 +171,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->comboBoxC14, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintC14()));
       connect(ui->comboBoxC15, SIGNAL(currentIndexChanged(int)),  SLOT(comboBoxPaintC15()));
 
-/*
+
       connect(ui->horiSliderAxis1Min, SIGNAL(valueChanged(int)), SLOT(lineEditAxis1Min_Slot(int)));
       connect(ui->lineEditAxis1Min, SIGNAL(textEdited(QString)), SLOT(horiSliderAxis1Min_Slot(QString)));
       connect(ui->horiSliderAxis1Max, SIGNAL(valueChanged(int)), SLOT(lineEditAxis1Max_Slot(int)));
@@ -173,21 +201,10 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->lineEditAxis6Min, SIGNAL(textEdited(QString)), SLOT(horiSliderAxis6Min_Slot(QString)));
       connect(ui->horiSliderAxis6Max, SIGNAL(valueChanged(int)), SLOT(lineEditAxis6Max_Slot(int)));
       connect(ui->lineEditAxis6Max, SIGNAL(textEdited(QString)), SLOT(horiSliderAxis6Max_Slot(QString)));
-*/
-/*      connect(ui->horiSliderAxisCombPin1Min, SIGNAL(valueChanged(int)), SLOT(lineEditAxisCombPin1Min_Slot(int)));
-      connect(ui->horiSliderAxisCombPin2Min, SIGNAL(valueChanged(int)), SLOT(lineEditAxisCombPin2Min_Slot(int)));
-      connect(ui->horiSliderAxisCombPin1Max, SIGNAL(valueChanged(int)), SLOT(lineEditAxisCombPin1Max_Slot(int)));
-      connect(ui->horiSliderAxisCombPin2Max, SIGNAL(valueChanged(int)), SLOT(lineEditAxisCombPin2Max_Slot(int)));
-      connect(ui->lineEditAxisCombPin1Min, SIGNAL(textEdited(QString)), SLOT(horiSliderAxisCombPin1Min_Slot(QString)));
-      connect(ui->lineEditAxisCombPin2Min, SIGNAL(textEdited(QString)), SLOT(horiSliderAxisCombPin2Min_Slot(QString)));
-      connect(ui->lineEditAxisCombPin1Max, SIGNAL(textEdited(QString)), SLOT(horiSliderAxisCombPin1Max_Slot(QString)));
-      connect(ui->lineEditAxisCombPin2Max, SIGNAL(textEdited(QString)), SLOT(horiSliderAxisCombPin2Max_Slot(QString)));
-*/
+
       connect(ui->horizontalSliderAxisComb, SIGNAL(valueChanged(int)), SLOT(showPercentAxisComb(int)));
-      connect(ui->comboBox_AxisCombBegin, SIGNAL(currentTextChanged(QString)),  SLOT(showPin1AxisComb(QString)));
-      connect(ui->comboBox_AxisCombEnd, SIGNAL(currentTextChanged(QString)),  SLOT(showPin2AxisComb(QString)));
-      connect(ui->checkBox_AxisComb, SIGNAL(toggled(bool)), SLOT(showAxisCombSection(bool)));
-      connect(ui->radioButtonCoopwoork, SIGNAL(toggled(bool)), SLOT(showAxisCombSlider(bool)));
+      connect(ui->comboBox_AxisCombBegin, SIGNAL(currentIndexChanged(int)),  SLOT(showPin1AxisComb(int)));
+      connect(ui->comboBox_AxisCombEnd, SIGNAL(currentIndexChanged(int)),  SLOT(showPin2AxisComb(int)));
 
       connect(ui->loadFile_Button, SIGNAL(clicked(bool)), SLOT(loadFromFile()));
       connect(ui->saveFile_Button, SIGNAL(clicked(bool)), SLOT(saveToFile()));
@@ -232,10 +249,6 @@ OSHStudio::OSHStudio(QWidget *parent) :
       qRegisterMetaType<uint16_t>("uint16_t");
       qRegisterMetaType<uint64_t>("uint64_t");
       qRegisterMetaType<uint16_t>("uint8_t");
-
-
-//      oshaxis* axis1 = new oshaxis();
-//      axis1->
 
 
       QThread* thread = new QThread;
@@ -290,7 +303,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
 
       QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
-                        <<"Analog Medium Smooth"<<"Analog High Smooting"<<"Analog to Button"
+                        <<"Analog Medium Smooth"<<"Analog High Smooting"
                         <<"Chd Rot Enc PINA"<<"Chd Rot Enc PINB"
                         <<"Chd Rot Enc 1/1"<<"Chd Rot Enc 1/2"<<"Chd Rot Enc 1/4"
                         <<"Sng Rot Enc PINA 1/1"<<"Sng Rot Enc PINB 1/1"
@@ -364,8 +377,6 @@ OSHStudio::OSHStudio(QWidget *parent) :
       ui->spinBox_USB_exchange->setValue(1);
       ui->horizontalSliderAxisComb->setValue(51);
       ui->horizontalSliderAxisComb->setValue(50);
-      ui->checkBox_AxisComb->setChecked(true);
-      ui->checkBox_AxisComb->setChecked(false);
 
       ui->comboBox_BoardType->addItem("BluePill Board");
       ui->comboBox_BoardType->addItem("BlackPill Board");
@@ -378,6 +389,369 @@ OSHStudio::~OSHStudio()
 }
 
 
+void OSHStudio::writeConfig_Slot()
+{
+    uint8_t buf[BUFFSIZE]={2,0};
+    uint8_t res=0;
+
+    //gather pins config
+    buf[1]=ui->comboBoxA0->currentIndex();
+    buf[2]=ui->comboBoxA1->currentIndex();
+    buf[3]=ui->comboBoxA2->currentIndex();
+    buf[4]=ui->comboBoxA3->currentIndex();
+    buf[5]=ui->comboBoxA4->currentIndex();
+    buf[6]=ui->comboBoxA5->currentIndex();
+    buf[7]=ui->comboBoxA6->currentIndex();
+    buf[8]=ui->comboBoxA7->currentIndex();
+    buf[9]=ui->comboBoxA8->currentIndex();
+    buf[10]=ui->comboBoxA9->currentIndex();
+    buf[11]=ui->comboBoxA10->currentIndex();
+    buf[12]=ui->comboBoxA11->currentIndex();
+    buf[13]=ui->comboBoxA12->currentIndex();
+    buf[14]=ui->comboBoxA15->currentIndex();
+    buf[15]=ui->comboBoxB0->currentIndex();
+    buf[16]=ui->comboBoxB1->currentIndex();
+    buf[17]=ui->comboBoxB3->currentIndex();
+    buf[18]=ui->comboBoxB4->currentIndex();
+    buf[19]=ui->comboBoxB5->currentIndex();
+    buf[20]=ui->comboBoxB6->currentIndex();
+    buf[21]=ui->comboBoxB7->currentIndex();
+    buf[22]=ui->comboBoxB8->currentIndex();
+    buf[23]=ui->comboBoxB9->currentIndex();
+    buf[24]=ui->comboBoxB10->currentIndex();
+    buf[25]=ui->comboBoxB11->currentIndex();
+    buf[26]=ui->comboBoxB12->currentIndex();
+    buf[27]=ui->comboBoxB13->currentIndex();
+    buf[28]=ui->comboBoxB14->currentIndex();
+    buf[29]=ui->comboBoxB15->currentIndex();
+    buf[30]=ui->comboBoxC13->currentIndex();
+    buf[31]=ui->comboBoxC14->currentIndex();
+    buf[32]=ui->comboBoxC15->currentIndex();
+
+
+    //gather axises config
+    buf[33]=LOBYTE(ui->horiSliderAxis1Min->value());
+    buf[34]=HIBYTE(ui->horiSliderAxis1Min->value());
+    buf[35]=LOBYTE(ui->horiSliderAxis1Max->value());
+    buf[36]=HIBYTE(ui->horiSliderAxis1Max->value());
+    buf[37]=0; //Reserved
+    buf[38]=LOBYTE(ui->horiSliderAxis2Min->value());
+    buf[39]=HIBYTE(ui->horiSliderAxis2Min->value());
+    buf[40]=LOBYTE(ui->horiSliderAxis2Max->value());
+    buf[41]=HIBYTE(ui->horiSliderAxis2Max->value());
+    buf[42]=0; //Reserved
+    buf[43]=LOBYTE(ui->horiSliderAxis3Min->value());
+    buf[44]=HIBYTE(ui->horiSliderAxis3Min->value());
+    buf[45]=LOBYTE(ui->horiSliderAxis3Max->value());
+    buf[46]=HIBYTE(ui->horiSliderAxis3Max->value());
+    buf[47]=0; //Reserved
+    buf[48]=LOBYTE(ui->horiSliderAxis4Min->value());
+    buf[49]=HIBYTE(ui->horiSliderAxis4Min->value());
+    buf[50]=LOBYTE(ui->horiSliderAxis4Max->value());
+    buf[51]=HIBYTE(ui->horiSliderAxis4Max->value());
+    buf[52]=0; //Reserved
+    buf[53]=LOBYTE(ui->horiSliderAxis5Min->value());
+    buf[54]=HIBYTE(ui->horiSliderAxis5Min->value());
+    buf[55]=LOBYTE(ui->horiSliderAxis5Max->value());
+    buf[56]=HIBYTE(ui->horiSliderAxis5Max->value());
+    buf[57]=0; //Reserved
+    buf[58]=LOBYTE(ui->horiSliderAxis6Min->value());
+    buf[59]=HIBYTE(ui->horiSliderAxis6Min->value());
+    buf[60]=LOBYTE(ui->horiSliderAxis6Max->value());
+    buf[61]=HIBYTE(ui->horiSliderAxis6Max->value());
+    buf[62]=0; //Reserved
+
+    if (ui->checkBox_POV1->isChecked()) buf[63]|=0x1;
+    if (ui->checkBox_POV2->isChecked()) buf[63]|=0x2;
+    if (ui->checkBox_POV3->isChecked()) buf[63]|=0x4;
+    if (ui->checkBox_POV4->isChecked()) buf[63]|=0x8;
+
+    res=hid_write(handle_read, buf, BUFFSIZE);
+
+    QThread::sleep(1);
+    buf[0]=6;
+    buf[1]=LOBYTE(ui->spinBox__Rot_Press_time->value());
+    buf[2]=HIBYTE(ui->spinBox__Rot_Press_time->value());
+    buf[3]=LOBYTE(ui->spinBox_Rot_Debounce_time->value());
+    buf[4]=HIBYTE(ui->spinBox_Rot_Debounce_time->value());
+    buf[5]=LOBYTE(ui->spinBox_Button_Debounce_time->value());
+    buf[6]=HIBYTE(ui->spinBox_Button_Debounce_time->value());
+    buf[7]=ui->spinBox_USB_exchange->value();
+    buf[9]=LOBYTE(ui->spinBox_RotSwitch_Press_time->value());
+    buf[10]=HIBYTE(ui->spinBox_RotSwitch_Press_time->value());
+
+    QString USB_PS_Uniq =ui->lineEdit_Device_ident->text();
+    for(uint8_t i=0; i <10; i++){
+        if (USB_PS_Uniq.at(i) != 0) {
+          buf[11+i] = (uint8_t)USB_PS_Uniq.at(i).toLatin1();
+        } else {
+            buf[11+i] = 0;
+            }
+    }
+
+    QString USB_SN_Uniq = ui->lineEdit_Serial_Number->text();
+    for (uint8_t i=0; i<10; i++) {
+        buf[21+i] = (uint8_t)USB_SN_Uniq.at(i).toLatin1();
+    }
+
+    buf[31] = Total_Single_encoders;
+    for (uint8_t i=0; i<14; i++) {
+        buf[32+(i*2)] = single_encoders_store[i].pinA;
+        buf[33+(i*2)] = single_encoders_store[i].pinB;
+    }
+    res=hid_write(handle_read, buf, BUFFSIZE);
+}
+
+void OSHStudio::setConfig_Slot(uint8_t buf[BUFFSIZE], uint8_t op_code){
+    wchar_t tmp[10];
+    wchar_t * USB_PS_Uniq;
+    wchar_t * USB_SN_Uniq;
+//    struct sgl_enc_pins {
+//        uint8_t pinA;
+//        uint8_t pinB;
+//        uint8_t pinA_type;
+//        uint8_t pinB_type;
+    struct single_encoders_pins sgl_enc_tmp[14]={0,0,0,0};
+
+    if (op_code == 1) {
+        ui->comboBoxA0->setCurrentIndex(buf[1]);
+        ui->comboBoxA1->setCurrentIndex(buf[2]);
+        ui->comboBoxA2->setCurrentIndex(buf[3]);
+        ui->comboBoxA3->setCurrentIndex(buf[4]);
+        ui->comboBoxA4->setCurrentIndex(buf[5]);
+        ui->comboBoxA5->setCurrentIndex(buf[6]);
+        ui->comboBoxA6->setCurrentIndex(buf[7]);
+        ui->comboBoxA7->setCurrentIndex(buf[8]);
+        ui->comboBoxA8->setCurrentIndex(buf[9]);
+        ui->comboBoxA9->setCurrentIndex(buf[10]);
+        ui->comboBoxA10->setCurrentIndex(buf[11]);
+        ui->comboBoxA11->setCurrentIndex(buf[12]);
+        ui->comboBoxA12->setCurrentIndex(buf[13]);
+        ui->comboBoxA15->setCurrentIndex(buf[14]);
+        ui->comboBoxB0->setCurrentIndex(buf[15]);
+        ui->comboBoxB1->setCurrentIndex(buf[16]);
+        ui->comboBoxB3->setCurrentIndex(buf[17]);
+        ui->comboBoxB4->setCurrentIndex(buf[18]);
+        ui->comboBoxB5->setCurrentIndex(buf[19]);
+        ui->comboBoxB6->setCurrentIndex(buf[20]);
+        ui->comboBoxB7->setCurrentIndex(buf[21]);
+        ui->comboBoxB8->setCurrentIndex(buf[22]);
+        ui->comboBoxB9->setCurrentIndex(buf[23]);
+        ui->comboBoxB10->setCurrentIndex(buf[24]);
+        ui->comboBoxB11->setCurrentIndex(buf[25]);
+        ui->comboBoxB12->setCurrentIndex(buf[26]);
+        ui->comboBoxB13->setCurrentIndex(buf[27]);
+        ui->comboBoxB14->setCurrentIndex(buf[28]);
+        ui->comboBoxB15->setCurrentIndex(buf[29]);
+        ui->comboBoxC13->setCurrentIndex(buf[30]);
+        ui->comboBoxC14->setCurrentIndex(buf[31]);
+        ui->comboBoxC15->setCurrentIndex(buf[32]);
+
+        ui->horiSliderAxis1Min->setValue((buf[34]<<8) | buf[33]);
+        ui->horiSliderAxis1Max->setValue((buf[36]<<8) | buf[35]);
+
+        ui->horiSliderAxis2Min->setValue((buf[39]<<8) | buf[38]);
+        ui->horiSliderAxis2Max->setValue((buf[41]<<8) | buf[40]);
+
+        ui->horiSliderAxis3Min->setValue((buf[44]<<8) | buf[43]);
+        ui->horiSliderAxis3Max->setValue((buf[46]<<8) | buf[45]);
+
+        ui->horiSliderAxis4Min->setValue((buf[49]<<8) | buf[48]);
+        ui->horiSliderAxis4Max->setValue((buf[51]<<8) | buf[50]);
+
+        ui->horiSliderAxis5Min->setValue((buf[54]<<8) | buf[53]);
+        ui->horiSliderAxis5Max->setValue((buf[56]<<8) | buf[55]);
+
+        ui->horiSliderAxis6Min->setValue((buf[59]<<8) | buf[58]);
+        ui->horiSliderAxis6Max->setValue((buf[61]<<8) | buf[60]);
+
+        if (buf[63] & 0x1) ui->checkBox_POV1->setChecked(true);
+            else ui->checkBox_POV1->setChecked(false);
+        if (buf[63] & 0x2) ui->checkBox_POV2->setChecked(true);
+            else ui->checkBox_POV2->setChecked(false);
+        if (buf[63] & 0x4) ui->checkBox_POV3->setChecked(true);
+            else ui->checkBox_POV3->setChecked(false);
+        if (buf[63] & 0x8) ui->checkBox_POV4->setChecked(true);
+            else ui->checkBox_POV4->setChecked(false);
+    }
+
+    if (op_code == 2) {
+        ui->spinBox__Rot_Press_time->setValue((buf[2]<<8)+buf[1]);
+        ui->spinBox_Rot_Debounce_time->setValue((buf[4]<<8)+buf[3]);
+        ui->spinBox_Button_Debounce_time->setValue((buf[6]<<8)+buf[5]);
+        ui->spinBox_USB_exchange->setValue(buf[7]);
+        ui->spinBox_RotSwitch_Press_time->setValue((buf[10]<<8)+buf[9]);
+
+
+        for (uint8_t i=0; i<10; i++) {
+            tmp[i]=(wchar_t)buf[11+i];
+        }
+        USB_PS_Uniq=tmp;
+        ui->lineEdit_Device_ident->setText(QString::fromWCharArray(USB_PS_Uniq));
+
+        for (uint8_t i=0; i<10; i++) {
+            tmp[i]=(wchar_t)buf[21+i];
+        }
+        USB_SN_Uniq=tmp;
+        ui->lineEdit_Serial_Number->setText(QString::fromWCharArray(USB_SN_Uniq));
+
+        Total_Single_encoders=buf[31];
+        for (uint8_t i=0; i<14; i++) {
+            sgl_enc_tmp[i].pinA=buf[32+(i*2)] ;
+            sgl_enc_tmp[i].pinB=buf[33+(i*2)] ;
+        }
+        for (uint8_t i=0; i<Total_Single_encoders; i++){
+            for (uint8_t j=0; j<Total_Single_encoders; j++) {
+                if (sgl_enc_tmp[i].pinA == single_encoders_store[j].pinA) {
+                    sgl_enc_tmp[i].pinA_type=single_encoders_store[j].pinA_type;
+                }
+                if (sgl_enc_tmp[i].pinB == single_encoders_store[j].pinB) {
+                    sgl_enc_tmp[i].pinB_type=single_encoders_store[j].pinB_type;
+                }
+            }
+        }
+        for (uint8_t i=0; i<Total_Single_encoders; i++) {
+            single_encoders_store[i].pinA=sgl_enc_tmp[i].pinA;
+            single_encoders_store[i].pinB=sgl_enc_tmp[i].pinB;
+            single_encoders_store[i].pinA_type=sgl_enc_tmp[i].pinA_type;
+            single_encoders_store[i].pinB_type=sgl_enc_tmp[i].pinB_type;
+        }
+        showSingleEncodersTab();
+    }
+
+}
+
+void OSHStudio::resetConfig_Slot(){
+    uint8_t buf[BUFFSIZE]={0};
+
+    setConfig_Slot(buf,1);
+//    setConfig_Slot(buf,2);
+}
+
+void OSHStudio::restoreConfig_Slot(){
+    uint8_t buf[BUFFSIZE]={0};
+
+    for (uint8_t i=1; i<7; i++){
+        buf[i]=AnalogMedSmooth;
+    }
+    buf[7]=Chain_Rotary_Enc_1;
+    buf[8]=Button_COLUMN;
+    buf[9]=Chain_Rotary_Enc_1;
+    buf[10]=Chain_Rotary_Enc_1;
+    buf[11]=Chain_Rotary_Enc_1;
+    buf[14]=Chain_Rotary_Enc_1;
+    buf[15]=Chain_Rotary_Enc_1;
+    buf[16]=Chain_Rotary_Enc_1;
+    buf[17]=Button_COLUMN;
+    for (uint8_t i=18; i<24; i++){
+        buf[i]=Button_ROW;
+    }
+    buf[24]=Chain_Rotary_PINA;
+    buf[25]=Chain_Rotary_PINB;
+    buf[26]=Button_COLUMN;
+    buf[27]=Chain_Rotary_Enc_1;
+    buf[28]=Chain_Rotary_Enc_1;
+    buf[29]=Chain_Rotary_Enc_1;
+    buf[30]=Button_COLUMN;
+    buf[31]=Button_COLUMN;
+    buf[32]=Button_COLUMN;
+
+    buf[33]=0;
+    buf[34]=0;
+    buf[35]=0xFF;
+    buf[36]=0x0F;
+
+    buf[38]=0;
+    buf[39]=0;
+    buf[40]=0xFF;
+    buf[41]=0x0F;
+
+    buf[43]=0;
+    buf[44]=0;
+    buf[45]=0xFF;
+    buf[46]=0x0F;
+
+    buf[48]=0;
+    buf[49]=0;
+    buf[50]=0xFF;
+    buf[51]=0x0F;
+
+    buf[53]=0;
+    buf[54]=0;
+    buf[55]=0xFF;
+    buf[56]=0x0F;
+
+    buf[58]=0;
+    buf[59]=0;
+    buf[60]=0xFF;
+    buf[61]=0x0F;
+
+    buf[63]=0;
+
+    setConfig_Slot(buf,1);
+
+    for (uint8_t i=0; i<BUFFSIZE; i++){
+        buf[i]=0;
+    }
+
+    buf[1]=50;
+    buf[2]=0;
+    buf[3]=10;
+    buf[4]=0;
+    buf[5]=50;
+    buf[6]=0;\
+    buf[7]=0x10;
+    buf[8]=0;
+    buf[9]=100;
+    buf[10]=0;
+    buf[11]=0;
+    buf[21]=48;
+    buf[22]=48;
+    buf[23]=48;
+    buf[24]=48;
+    buf[25]=48;
+    buf[26]=48;
+    buf[27]=48;
+    buf[28]=48;
+    buf[29]=49;
+    buf[30]=66;
+
+
+    setConfig_Slot(buf,2);
+
+}
+
+void OSHStudio::getConfig_Slot()
+{
+    uint8_t buf[BUFFSIZE]={0};
+    uint8_t bufrep2[2]={3,1};
+    uint8_t res=0,j=0;
+
+
+    do {
+        res=hid_write(handle_read, bufrep2, 2);
+        res=hid_read(handle_read, buf, BUFFSIZE);
+        j++;
+       } while ((buf[0] != 4) || j<50 );
+    if (buf[0] == 4) {
+        setConfig_Slot(buf,1);
+    }
+
+    for (uint8_t i=1; i<BUFFSIZE; i++) {
+        buf[i]=0;
+    }
+
+    bufrep2[1]=2;
+    j=0;
+    do {
+        res=hid_write(handle_read, bufrep2, 2);
+        res=hid_read(handle_read, buf, BUFFSIZE);
+        j++;
+       } while ((buf[0] != 5) || j<50 );
+    if (buf[0] == 5) {
+        setConfig_Slot(buf,2);
+    }
+}
 
 void OSHStudio::show_USB_ident_uniq(QString ident) {
     QString const_desc="Your identifier for the device, it will appear in Windows as \"OSH PB Controller";
@@ -423,27 +797,27 @@ QString OSHStudio::DrawTypeComboBox(pintype i) {
 
 
 void OSHStudio::drawAxis1Value(uint16_t axis_value) {
-    ui->widget_axis1->setAxisValue(axis_value);
+    ui->progressBarAxis1->setValue(axis_value);
 }
 
 void OSHStudio::drawAxis2Value(uint16_t axis_value) {
-    ui->widget_axis2->setAxisValue(axis_value);
+    ui->progressBarAxis2->setValue(axis_value);
 }
 
 void OSHStudio::drawAxis3Value(uint16_t axis_value) {
-    ui->widget_axis3->setAxisValue(axis_value);
+    ui->progressBarAxis3->setValue(axis_value);
 }
 
 void OSHStudio::drawAxis4Value(uint16_t axis_value) {
-    ui->widget_axis4->setAxisValue(axis_value);
+    ui->progressBarAxis4->setValue(axis_value);
 }
 
 void OSHStudio::drawAxis5Value(uint16_t axis_value) {
-    ui->widget_axis5->setAxisValue(axis_value);
+    ui->progressBarAxis5->setValue(axis_value);
 }
 
 void OSHStudio::drawAxis6Value(uint16_t axis_value) {
-    ui->widget_axis6->setAxisValue(axis_value);
+    ui->progressBarAxis6->setValue(axis_value);
 }
 
 void OSHStudio::drawPOVSvalue(uint64_t POVS_value) {
@@ -602,52 +976,11 @@ void OSHStudio::showPercentAxisComb(int i) {
     ui->label_AxisComb2->setText(QString::number(100-i)+"%");
 }
 
-void OSHStudio::showAxisCombSlider(bool state) {
-    ui->horizontalSliderAxisComb->setEnabled(state);
-    ui->label_4->setVisible(state);
-    ui->label_AxisComb1->setVisible(state);
-    ui->label_5->setVisible(state);
-    ui->label_6->setVisible(state);
-    ui->label_AxisComb2->setVisible(state);
-    ui->label_7->setVisible(state);
-    ui->label_AxisCombPin1->setVisible(state);
-    ui->label_AxisCombPin2->setVisible(state);
-}
-
-void OSHStudio::showAxisCombSection(bool checked) {
-        ui->comboBox_AxisCombBegin->setEnabled(checked);
-        ui->comboBox_AxisCombEnd->setEnabled(checked);
-        ui->widget_axisComb1->setPinsEnabled(checked);
-        ui->widget_axisComb2->setPinsEnabled(checked);
-        ui->widget_axisComb1->setEnabled(checked);
-        ui->widget_axisComb2->setEnabled(checked);
-
-        ui->radioButtonCoopwoork->setEnabled(checked);
-        ui->radioButtonEachonhisown->setEnabled(checked);
-
-        if (checked) {
-            if (ui->radioButtonCoopwoork->isChecked()) showAxisCombSlider(true);
-                else showAxisCombSlider(false);
-        } else {
-            showAxisCombSlider(false);
-        }
-}
-
-void OSHStudio::showPin1AxisComb(QString pinname){
-    ui->label_AxisCombPin1->setText(pinname);
-    AxisComb_StartPin=convertPinnameToIndex(pinname);
-}
-
-void OSHStudio::showPin2AxisComb(QString pinname){
-    ui->label_AxisCombPin2->setText(pinname);
-    AxisComb_EndPin=convertPinnameToIndex(pinname);
-}
-
 int OSHStudio::convertStringToInt(QString str) {
     return str.toInt();
 }
 
-/*void OSHStudio::lineEditAxis1Min_Slot(int i) {
+void OSHStudio::lineEditAxis1Min_Slot(int i) {
     ui->lineEditAxis1Min->setText(QString::number(i));
 }
 
@@ -741,40 +1074,8 @@ void OSHStudio::lineEditAxis6Max_Slot(int i) {
 
 void OSHStudio::horiSliderAxis6Max_Slot(QString str) {
     ui->horiSliderAxis6Max->setValue(str.toInt());
-}*/
-/*
-void OSHStudio::lineEditAxisCombPin1Min_Slot(int i) {
-    ui->lineEditAxisCombPin1Min->setText(QString::number(i));
 }
 
-void OSHStudio::horiSliderAxisCombPin1Min_Slot(QString str) {
-    ui->horiSliderAxisCombPin1Min->setValue(str.toInt());
-}
-
-void OSHStudio::lineEditAxisCombPin1Max_Slot(int i) {
-    ui->lineEditAxisCombPin1Max->setText(QString::number(i));
-}
-
-void OSHStudio::horiSliderAxisCombPin1Max_Slot(QString str) {
-    ui->horiSliderAxisCombPin1Max->setValue(str.toInt());
-}
-
-void OSHStudio::lineEditAxisCombPin2Min_Slot(int i) {
-    ui->lineEditAxisCombPin2Min->setText(QString::number(i));
-}
-
-void OSHStudio::horiSliderAxisCombPin2Min_Slot(QString str) {
-    ui->horiSliderAxisCombPin2Min->setValue(str.toInt());
-}
-
-void OSHStudio::lineEditAxisCombPin2Max_Slot(int i) {
-    ui->lineEditAxisCombPin2Max->setText(QString::number(i));
-}
-
-void OSHStudio::horiSliderAxisCombPin2Max_Slot(QString str) {
-    ui->horiSliderAxisCombPin2Max->setValue(str.toInt());
-}
-*/
 
 void OSHStudio::comboBoxPaintA0() {
     ui->comboBoxA0->setStyleSheet(DrawTypeComboBox((pintype)ui->comboBoxA0->currentIndex()));
@@ -993,8 +1294,7 @@ void OSHStudio::gatherAllConf()
     PINAlist.clear();
     PINBlist.clear();
     Total_Single_encoders=0;
-    QStringList AxisComb1;
-
+    QStringList AxisComb1, AxisComb2, 
 
     uint8_t pin_number=0;
     uint8_t Single_Rotaries_PINA=0;
@@ -1015,7 +1315,7 @@ void OSHStudio::gatherAllConf()
                     case (AnalogNoSmooth):
                     case (AnalogLowSmooth):
                     case (AnalogMedSmooth):
-                    case (AnalogHighSmooth):        AxisComb1+=QChar::fromLatin1(port)+QString::number(i);
+                    case (AnalogHighSmooth):        AxisComb1+=
                                                     NumberAnalogInputs ++; break;
                     case (Chain_Rotary_PINA):       Chain_PinA++; break;
                     case (Chain_Rotary_PINB):       Chain_PinB++; break;
@@ -1086,12 +1386,6 @@ void OSHStudio::gatherAllConf()
         Total_Single_encoders+=Single_Rotaries_PINA_4 ;
     }
 
-    ui->comboBox_AxisCombBegin->clear();
-    ui->comboBox_AxisCombEnd->clear();
-    ui->comboBox_AxisCombBegin->addItems(AxisComb1);
-    ui->comboBox_AxisCombEnd->addItems(AxisComb1);
-    ui->comboBox_AxisCombBegin->setCurrentIndex((ui->comboBox_AxisCombBegin->count())-2);
-    ui->comboBox_AxisCombEnd->setCurrentIndex((ui->comboBox_AxisCombEnd->count())-1);
     showSingleEncodersTab();
 }
 

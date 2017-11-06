@@ -16,12 +16,16 @@ SOURCES += main.cpp\
         oshstudio.cpp \
     hid.c \
     file_ops.cpp \
-    board_types.cpp
+    board_types.cpp \
+    oshaxiswca.cpp \
+    get_put_config.cpp
 
 HEADERS  += oshstudio.h \
-    hidapi.h
+    hidapi.h \
+    oshaxiswca.h
 
-FORMS    += oshstudio.ui
+FORMS    += oshstudio.ui \
+    oshaxiswca.ui
 
 RESOURCES += \
     oshstudio.qrc

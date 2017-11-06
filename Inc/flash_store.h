@@ -35,6 +35,7 @@
 #include <periph_init.h>
 
 #define FLASHSIZEREG 	0x1FFFF7E0
+
 //#define FLASHBASE		0x08000000
 //#define FLASH_KEY1               ((uint32_t)0x45670123)
 //#define FLASH_KEY2               ((uint32_t)0xCDEF89AB)

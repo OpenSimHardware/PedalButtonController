@@ -38,6 +38,7 @@
 #define USEDPINS 32
 #define AXISES 6
 #define ADC_BUFF_SIZE 7
+#define UNIQUEIDREG 0x1FFFF7E8
 
 
 typedef enum {
@@ -46,23 +47,24 @@ typedef enum {
 	AnalogLowSmooth = 2,
 	AnalogMedSmooth = 3,
 	AnalogHighSmooth = 4,
-	Chain_Rotary_PINA = 5,
-	Chain_Rotary_PINB = 6,
-	Chain_Rotary_Enc_1 = 7,
-	Chain_Rotary_Enc_2 = 8,
-	Chain_Rotary_Enc_4 = 9,
-	Single_Rotary_PINA_1 = 10,
-	Single_Rotary_PINB_1 = 11,
-	Single_Rotary_PINA_2 = 12,
-	Single_Rotary_PINB_2 = 13,
-	Single_Rotary_PINA_4 = 14,
-	Single_Rotary_PINB_4 = 15,
-	Button_ROW = 16,
-	Button_COLUMN = 17,
-	Button = 18,
-	Button_GND = 19,
-	RotSwPole = 20,
-	RotSwWire = 21,
+	Analog2Button = 5,
+	Chain_Rotary_PINA = 6,
+	Chain_Rotary_PINB = 7,
+	Chain_Rotary_Enc_1 = 8,
+	Chain_Rotary_Enc_2 = 9,
+	Chain_Rotary_Enc_4 = 10,
+	Single_Rotary_PINA_1 = 11,
+	Single_Rotary_PINB_1 = 12,
+	Single_Rotary_PINA_2 = 13,
+	Single_Rotary_PINB_2 = 14,
+	Single_Rotary_PINA_4 = 15,
+	Single_Rotary_PINB_4 = 16,
+	Button_ROW = 17,
+	Button_COLUMN = 18,
+	Button = 19,
+	Button_GND = 20,
+	RotSwPole = 21,
+	RotSwWire = 22,
 } pintype;
 
 
@@ -109,5 +111,6 @@ void processing_axises(uint8_t axis, uint8_t Kstab);
 void fill_buffer_4_axises(void);
 uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 void custom_usb_config(void);
+uint8_t uint8_to_32(uint8_t value);
 
 #endif /* PERIPH_INIT_H_ */

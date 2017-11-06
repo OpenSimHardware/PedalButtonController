@@ -27,6 +27,7 @@
  * */
 
 #include <periph_init.h>
+#include <keypad.h>
 
 // default ports configuration
 volatile struct pin_conf pins[USEDPINS] = {
@@ -118,8 +119,25 @@ volatile uint16_t RotSwitch_Press_Time=100;
 uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
 volatile uint8_t USB_Product_String_Unique[10] = {0};
-volatile uint8_t USB_Serial_Number_Unique[13] = {48,48,48,48,48,48,48,48,48,48,49,66,0};
+uint8_t USB_Serial_Number_Unique[15] = {0};
 volatile uint8_t USB_polling_interval=0x10;
+volatile uint8_t AxisComb_Percent=50;
+volatile uint8_t AxisComb_pin1=4;
+volatile uint8_t AxisComb_pin2=5;
+volatile uint8_t AxisCombEnabled=0;
+volatile uint16_t AxisCombPin1Min=0;
+volatile uint16_t AxisCombPin1Max=4095;
+volatile uint16_t AxisCombPin2Min=0;
+volatile uint16_t AxisCombPin2Max=4095;
+volatile uint8_t AxisCombPin1AC=0;
+volatile uint8_t AxisCombPin2AC=0;
+volatile uint8_t AxisCombCoop=1;
+volatile uint8_t AxisCombSep=0;
+volatile uint16_t Analog2ButtonThreshold=2048;
+volatile uint8_t Number_AnalogButtons=0;
+uint8_t Number_DigiButtons=0;
+
+
 
 uint8_t USB_Product_String[31] = {
 		79, // O
@@ -175,7 +193,7 @@ void gpio_init(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPBEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_IOPDEN;
 	// Disable JTAG and SWD
 	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
-	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
+//	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
 
 	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
 		write_flash();
@@ -191,7 +209,11 @@ void gpio_init(void) {
 }
 
 void custom_usb_config(void) {
-volatile	uint8_t i=0;
+	uint8_t i=0;
+	uint32_t * curradr;
+	uint32_t id1,id2,id3;
+	uint8_t mod;
+
 
 	if (USB_Product_String_Unique[0]) {
 		USB_Product_String[17] = 32; // Space
@@ -207,10 +229,36 @@ volatile	uint8_t i=0;
 
 	USBD_PRODUCT_STRING_FS = USB_Product_String;
 
-	USB_Serial_Number_Unique[12]=0;
-	USBD_SERIALNUMBER_STRING_FS = USB_Serial_Number_Unique;
+	USB_Serial_Number_Unique[14]=0;
+	curradr = (uint32_t *)UNIQUEIDREG;
+	id1 = *curradr++;
+	id2 = *curradr++;
+	id3 = *curradr;
+
+	id2^=id1;
+	id3^=id1;
+
+		for (uint8_t i=0; i<6; i++) {
+			mod = id2 % 32;
+			USB_Serial_Number_Unique[13-i]=uint8_to_32(mod);
+			id2 = id2/32;
+		}
+		USB_Serial_Number_Unique[7]=uint8_to_32(id2);
+		for (uint8_t i=0; i<6; i++) {
+			mod = id3 % 32;
+			USB_Serial_Number_Unique[6-i]=uint8_to_32(mod);
+			id3 = id3/32;
+		}
+		USB_Serial_Number_Unique[0]=uint8_to_32(id3);
+
+ 	USBD_SERIALNUMBER_STRING_FS = USB_Serial_Number_Unique;
 
 	USBD_CUSTOM_HID_CfgDesc[33]=USB_polling_interval;
+}
+
+uint8_t uint8_to_32(uint8_t value) {
+	if (value > 9) return (value+55);
+	else return (value+48);
 }
 
 void gpio_ports_config(void) {
@@ -247,6 +295,11 @@ void gpio_ports_config(void) {
 		case AnalogMedSmooth:
 		case AnalogHighSmooth:
 		case AnalogNoSmooth:Number_Channels++;
+							tmpconfvalue=0x0;
+							tmpbsrrvalue=0x10;
+							break;
+		case Analog2Button: Number_Channels++;
+							Number_AnalogButtons++;
 							tmpconfvalue=0x0;
 							tmpbsrrvalue=0x10;
 							break;
@@ -335,13 +388,21 @@ void gpio_ports_config(void) {
 		Single_rotaries[i].PINBmask=(0x1<<pins[Single_rotaries[i].PINB].pin_number);
 	}
 
-	Number_Buttons = Number_Columns*Number_Rows + Number_Simple_Buttons;
+	Number_DigiButtons = Number_Columns*Number_Rows + Number_Simple_Buttons;
+	Number_Buttons = Number_DigiButtons + Number_AnalogButtons;
 	Number_RotSwitches = Number_Poles * Number_Wires;
 	encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
 	if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
 
 
 	adc_init();
+
+	for (uint8_t i=0;i<AXISES;i++) {
+			  if (axises[i].special == 1) {
+				  axises[i].calib_min = 4095;
+				  axises[i].calib_max = 1;
+			  }
+		  }
 }
 
 void adc_init(void) {
@@ -405,7 +466,8 @@ void adc_init(void) {
 
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if ((pins[i].pin_type == AnalogNoSmooth) || (pins[i].pin_type == AnalogLowSmooth) ||
-				(pins[i].pin_type == AnalogMedSmooth) || (pins[i].pin_type == AnalogHighSmooth)) {
+				(pins[i].pin_type == AnalogMedSmooth) || (pins[i].pin_type == AnalogHighSmooth) ||
+				(pins[i].pin_type == Analog2Button)) {
 			if (channel < 6) {
 				//ADC1->SQR3 |= channel << (5*channel);
 				ADC1->SQR3 |= pins[i].pin_number << (5*channel);
@@ -482,6 +544,7 @@ void NVIC_init(void){
 
 void fill_buffer_4_axises(void) {
 	  uint8_t axis=0;
+	  uint8_t AnalogButton=0;
 
 	  for (uint8_t i=0;i<USEDPINS;i++) {
 		  switch (pins[i].pin_type) {
@@ -489,6 +552,7 @@ void fill_buffer_4_axises(void) {
 		  	  case AnalogLowSmooth:	  	  processing_axises(axis++, 60); break;
 		  	  case AnalogMedSmooth:		  processing_axises(axis++, 30); break;
 		  	  case AnalogHighSmooth:	  processing_axises(axis++, 1); break;
+		  	  case Analog2Button:		  processing_axises(axis++, 200+AnalogButton++); break;
 		  	  default:					  break;
 		  }
 	  }
@@ -504,10 +568,24 @@ void processing_axises(uint8_t axis, uint8_t Kstab) {
 
 	curr = ADC1Values[axis];
 
+	if (Kstab > 199) {
+		if (curr > Analog2ButtonThreshold) {
+			SetButtonState(Kstab-200 + Number_DigiButtons, 1);
+		} else {
+			SetButtonState(Kstab-200 + Number_DigiButtons, 0);
+		}
+	}
+
 	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[axis]))/100 + ADC1Prevs_Values[axis];
 
-	if (optvalue < axises[axis].calib_min) optvalue = axises[axis].calib_min;
-	if (optvalue > axises[axis].calib_max) optvalue = axises[axis].calib_max;
+
+	if (axises[axis].special == 1) {
+		if (optvalue < axises[axis].calib_min) axises[axis].calib_min = optvalue;
+		if (optvalue > axises[axis].calib_max) axises[axis].calib_max = optvalue;
+	} else {
+		if (optvalue < axises[axis].calib_min) optvalue = axises[axis].calib_min;
+		if (optvalue > axises[axis].calib_max) optvalue = axises[axis].calib_max;
+	}
 
 	mapvalue = map(optvalue, axises[axis].calib_min, axises[axis].calib_max, 0, 4095);
 

@@ -124,51 +124,99 @@ void OSHStudio::loadFromFile()
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis1Min->setValue(value.toUInt());
+            ui->widget_axis1->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis1Max->setValue(value.toUInt());
-            line = in.readLine(); //"Reserved="
+            ui->widget_axis1->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis1->setAutoCalib(value.toUInt());
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis2Min->setValue(value.toUInt());
+            ui->widget_axis2->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis2Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
+            ui->widget_axis2->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis2->setAutoCalib(value.toUInt());
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis3Min->setValue(value.toUInt());
+            ui->widget_axis3->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis3Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
+            ui->widget_axis3->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis3->setAutoCalib(value.toUInt());
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis4Min->setValue(value.toUInt());
+            ui->widget_axis4->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis4Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
+            ui->widget_axis4->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis4->setAutoCalib(value.toUInt());
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis5Min->setValue(value.toUInt());
+            ui->widget_axis5->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis5Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
+            ui->widget_axis5->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis5->setAutoCalib(value.toUInt());
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis6Min->setValue(value.toUInt());
+            ui->widget_axis6->setMinCalibValue(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->horiSliderAxis6Max->setValue(value.toUInt());
-            line = in.readLine(); // "Reserved="
+            ui->widget_axis6->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axis6->setAutoCalib(value.toUInt());
+
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->checkBox_AxisComb->setChecked(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb1->setMinCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb1->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb2->setMinCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb2->setMaxCalibValue(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb1->setAutoCalib(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->widget_axisComb2->setAutoCalib(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->radioButtonCoopwoork->setChecked(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->radioButtonEachonhisown->setChecked(value.toUInt());
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->horizontalSliderAxisComb->setValue(value.toUInt());
+
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->horiSlider_A2B->setValue(value.toUInt());
+
 
             line = in.readLine();
             value = line.section('=',1,1);
@@ -186,7 +234,7 @@ void OSHStudio::loadFromFile()
             ui->lineEdit_Device_ident->setText(value);
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->lineEdit_Serial_Number->setText(value);
+//            ui->lineEdit_Serial_Number->setText(value);
             line = in.readLine();
             value = line.section('=',1,1);
             ui->spinBox_USB_exchange->setValue(value.toUInt());
@@ -272,24 +320,41 @@ void OSHStudio::saveToFile()
         << "C14=" << ui->comboBoxC14->currentIndex() << "\n"
         << "C15=" << ui->comboBoxC15->currentIndex() << "\n"
 
-        << "Axis1Min=" << ui->horiSliderAxis1Min->value() << "\n"
-        << "Axis1Max=" << ui->horiSliderAxis1Max->value() << "\n"
-        << "Reserved="    << "\n"
-        << "Axis2Min=" << ui->horiSliderAxis2Min->value() << "\n"
-        << "Axis2Max=" << ui->horiSliderAxis2Max->value() << "\n"
-        << "Reserved="    << "\n"
-        << "Axis3Min=" << ui->horiSliderAxis3Min->value() << "\n"
-        << "Axis3Max=" << ui->horiSliderAxis3Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis4Min=" << ui->horiSliderAxis4Min->value() << "\n"
-        << "Axis4Max=" << ui->horiSliderAxis4Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis5Min=" << ui->horiSliderAxis5Min->value() << "\n"
-        << "axis5Max=" << ui->horiSliderAxis5Max->value() << "\n"
-        << "Reserved="   << "\n"
-        << "Axis6Min=" << ui->horiSliderAxis6Min->value() << "\n"
-        << "Axis6Max=" << ui->horiSliderAxis6Max->value() << "\n"
-        << "Reserved="   << "\n";
+        << "Axis1Min=" << ui->widget_axis1->LeftPinValue() << "\n"
+        << "Axis1Max=" << ui->widget_axis1->RightPinValue() << "\n"
+        << "Axis1Func=" << ui->widget_axis1->isAutoCalibEnabled()  << "\n"
+
+        << "Axis2Min=" << ui->widget_axis2->LeftPinValue() << "\n"
+        << "Axis2Max=" << ui->widget_axis2->RightPinValue() << "\n"
+        << "Axis2Func=" << ui->widget_axis2->isAutoCalibEnabled()  << "\n"
+
+        << "Axis3Min=" << ui->widget_axis3->LeftPinValue() << "\n"
+        << "Axis3Max=" << ui->widget_axis3->RightPinValue() << "\n"
+        << "Axis3Func="<< ui->widget_axis3->isAutoCalibEnabled()   << "\n"
+
+        << "Axis4Min=" << ui->widget_axis4->LeftPinValue() << "\n"
+        << "Axis4Max=" << ui->widget_axis4->RightPinValue() << "\n"
+        << "Axis4Func="<< ui->widget_axis4->isAutoCalibEnabled()   << "\n"
+
+        << "Axis5Min=" << ui->widget_axis5->LeftPinValue() << "\n"
+        << "axis5Max=" << ui->widget_axis5->RightPinValue() << "\n"
+        << "Axis5Func="<< ui->widget_axis5->isAutoCalibEnabled()   << "\n"
+
+        << "Axis6Min=" << ui->widget_axis6->LeftPinValue() << "\n"
+        << "Axis6Max=" << ui->widget_axis6->RightPinValue() << "\n"
+        << "Axis6Func="<< ui->widget_axis6->isAutoCalibEnabled()   << "\n"
+
+        << "ComboAxis=" << ui->checkBox_AxisComb->isChecked() << "\n"
+        << "ComboAxisPin1Min=" << ui->widget_axisComb1->LeftPinValue() << "\n"
+        << "ComboAxisPin1Max=" << ui->widget_axisComb1->RightPinValue() << "\n"
+        << "ComboAxisPin2Min=" << ui->widget_axisComb2->LeftPinValue() << "\n"
+        << "ComboAxisPin2Max=" << ui->widget_axisComb2->RightPinValue() << "\n"
+        << "ComboAxisPin1AC=" << ui->widget_axisComb1->isAutoCalibEnabled() << "\n"
+        << "ComboAxisPin2AC=" << ui->widget_axisComb2->isAutoCalibEnabled() << "\n"
+        << "ComboAxisCoop=" << ui->radioButtonCoopwoork->isChecked() << "\n"
+        << "ComboAxisSep=" << ui->radioButtonEachonhisown->isChecked() << "\n"
+        << "ComboAxisSlid=" << ui->horizontalSliderAxisComb->value() << "\n"
+        << "Analog2ButtonThresh" << ui->horiSlider_A2B->value() << "\n";
 
     int POVConf=0;
     if (ui->checkBox_POV1->isChecked()) POVConf|=0x1;
@@ -299,7 +364,7 @@ void OSHStudio::saveToFile()
      out << "POVConfig=" << POVConf << "\n";
 
      out << "USB_custom_string=" << ui->lineEdit_Device_ident->text() << "\n"
-         << "USB_serial_number=" << ui->lineEdit_Serial_Number->text() << "\n"
+//         << "USB_serial_number=" << ui->lineEdit_Serial_Number->text() << "\n"
          << "USB_poll_interval=" << ui->spinBox_USB_exchange->value() << "\n"
          << "Encoders_press_time=" << ui->spinBox__Rot_Press_time->value() << "\n"
          << "RotSwitch_press_time="<< ui->spinBox_RotSwitch_Press_time->value() << "\n"

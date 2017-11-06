@@ -42,6 +42,19 @@ volatile extern uint8_t USB_Serial_Number_Unique[13];
 volatile extern uint8_t USB_polling_interval;
 volatile extern struct rot_conf Single_rotaries[USEDPINS];
 extern uint8_t Number_Single_Rotaries;
+volatile extern uint8_t AxisComb_Percent;
+volatile extern uint8_t AxisComb_pin1;
+volatile extern uint8_t AxisComb_pin2;
+volatile extern uint8_t AxisCombEnabled;
+volatile extern uint16_t AxisCombPin1Min;
+volatile extern uint16_t AxisCombPin1Max;
+volatile extern uint16_t AxisCombPin2Min;
+volatile extern uint16_t AxisCombPin2Max;
+volatile extern uint8_t AxisCombPin1AC;
+volatile extern uint8_t AxisCombPin2AC;
+volatile extern uint8_t AxisCombCoop;
+volatile extern uint8_t AxisCombSep;
+volatile extern uint16_t Analog2ButtonThreshold;
 
 
 
@@ -104,15 +117,43 @@ void get_config(void) {
 		USB_Product_String_Unique[i]=(uint8_t)*curradr; curradr++;
 	}
 
-	for (uint8_t i=0; i<10; i++) {
-		USB_Serial_Number_Unique[i+2] = (uint8_t)*curradr; curradr++;
-	}
+//	for (uint8_t i=0; i<10; i++) {
+//		USB_Serial_Number_Unique[i+2] = (uint8_t)*curradr; curradr++;
+//	}
+    AxisCombEnabled=(uint8_t)*curradr; curradr++;
+
+    tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+    AxisCombPin1Min=(tmp_high<<8)+tmp_low;
+
+    tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+    AxisCombPin1Max=(tmp_high<<8)+tmp_low;
+
+    tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+    AxisCombPin2Min=(tmp_high<<8)+tmp_low;
+
+    tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+    AxisCombPin2Max=(tmp_high<<8)+tmp_low;
+
+    tmp_low=(uint8_t)*curradr; curradr++;
+    AxisCombPin1AC=(uint8_t)tmp_low&0b0001;
+    AxisCombPin2AC=(uint8_t)tmp_low&0b0010;
+    AxisCombCoop=(uint8_t)tmp_low&0b0100;
+    AxisCombSep=(uint8_t)tmp_low&0b1000;
+
+
 
 	Number_Single_Rotaries = (uint8_t)*curradr; curradr++;
 	for (uint8_t i=0; i<14; i++) {
 		Single_rotaries[i].PINA=(uint8_t)*curradr; curradr++;
 		Single_rotaries[i].PINB=(uint8_t)*curradr; curradr++;
 	}
+
+	AxisComb_Percent = (uint8_t)*curradr; curradr++;
+	AxisComb_pin1 = (uint8_t)*curradr; curradr++;
+	AxisComb_pin2 = (uint8_t)*curradr; curradr++;
+
+	tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
+	Analog2ButtonThreshold = (tmp_high<<8)+tmp_low;
 
 }
 
@@ -195,15 +236,34 @@ void write_flash(void) {
 		*curradr=USB_Product_String_Unique[i]; curradr++;
 	}
 
-	for (uint8_t i=0; i<10; i++) {
-		*curradr=USB_Serial_Number_Unique[i+2]; curradr++;
-	}
+//	for (uint8_t i=0; i<10; i++) {
+//		*curradr=USB_Serial_Number_Unique[i+2]; curradr++;
+//	}
+	*curradr=AxisCombEnabled;  curradr++;
+	*curradr=LOBYTE(AxisCombPin1Min); curradr++;
+	*curradr=HIBYTE(AxisCombPin1Min); curradr++;
+	*curradr=LOBYTE(AxisCombPin1Max); curradr++;
+	*curradr=HIBYTE(AxisCombPin1Max); curradr++;
+	*curradr=LOBYTE(AxisCombPin2Min); curradr++;
+	*curradr=HIBYTE(AxisCombPin2Min); curradr++;
+	*curradr=LOBYTE(AxisCombPin2Max); curradr++;
+	*curradr=HIBYTE(AxisCombPin2Max); curradr++;
+	*curradr=(AxisCombSep<<3) | (AxisCombCoop<<2) | (AxisCombPin2AC <<1) | AxisCombPin1AC; curradr++;
+
 
 	*curradr=Number_Single_Rotaries; curradr++;
 	for (uint8_t i=0; i<14; i++) {
 		*curradr=Single_rotaries[i].PINA; curradr++;
 		*curradr=Single_rotaries[i].PINB; curradr++;
 	}
+
+	*curradr=AxisComb_Percent; curradr++;
+	*curradr=AxisComb_pin1; curradr++;
+	*curradr=AxisComb_pin2; curradr++;
+
+	*curradr=LOBYTE(Analog2ButtonThreshold); curradr++;
+	*curradr=HIBYTE(Analog2ButtonThreshold); curradr++;
+
 
 
   FLASH->CR &= ~FLASH_CR_PG; /* Reset the flag back !!!! */

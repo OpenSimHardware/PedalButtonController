@@ -7,7 +7,7 @@
 #include<QFileDialog>
 #include<QTextStream>
 
-#define OSHSTUDIOVERSION 13
+#define OSHSTUDIOVERSION 14
 
 //Input/output usb packet
 #define BUFFSIZE 64
@@ -50,6 +50,42 @@ public:
 private:
   Ui::OSHStudio *ui;
   hid_device *handle_device;
+//  const QString pin_names[PINS];
+  const QString pin_names[PINS] = {
+   {"A0"},
+   {"A1"},
+   {"A2"},
+   {"A3"},
+   {"A4"},
+   {"A5"},
+   {"A6"},
+   {"A7"},
+   {"A8"},
+   {"A9"},
+   {"A10"},
+   {"A11"},
+   {"A12"},
+   {"A15"},
+   {"B0"},
+   {"B1"},
+   {"B3"},
+   {"B4"},
+   {"B5"},
+   {"B6"},
+   {"B7"},
+   {"B8"},
+   {"B9"},
+   {"B10"},
+   {"B11"},
+   {"B12"},
+   {"B13"},
+   {"B14"},
+   {"B15"},
+   {"C13"},
+   {"C14"},
+   {"C15"},
+  };
+
 
   typedef enum {
       Not_Used = 0,
@@ -57,23 +93,24 @@ private:
       AnalogLowSmooth = 2,
       AnalogMedSmooth = 3,
       AnalogHighSmooth = 4,
-      Chain_Rotary_PINA = 5,
-      Chain_Rotary_PINB = 6,
-      Chain_Rotary_Enc_1 = 7,
-      Chain_Rotary_Enc_2 = 8,
-      Chain_Rotary_Enc_4 = 9,
-      Single_Rotary_PINA_1 = 10,
-      Single_Rotary_PINB_1 = 11,
-      Single_Rotary_PINA_2 = 12,
-      Single_Rotary_PINB_2 = 13,
-      Single_Rotary_PINA_4 = 14,
-      Single_Rotary_PINB_4 = 15,
-      Button_ROW = 16,
-      Button_COLUMN = 17,
-      Button = 18,
-      Button_GND = 19,
-      RotSwPole = 20,
-      RotSwWire = 21,
+      Analog2Button = 5,
+      Chain_Rotary_PINA = 6,
+      Chain_Rotary_PINB = 7,
+      Chain_Rotary_Enc_1 = 8,
+      Chain_Rotary_Enc_2 = 9,
+      Chain_Rotary_Enc_4 = 10,
+      Single_Rotary_PINA_1 = 11,
+      Single_Rotary_PINB_1 = 12,
+      Single_Rotary_PINA_2 = 13,
+      Single_Rotary_PINB_2 = 14,
+      Single_Rotary_PINA_4 = 15,
+      Single_Rotary_PINB_4 = 16,
+      Button_ROW = 17,
+      Button_COLUMN = 18,
+      Button = 19,
+      Button_GND = 20,
+      RotSwPole = 21,
+      RotSwWire = 22,
 } pintype;
 
 
@@ -84,6 +121,7 @@ private slots:
   void resetConfig_Slot();
   void setConfig_Slot(uint8_t buff[BUFFSIZE], uint8_t);
   void restoreConfig_Slot();
+  void send_write_packet(uint8_t buf[BUFFSIZE]);
   void show_USB_ident_uniq(QString ident);
   void show_USB_exch_rate(int interval);
   void comboBoxSEManualConfig();
@@ -105,31 +143,11 @@ private slots:
   QString DrawTypeComboBox(pintype i);
   QString convertIntToString(int i);
   int convertStringToInt(QString str);
-  void lineEditAxis1Min_Slot(int i);
-  void horiSliderAxis1Min_Slot(QString str);
-  void lineEditAxis1Max_Slot(int i);
-  void horiSliderAxis1Max_Slot(QString str);
-  void lineEditAxis2Min_Slot(int i);
-  void horiSliderAxis2Min_Slot(QString str);
-  void lineEditAxis2Max_Slot(int i);
-  void horiSliderAxis2Max_Slot(QString str);
-  void lineEditAxis3Min_Slot(int i);
-  void horiSliderAxis3Min_Slot(QString str);
-  void lineEditAxis3Max_Slot(int i);
-  void horiSliderAxis3Max_Slot(QString str);
-  void lineEditAxis4Min_Slot(int i);
-  void horiSliderAxis4Min_Slot(QString str);
-  void lineEditAxis4Max_Slot(int i);
-  void horiSliderAxis4Max_Slot(QString str);
-  void lineEditAxis5Min_Slot(int i);
-  void horiSliderAxis5Min_Slot(QString str);
-  void lineEditAxis5Max_Slot(int i);
-  void horiSliderAxis5Max_Slot(QString str);
-  void lineEditAxis6Min_Slot(int i);
-  void horiSliderAxis6Min_Slot(QString str);
-  void lineEditAxis6Max_Slot(int i);
-  void horiSliderAxis6Max_Slot(QString str);
-//  void comboBoxPaint(QString combobb);
+  void showPercentAxisComb(int i);
+  void showPin1AxisComb(QString pinname);
+  void showPin2AxisComb(QString pinname);
+  void showAxisCombSection(bool checked);
+  void showAxisCombSlider(bool state);
   void loadFromFile();
   void saveToFile();
   void drawHelp();
@@ -199,6 +217,5 @@ private:
     uint8_t channel=0;
 
 };
-
 
 #endif // OSHSTUDIO_H

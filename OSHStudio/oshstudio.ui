@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1029</width>
-    <height>538</height>
+    <width>1026</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,7 +103,7 @@
       <x>170</x>
       <y>30</y>
       <width>851</width>
-      <height>491</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="font">
@@ -126,7 +126,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1366,7 +1366,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Your board's type:</string>
+       <string>Your board type:</string>
       </property>
      </widget>
      <widget class="QComboBox" name="comboBox_BoardType">
@@ -1452,962 +1452,11 @@
      <attribute name="title">
       <string>Axises Configuration</string>
      </attribute>
-     <widget class="QSlider" name="horiSliderAxis1Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>50</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis1Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>20</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="sliderPosition">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis1">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>40</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis2Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>110</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis2">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>100</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis2Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>80</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis3Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>170</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis3Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>140</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis3">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>160</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis4Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>230</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis4Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>200</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis4">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>220</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis5Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>290</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis5Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>260</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis5">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>280</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis6Max">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>350</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="value">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSliderAxis6Min">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>320</y>
-        <width>561</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>50</number>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBarAxis6">
-      <property name="geometry">
-       <rect>
-        <x>70</x>
-        <y>340</y>
-        <width>561</width>
-        <height>10</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>7</pointsize>
-        <kerning>true</kerning>
-       </font>
-      </property>
-      <property name="maximum">
-       <number>4096</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
-      </property>
-      <property name="textVisible">
-       <bool>true</bool>
-      </property>
-      <property name="format">
-       <string>%v</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis1Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>20</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis1Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>50</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis2Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>110</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis2Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>80</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis3Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>170</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis3Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>140</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis4Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>230</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis4Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>200</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis5Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>290</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis5Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>260</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis6Max">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>350</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>4095</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="lineEditAxis6Min">
-      <property name="geometry">
-       <rect>
-        <x>650</x>
-        <y>320</y>
-        <width>36</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_36">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>20</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_37">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>50</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_38">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>80</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_39">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>110</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_40">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>140</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_41">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>170</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_42">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>200</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_43">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>230</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_44">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>260</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_45">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>290</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_46">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>320</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Min Calibration Zone</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_47">
-      <property name="geometry">
-       <rect>
-        <x>700</x>
-        <y>350</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Max Calibration Zone</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_48">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>40</y>
+        <y>20</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2427,7 +1476,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>100</y>
+        <y>70</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2447,7 +1496,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>160</y>
+        <y>120</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2467,7 +1516,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>220</y>
+        <y>170</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2487,7 +1536,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>280</y>
+        <y>220</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2507,7 +1556,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>340</y>
+        <y>270</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -2521,6 +1570,316 @@
       </property>
       <property name="text">
        <string>AXIS6</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox_AxisComb">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>330</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Combined Axis</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_AxisCombBegin">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>360</y>
+        <width>41</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_AxisCombEnd">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>410</y>
+        <width>41</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QSlider" name="horizontalSliderAxisComb">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>480</y>
+        <width>391</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="invertedControls">
+       <bool>false</bool>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksAbove</enum>
+      </property>
+      <property name="tickInterval">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_AxisComb1">
+      <property name="geometry">
+       <rect>
+        <x>235</x>
+        <y>450</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_AxisComb2">
+      <property name="geometry">
+       <rect>
+        <x>455</x>
+        <y>450</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>450</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>The</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>265</x>
+        <y>450</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>of AXIS6 will be from</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>450</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>The</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>485</x>
+        <y>450</y>
+        <width>111</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>of AXIS6 will be from</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_AxisCombPin1">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>450</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_AxisCombPin2">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>450</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonCoopwoork">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>460</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Cooperative work</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonEachonhisown">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>480</y>
+        <width>101</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Each on his own</string>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>10</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>60</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>110</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>160</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>210</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axis6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>260</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axisComb1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>350</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="OSHaxiswca" name="widget_axisComb2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>400</y>
+        <width>750</width>
+        <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -3905,6 +3264,73 @@
        <string>Enable POV4</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>480</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Analog to Button Inputs</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="horiSlider_A2B">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>480</y>
+        <width>421</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>4095</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksAbove</enum>
+      </property>
+      <property name="tickInterval">
+       <number>200</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>480</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+3.3V</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>480</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>0V</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -4802,7 +4228,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>120</y>
+        <y>90</y>
         <width>61</width>
         <height>21</height>
        </rect>
@@ -4821,7 +4247,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>120</y>
+        <y>90</y>
         <width>441</width>
         <height>16</height>
        </rect>
@@ -4846,25 +4272,6 @@
        <number>10</number>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_Serial_Number">
-      <property name="geometry">
-       <rect>
-        <x>52</x>
-        <y>90</y>
-        <width>71</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="inputMask">
-       <string>HHHHHHHHHH</string>
-      </property>
-      <property name="maxLength">
-       <number>10</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_60">
       <property name="geometry">
        <rect>
@@ -4876,19 +4283,6 @@
       </property>
       <property name="text">
        <string>Your identifier for the device, it will appear in Windows as &quot;OSH PB Controller&quot;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_61">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>90</y>
-        <width>181</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Serial number of the device, hex</string>
       </property>
      </widget>
     </widget>
@@ -5055,6 +4449,14 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>OSHaxiswca</class>
+   <extends>QWidget</extends>
+   <header>oshaxiswca.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="oshstudio.qrc"/>
  </resources>
