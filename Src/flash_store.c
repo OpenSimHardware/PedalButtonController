@@ -124,19 +124,25 @@ void get_config(void) {
 
     tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
     AxisCombPin1Min=(tmp_high<<8)+tmp_low;
+//    axises[AXISES].calib_min=AxisCombPin1Min;
 
     tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
     AxisCombPin1Max=(tmp_high<<8)+tmp_low;
+ //   axises[AXISES].calib_max=AxisCombPin1Max;
 
     tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
     AxisCombPin2Min=(tmp_high<<8)+tmp_low;
+//    axises[AXISES+1].calib_min=AxisCombPin2Min;
 
     tmp_low=(uint8_t)*curradr; curradr++; tmp_high=(uint8_t)*curradr; curradr++;
     AxisCombPin2Max=(tmp_high<<8)+tmp_low;
+//    axises[AXISES+1].calib_max=AxisCombPin2Max;
 
     tmp_low=(uint8_t)*curradr; curradr++;
     AxisCombPin1AC=(uint8_t)tmp_low&0b0001;
+ //   axises[AXISES].special=AxisCombPin1AC;
     AxisCombPin2AC=(uint8_t)tmp_low&0b0010;
+//    axises[AXISES+1].special=AxisCombPin2AC;
     AxisCombCoop=(uint8_t)tmp_low&0b0100;
     AxisCombSep=(uint8_t)tmp_low&0b1000;
 

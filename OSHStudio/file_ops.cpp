@@ -232,8 +232,8 @@ void OSHStudio::loadFromFile()
             line = in.readLine();
             value = line.section('=',1,1);
             ui->lineEdit_Device_ident->setText(value);
-            line = in.readLine();
-            value = line.section('=',1,1);
+//            line = in.readLine();
+//            value = line.section('=',1,1);
 //            ui->lineEdit_Serial_Number->setText(value);
             line = in.readLine();
             value = line.section('=',1,1);
@@ -354,7 +354,7 @@ void OSHStudio::saveToFile()
         << "ComboAxisCoop=" << ui->radioButtonCoopwoork->isChecked() << "\n"
         << "ComboAxisSep=" << ui->radioButtonEachonhisown->isChecked() << "\n"
         << "ComboAxisSlid=" << ui->horizontalSliderAxisComb->value() << "\n"
-        << "Analog2ButtonThresh" << ui->horiSlider_A2B->value() << "\n";
+        << "Analog2ButtonThresh=" << ui->horiSlider_A2B->value() << "\n";
 
     int POVConf=0;
     if (ui->checkBox_POV1->isChecked()) POVConf|=0x1;

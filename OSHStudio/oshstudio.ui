@@ -126,7 +126,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1450,7 +1450,7 @@
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Axises Configuration</string>
+      <string>Axes Configuration</string>
      </attribute>
      <widget class="QLabel" name="label_48">
       <property name="geometry">

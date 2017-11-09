@@ -99,8 +99,14 @@ volatile struct pin_conf pins[USEDPINS] = {
 };
 
 //default axises configuration
-volatile struct axis_conf axises[AXISES] =
+volatile struct axis_conf axises[ADC_BUFF_SIZE] =
 {
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
+		{0,0,0xFF,0x0F,0,0,0xFFF},
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 		{0,0,0xFF,0x0F,0,0,0xFFF},
 		{0,0,0xFF,0x0F,0,0,0xFFF},
@@ -193,7 +199,7 @@ void gpio_init(void) {
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPBEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_IOPDEN;
 	// Disable JTAG and SWD
 	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
-//	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
+	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
 
 	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
 		write_flash();
@@ -403,6 +409,15 @@ void gpio_ports_config(void) {
 				  axises[i].calib_max = 1;
 			  }
 		  }
+
+	if (AxisCombEnabled) {
+		uint8_t lastaxis=0;
+		if (Number_Channels-Number_AnalogButtons > AXISES) lastaxis=5; else lastaxis=Number_Channels-Number_AnalogButtons;
+		axises[lastaxis].calib_min=AxisCombPin1Min;
+		axises[lastaxis].calib_min=AxisCombPin1Max;
+
+	}
+	//for (uint8_t i=0; i<Number_Channels-Number_AnalogButtons)
 }
 
 void adc_init(void) {
@@ -543,56 +558,106 @@ void NVIC_init(void){
 
 
 void fill_buffer_4_axises(void) {
-	  uint8_t axis=0;
+	  uint8_t Ainput=0;
 	  uint8_t AnalogButton=0;
 
 	  for (uint8_t i=0;i<USEDPINS;i++) {
 		  switch (pins[i].pin_type) {
-		  	  case AnalogNoSmooth:		  processing_axises(axis++, 100); break;
-		  	  case AnalogLowSmooth:	  	  processing_axises(axis++, 60); break;
-		  	  case AnalogMedSmooth:		  processing_axises(axis++, 30); break;
-		  	  case AnalogHighSmooth:	  processing_axises(axis++, 1); break;
-		  	  case Analog2Button:		  processing_axises(axis++, 200+AnalogButton++); break;
+		  	  case AnalogNoSmooth:		  processing_axises(Ainput++, 100, i); break;
+		  	  case AnalogLowSmooth:	  	  processing_axises(Ainput++, 60, i); break;
+		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 30, i); break;
+		  	  case AnalogHighSmooth:	  processing_axises(Ainput++, 1, i); break;
+		  	  case Analog2Button:		  processing_axises(Ainput++, 200+AnalogButton++, i); break;
 		  	  default:					  break;
 		  }
 	  }
 }
 
 
-void processing_axises(uint8_t axis, uint8_t Kstab) {
+void processing_axises(uint8_t Ainput, uint8_t Kstab, uint8_t i) {
 
 	uint32_t curr = 0;
 	uint32_t optvalue =0;
 	uint32_t mapvalue=0;
+	uint8_t endvalue;
+	uint8_t Number_Axes=0;
+static	uint32_t AxisComboValue=0;
+static uint8_t pincount=0;
+static uint8_t Axis=0;
 
+	Number_Axes=Number_Channels-Number_AnalogButtons-1; //Number of axes not more than analog inputs
 
-	curr = ADC1Values[axis];
+	curr = ADC1Values[Ainput];
 
 	if (Kstab > 199) {
+		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
+		ADC1Prevs_Values[Ainput] = optvalue;
 		if (curr > Analog2ButtonThreshold) {
 			SetButtonState(Kstab-200 + Number_DigiButtons, 1);
 		} else {
 			SetButtonState(Kstab-200 + Number_DigiButtons, 0);
 		}
+		return;
 	}
 
-	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[axis]))/100 + ADC1Prevs_Values[axis];
+	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 
 
-	if (axises[axis].special == 1) {
-		if (optvalue < axises[axis].calib_min) axises[axis].calib_min = optvalue;
-		if (optvalue > axises[axis].calib_max) axises[axis].calib_max = optvalue;
+	if (axises[Axis].special == 1) {
+		if (curr < axises[Axis].calib_min) axises[Axis].calib_min = curr;
+		if (curr > axises[Axis].calib_max) axises[Axis].calib_max = curr;
 	} else {
-		if (optvalue < axises[axis].calib_min) optvalue = axises[axis].calib_min;
-		if (optvalue > axises[axis].calib_max) optvalue = axises[axis].calib_max;
+		if (optvalue < axises[Axis].calib_min) optvalue = axises[Axis].calib_min;
+		if (optvalue > axises[Axis].calib_max) optvalue = axises[Axis].calib_max;
 	}
 
-	mapvalue = map(optvalue, axises[axis].calib_min, axises[axis].calib_max, 0, 4095);
+	ADC1Prevs_Values[Ainput] = optvalue;
 
-	ADC1Prevs_Values[axis] = optvalue;
-	USBSendBuffer[9+(2*axis)] = LOBYTE(mapvalue);
-	USBSendBuffer[10+(2*axis)] = HIBYTE(mapvalue);
+	if (AxisCombEnabled) {
+		Number_Axes-=2;
+	if ((i == AxisComb_pin1) || (i == AxisComb_pin2)){
+		pincount++;
+		if (i == AxisComb_pin1) optvalue = map(optvalue, AxisCombPin1Min, AxisCombPin1Max, 0, 4095);
+			else optvalue = map(optvalue, AxisCombPin2Min, AxisCombPin2Max, 0, 4095);
+		if (AxisCombCoop) {
+			if (i == AxisComb_pin1) endvalue=AxisComb_Percent;
+				else endvalue=100-AxisComb_Percent;
+			optvalue=(optvalue*endvalue)/100;
+			if (pincount==1)  {
+				AxisComboValue=optvalue;
+//				ADC1Prevs_Values[Ainput] = optvalue;
+				return; //not going to send axis value if not processed both inputs
+			}
+				else optvalue+=AxisComboValue;
+		} else {
+			if (pincount==1)  {
+							AxisComboValue=optvalue;
+//							ADC1Prevs_Values[Ainput] = optvalue;
+							return; //not going to send axis value if not processed both inputs
+						}
+							else {
+								if (AxisComboValue > optvalue) optvalue=AxisComboValue;
+							}
+		}
+		//Axis=5;
+		if (pincount==2) pincount=0;
+		//Combined axis will be always on AXIS6
+		mapvalue = map(optvalue, axises[5].calib_min, axises[5].calib_max, 0, 4095);
+//		ADC1Prevs_Values[Ainput] = optvalue;
+		USBSendBuffer[9+(10)] = LOBYTE(mapvalue);
+		USBSendBuffer[10+(10)] = HIBYTE(mapvalue);
+		return;
+	}
+	}
 
+
+	mapvalue = map(optvalue, axises[Axis].calib_min, axises[Axis].calib_max, 0, 4095);
+
+	USBSendBuffer[9+(2*Axis)] = LOBYTE(mapvalue);
+	USBSendBuffer[10+(2*Axis)] = HIBYTE(mapvalue);
+	Axis++;
+
+	if ((Axis > AXISES-1) || (Axis > Number_Axes)) Axis=0;
 }
 
 

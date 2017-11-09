@@ -399,6 +399,7 @@ QString OSHStudio::DrawTypeComboBox(pintype i) {
         case AnalogLowSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogMedSmooth:   return "QComboBox { color: white; background-color: black; }";
         case AnalogHighSmooth:  return "QComboBox { color: white; background-color: black; }";
+        case Analog2Button:  return "QComboBox { color: white; background-color: black; }";
         case Chain_Rotary_PINA: return "QComboBox { color: white; background-color: darkRed; }";
         case Chain_Rotary_PINB: return "QComboBox { color: white; background-color: darkRed; }";
         case Chain_Rotary_Enc_1:return "QComboBox { color: black; background-color: darkRed; }";
