@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f1xx_ll_usb.h
   * @author  MCD Application Team
-  * @version V1.0.3
-  * @date    11-January-2016
+  * @version V1.1.1
+  * @date    12-May-2017
   * @brief   Header file of USB Low Layer HAL module.
   ******************************************************************************
   * @attention

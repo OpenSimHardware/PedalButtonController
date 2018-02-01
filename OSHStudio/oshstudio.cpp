@@ -58,8 +58,8 @@ while (1) {
       } else {
         res=hid_set_nonblocking(handle_read, 1);
 
-        cur_dev = hid_enumerate(0x1209, 0x3100);
-        emit putConnectedDeviceInfo(cur_dev->release_number);
+      //  cur_dev = hid_enumerate(0x1209, 0x3100);
+        emit putConnectedDeviceInfo(14);
         }
      }
 
@@ -314,6 +314,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
                 pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
                 pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
                 pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+                pinComboBox->setItemData(5, 0, Qt::UserRole - 1);
             }
       }
 
@@ -322,6 +323,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
       ui->comboBoxA15->setItemData(2, 0, Qt::UserRole - 1);
       ui->comboBoxA15->setItemData(3, 0, Qt::UserRole - 1);
       ui->comboBoxA15->setItemData(4, 0, Qt::UserRole - 1);
+      ui->comboBoxA15->setItemData(5, 0, Qt::UserRole - 1);
+
 
       name_template="comboBoxB%1";
       for(int i = 0; i < 16; i++) {
@@ -332,6 +335,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
           pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
           pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
           pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(5, 0, Qt::UserRole - 1);
          }
       }
 
@@ -343,20 +347,24 @@ OSHStudio::OSHStudio(QWidget *parent) :
           pinComboBox->setItemData(2, 0, Qt::UserRole - 1);
           pinComboBox->setItemData(3, 0, Qt::UserRole - 1);
           pinComboBox->setItemData(4, 0, Qt::UserRole - 1);
+          pinComboBox->setItemData(5, 0, Qt::UserRole - 1);
       }
 
       ui->comboBoxC13->setItemData(5, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(6, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(10, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(7, 0, Qt::UserRole - 1);
+   //   ui->comboBoxC13->setItemData(9, 0, Qt::UserRole - 1);
+   //   ui->comboBoxC13->setItemData(10, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(11, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(12, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(13, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(14, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(15, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(16, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(18, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(17, 0, Qt::UserRole - 1);
       ui->comboBoxC13->setItemData(19, 0, Qt::UserRole - 1);
-      ui->comboBoxC13->setItemData(21, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(20, 0, Qt::UserRole - 1);
+      ui->comboBoxC13->setItemData(22, 0, Qt::UserRole - 1);
 
 
       // fake assignment for making slots active;

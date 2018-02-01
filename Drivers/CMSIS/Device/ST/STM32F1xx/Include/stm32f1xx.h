@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f1xx.h
   * @author  MCD Application Team
-  * @version V4.0.2
-  * @date    18-December-2015
+  * @version V4.2.0
+  * @date    31-March-2017
   * @brief   CMSIS STM32F1xx Device Peripheral Access Layer Header File. 
   *
   *          The file is the unique include file that the application programmer
@@ -18,7 +18,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -86,7 +86,7 @@
   /* #define STM32F101xG  */   /*!< STM32F101RF, STM32F101VF, STM32F101ZF, STM32F101RG, STM32F101VG and STM32F101ZG */
   /* #define STM32F102x6 */    /*!< STM32F102C4, STM32F102R4, STM32F102C6 and STM32F102R6 */
   /* #define STM32F102xB  */   /*!< STM32F102C8, STM32F102R8, STM32F102CB and STM32F102RB */
-   #define STM32F103x6     /*!< STM32F103C4, STM32F103R4, STM32F103T4, STM32F103C6, STM32F103R6 and STM32F103T6 */
+  /* #define STM32F103x6  */   /*!< STM32F103C4, STM32F103R4, STM32F103T4, STM32F103C6, STM32F103R6 and STM32F103T6 */
   /* #define STM32F103xB  */   /*!< STM32F103C8, STM32F103R8, STM32F103T8, STM32F103V8, STM32F103CB, STM32F103RB, STM32F103TB and STM32F103VB */
   /* #define STM32F103xE */    /*!< STM32F103RC, STM32F103VC, STM32F103ZC, STM32F103RD, STM32F103VD, STM32F103ZD, STM32F103RE, STM32F103VE and STM32F103ZE */
   /* #define STM32F103xG  */   /*!< STM32F103RF, STM32F103VF, STM32F103ZF, STM32F103RG, STM32F103VG and STM32F103ZG */
@@ -108,16 +108,16 @@
 #endif /* USE_HAL_DRIVER */
 
 /**
-  * @brief CMSIS Device version number V4.0.2
-  */ 
-#define __STM32F1_CMSIS_VERSION_MAIN (0x04) /*!< [31:24] main version */                                  
-#define __STM32F1_CMSIS_VERSION_SUB1 (0x00) /*!< [23:16] sub1 version */
-#define __STM32F1_CMSIS_VERSION_SUB2 (0x02) /*!< [15:8]  sub2 version */
-#define __STM32F1_CMSIS_VERSION_RC   (0x00) /*!< [7:0]  release candidate */ 
-#define __STM32F1_CMSIS_VERSION       ((__STM32F1_CMSIS_VERSION_MAIN << 24)\
-                                      |(__STM32F1_CMSIS_VERSION_SUB1 << 16)\
-                                      |(__STM32F1_CMSIS_VERSION_SUB2 << 8 )\
-                                      |(__STM32F1_CMSIS_VERSION_RC))
+  * @brief CMSIS Device version number V4.2.0
+  */
+#define __STM32F1_CMSIS_VERSION_MAIN   (0x04) /*!< [31:24] main version */
+#define __STM32F1_CMSIS_VERSION_SUB1   (0x02) /*!< [23:16] sub1 version */
+#define __STM32F1_CMSIS_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
+#define __STM32F1_CMSIS_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
+#define __STM32F1_CMSIS_VERSION        ((__STM32F1_CMSIS_VERSION_MAIN << 24)\
+                                       |(__STM32F1_CMSIS_VERSION_SUB1 << 16)\
+                                       |(__STM32F1_CMSIS_VERSION_SUB2 << 8 )\
+                                       |(__STM32F1_CMSIS_VERSION_RC))
 
 /**
   * @}
