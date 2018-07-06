@@ -155,19 +155,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxA12">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>220</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_A11">
       <property name="geometry">
        <rect>
@@ -214,19 +201,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxB8">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>350</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_B13">
       <property name="geometry">
        <rect>
@@ -248,71 +222,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA4">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>200</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA2">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>240</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB6">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>320</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB13">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>80</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxC13">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>310</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_A6">
@@ -467,7 +376,7 @@
         </font>
        </property>
        <property name="text">
-        <string>aa</string>
+        <string/>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
@@ -503,19 +412,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxB11">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>60</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_B6">
       <property name="geometry">
        <rect>
@@ -537,19 +433,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA5">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>180</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_A2">
@@ -621,19 +504,6 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxA1">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>260</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_A0">
       <property name="geometry">
        <rect>
@@ -703,35 +573,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxB15">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>120</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA0">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>280</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-      <property name="frame">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_B8">
       <property name="geometry">
        <rect>
@@ -753,19 +594,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB10">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>80</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_A9">
@@ -814,19 +642,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxA11">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>200</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
@@ -844,136 +659,6 @@
       </property>
       <property name="scaledContents">
        <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA3">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>220</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA15">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>240</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxC14">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>420</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB4">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>280</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxC15">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>400</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB3">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>260</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA8">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>140</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB7">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>340</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB1">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>100</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB9">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>330</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_C15">
@@ -999,45 +684,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxB5">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>300</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA10">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>180</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB12">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>60</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_A5">
       <property name="geometry">
        <rect>
@@ -1059,32 +705,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB14">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>100</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxB0">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>120</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_B4">
@@ -1202,19 +822,6 @@
        <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxA6">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>160</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_B9">
       <property name="geometry">
        <rect>
@@ -1238,19 +845,6 @@
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
       </property>
      </widget>
-     <widget class="QComboBox" name="comboBoxA9">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>160</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_A10">
       <property name="geometry">
        <rect>
@@ -1272,19 +866,6 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxA7">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>140</y>
-        <width>141</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="maxVisibleItems">
-       <number>25</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_A12">
@@ -1379,21 +960,334 @@
        </rect>
       </property>
      </widget>
+     <widget class="oshpincombobox" name="widget_PB25" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>60</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB0" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>280</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>260</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>240</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>220</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>200</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>180</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>160</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB7" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>140</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB8" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>140</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB9" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>160</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB10" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>180</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB11" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>200</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB12" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>220</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB13" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>240</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB14" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>120</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB15" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>100</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB16" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>260</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB17" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>280</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB18" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>300</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB19" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>320</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB20" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>340</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB21" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>350</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB22" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>330</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB23" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>80</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB24" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>60</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB26" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>80</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB27" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>100</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB28" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>120</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB29" native="true">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>300</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB30" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>420</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_PB31" native="true">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>400</y>
+        <width>141</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
      <zorder>label_B12</zorder>
      <zorder>label_B14</zorder>
      <zorder>label_A10</zorder>
      <zorder>label_A8</zorder>
      <zorder>label_B11</zorder>
-     <zorder>comboBoxA12</zorder>
      <zorder>label_A11</zorder>
      <zorder>label_A3</zorder>
-     <zorder>comboBoxB8</zorder>
      <zorder>label_B13</zorder>
-     <zorder>comboBoxA4</zorder>
-     <zorder>comboBoxA2</zorder>
-     <zorder>comboBoxB6</zorder>
-     <zorder>comboBoxB13</zorder>
-     <zorder>comboBoxC13</zorder>
      <zorder>label_A6</zorder>
      <zorder>label_B15</zorder>
      <zorder>label_B3</zorder>
@@ -1401,52 +1295,59 @@
      <zorder>label_A15</zorder>
      <zorder>groupBox</zorder>
      <zorder>label_C14</zorder>
-     <zorder>comboBoxB11</zorder>
      <zorder>label_B6</zorder>
-     <zorder>comboBoxA5</zorder>
      <zorder>label_A2</zorder>
      <zorder>label_B1</zorder>
      <zorder>label_B7</zorder>
-     <zorder>comboBoxA1</zorder>
      <zorder>label_A0</zorder>
      <zorder>label_A4</zorder>
      <zorder>label_A7</zorder>
-     <zorder>comboBoxB15</zorder>
-     <zorder>comboBoxA0</zorder>
      <zorder>label_B8</zorder>
-     <zorder>comboBoxB10</zorder>
      <zorder>label_A9</zorder>
      <zorder>label_B0</zorder>
-     <zorder>comboBoxA11</zorder>
      <zorder>label</zorder>
-     <zorder>comboBoxA3</zorder>
-     <zorder>comboBoxA15</zorder>
-     <zorder>comboBoxC14</zorder>
-     <zorder>comboBoxB4</zorder>
-     <zorder>comboBoxC15</zorder>
-     <zorder>comboBoxB3</zorder>
-     <zorder>comboBoxA8</zorder>
-     <zorder>comboBoxB7</zorder>
-     <zorder>comboBoxB1</zorder>
-     <zorder>comboBoxB9</zorder>
      <zorder>label_C15</zorder>
-     <zorder>comboBoxB5</zorder>
-     <zorder>comboBoxA10</zorder>
-     <zorder>comboBoxB12</zorder>
      <zorder>label_A5</zorder>
-     <zorder>comboBoxB14</zorder>
-     <zorder>comboBoxB0</zorder>
      <zorder>label_B4</zorder>
      <zorder>label_A1</zorder>
-     <zorder>comboBoxA6</zorder>
      <zorder>label_B9</zorder>
-     <zorder>comboBoxA9</zorder>
-     <zorder>comboBoxA7</zorder>
      <zorder>label_A12</zorder>
      <zorder>label_C13</zorder>
      <zorder>label_B10</zorder>
      <zorder>label_3</zorder>
      <zorder>comboBox_BoardType</zorder>
+     <zorder>widget_PB25</zorder>
+     <zorder>widget_PB0</zorder>
+     <zorder>widget_PB1</zorder>
+     <zorder>widget_PB2</zorder>
+     <zorder>widget_PB3</zorder>
+     <zorder>widget_PB4</zorder>
+     <zorder>widget_PB5</zorder>
+     <zorder>widget_PB6</zorder>
+     <zorder>widget_PB7</zorder>
+     <zorder>widget_PB8</zorder>
+     <zorder>widget_PB9</zorder>
+     <zorder>widget_PB10</zorder>
+     <zorder>widget_PB11</zorder>
+     <zorder>widget_PB12</zorder>
+     <zorder>widget_PB13</zorder>
+     <zorder>widget_PB14</zorder>
+     <zorder>widget_PB15</zorder>
+     <zorder>widget_PB16</zorder>
+     <zorder>widget_PB17</zorder>
+     <zorder>widget_PB18</zorder>
+     <zorder>widget_PB19</zorder>
+     <zorder>widget_PB20</zorder>
+     <zorder>widget_PB21</zorder>
+     <zorder>widget_PB22</zorder>
+     <zorder>widget_PB23</zorder>
+     <zorder>widget_PB24</zorder>
+     <zorder>widget_PB26</zorder>
+     <zorder>widget_PB27</zorder>
+     <zorder>widget_PB28</zorder>
+     <zorder>widget_PB29</zorder>
+     <zorder>widget_PB30</zorder>
+     <zorder>widget_PB31</zorder>
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -4286,6 +4187,51 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+     <widget class="oshpincombobox" name="widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>110</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>160</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshpincombobox" name="widget_3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>210</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>40</y>
+        <width>201</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QPushButton" name="saveConfig_Button">
     <property name="geometry">
@@ -4454,6 +4400,12 @@
    <class>OSHaxiswca</class>
    <extends>QWidget</extends>
    <header>oshaxiswca.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>oshpincombobox</class>
+   <extends>QWidget</extends>
+   <header>oshpincombobox.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

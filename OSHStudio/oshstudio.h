@@ -50,7 +50,7 @@ public:
 private:
   Ui::OSHStudio *ui;
   hid_device *handle_device;
-//  const QString pin_names[PINS];
+
   const QString pin_names[PINS] = {
    {"A0"},
    {"A1"},
@@ -140,7 +140,6 @@ private slots:
   void drawPOVSvalue(uint64_t POVS_value);
   void showConnectDeviceInfo(uint8_t firmware_release);
   void hideConnectDeviceInfo();
-  QString DrawTypeComboBox(pintype i);
   QString convertIntToString(int i);
   int convertStringToInt(QString str);
   void showPercentAxisComb(int i);
@@ -153,44 +152,10 @@ private slots:
   void drawHelp();
   void gatherAllConf();
   void showSingleEncodersTab(void);
-//  void gatherPinConfig(pintype i);
   void checkBoxPOV1Changed(int state);
   void checkBoxPOV2Changed(int state);
   void checkBoxPOV3Changed(int state);
   void checkBoxPOV4Changed(int state);
-  void comboBoxPaintA0();
-  void comboBoxPaintA1();
-  void comboBoxPaintA2();
-  void comboBoxPaintA3();
-  void comboBoxPaintA4();
-  void comboBoxPaintA5();
-  void comboBoxPaintA6();
-  void comboBoxPaintA7();
-  void comboBoxPaintA8();
-  void comboBoxPaintA9();
-  void comboBoxPaintA10();
-  void comboBoxPaintA11();
-  void comboBoxPaintA12();
-  void comboBoxPaintA15();
-  void comboBoxPaintB0();
-  void comboBoxPaintB1();
-  void comboBoxPaintB3();
-  void comboBoxPaintB4();
-  void comboBoxPaintB5();
-  void comboBoxPaintB6();
-  void comboBoxPaintB7();
-  void comboBoxPaintB8();
-  void comboBoxPaintB9();
-  void comboBoxPaintB10();
-  void comboBoxPaintB11();
-  void comboBoxPaintB12();
-  void comboBoxPaintB13();
-  void comboBoxPaintB14();
-  void comboBoxPaintB15();
-  void comboBoxPaintC13();
-  void comboBoxPaintC14();
-  void comboBoxPaintC15();
-
 };
 
 class Worker : public QObject {

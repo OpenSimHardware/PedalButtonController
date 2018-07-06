@@ -26,100 +26,100 @@ void OSHStudio::loadFromFile()
 
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA0->setCurrentIndex(value.toUInt());
+            ui->widget_PB0->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA1->setCurrentIndex(value.toUInt());
+            ui->widget_PB1->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA2->setCurrentIndex(value.toUInt());
+            ui->widget_PB2->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA3->setCurrentIndex(value.toUInt());
+            ui->widget_PB3->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA4->setCurrentIndex(value.toUInt());
+            ui->widget_PB4->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA5->setCurrentIndex(value.toUInt());
+            ui->widget_PB5->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA6->setCurrentIndex(value.toUInt());
+            ui->widget_PB6->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA7->setCurrentIndex(value.toUInt());
+            ui->widget_PB7->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA8->setCurrentIndex(value.toUInt());
+            ui->widget_PB8->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA9->setCurrentIndex(value.toUInt());
+            ui->widget_PB9->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA10->setCurrentIndex(value.toUInt());
+            ui->widget_PB10->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA11->setCurrentIndex(value.toUInt());
+            ui->widget_PB11->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA12->setCurrentIndex(value.toUInt());
+            ui->widget_PB12->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxA15->setCurrentIndex(value.toUInt());
+            ui->widget_PB13->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB0->setCurrentIndex(value.toUInt());
+            ui->widget_PB14->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB1->setCurrentIndex(value.toUInt());
+            ui->widget_PB15->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB3->setCurrentIndex(value.toUInt());
+            ui->widget_PB16->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB4->setCurrentIndex(value.toUInt());
+            ui->widget_PB17->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB5->setCurrentIndex(value.toUInt());
+            ui->widget_PB18->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB6->setCurrentIndex(value.toUInt());
+            ui->widget_PB19->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB7->setCurrentIndex(value.toUInt());
+            ui->widget_PB20->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB8->setCurrentIndex(value.toUInt());
+            ui->widget_PB21->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB9->setCurrentIndex(value.toUInt());
+            ui->widget_PB22->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB10->setCurrentIndex(value.toUInt());
+            ui->widget_PB23->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB11->setCurrentIndex(value.toUInt());
+            ui->widget_PB24->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB12->setCurrentIndex(value.toUInt());
+            ui->widget_PB25->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB13->setCurrentIndex(value.toUInt());
+            ui->widget_PB26->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB14->setCurrentIndex(value.toUInt());
+            ui->widget_PB27->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxB15->setCurrentIndex(value.toUInt());
+            ui->widget_PB28->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxC13->setCurrentIndex(value.toUInt());
+            ui->widget_PB29->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxC14->setCurrentIndex(value.toUInt());
+            ui->widget_PB30->set_current_index(value.toUInt());
             line = in.readLine();
             value = line.section('=',1,1);
-            ui->comboBoxC15->setCurrentIndex(value.toUInt());
+            ui->widget_PB31->set_current_index(value.toUInt());
 
 
             line = in.readLine();
@@ -287,38 +287,38 @@ void OSHStudio::saveToFile()
 
     QTextStream out(&file);
 
-    out << "A0=" << ui->comboBoxA0->currentIndex() << "\n"
-        << "A1=" << ui->comboBoxA1->currentIndex() << "\n"
-        << "A2=" << ui->comboBoxA2->currentIndex() << "\n"
-        << "A3=" << ui->comboBoxA3->currentIndex() << "\n"
-        << "A4=" << ui->comboBoxA4->currentIndex() << "\n"
-        << "A5=" << ui->comboBoxA5->currentIndex() << "\n"
-        << "A6=" << ui->comboBoxA6->currentIndex() << "\n"
-        << "A7=" << ui->comboBoxA7->currentIndex() << "\n"
-        << "A8=" << ui->comboBoxA8->currentIndex() << "\n"
-        << "A9=" << ui->comboBoxA9->currentIndex() << "\n"
-        << "A10=" << ui->comboBoxA10->currentIndex() << "\n"
-        << "A11=" << ui->comboBoxA11->currentIndex() << "\n"
-        << "A12=" << ui->comboBoxA12->currentIndex() << "\n"
-        << "A15=" << ui->comboBoxA15->currentIndex() << "\n"
-        << "B0=" << ui->comboBoxB0->currentIndex() << "\n"
-        << "B1=" << ui->comboBoxB1->currentIndex() << "\n"
-        << "B3=" << ui->comboBoxB3->currentIndex() << "\n"
-        << "B4=" << ui->comboBoxB4->currentIndex() << "\n"
-        << "B5=" << ui->comboBoxB5->currentIndex() << "\n"
-        << "B6=" << ui->comboBoxB6->currentIndex() << "\n"
-        << "B7=" << ui->comboBoxB7->currentIndex() << "\n"
-        << "B8=" << ui->comboBoxB8->currentIndex() << "\n"
-        << "B9=" << ui->comboBoxB9->currentIndex() << "\n"
-        << "B10=" << ui->comboBoxB10->currentIndex() << "\n"
-        << "B11=" << ui->comboBoxB11->currentIndex() << "\n"
-        << "B12=" << ui->comboBoxB12->currentIndex() << "\n"
-        << "B13=" << ui->comboBoxB13->currentIndex() << "\n"
-        << "B14=" << ui->comboBoxB14->currentIndex() << "\n"
-        << "B15=" << ui->comboBoxB15->currentIndex() << "\n"
-        << "C13=" << ui->comboBoxC13->currentIndex() << "\n"
-        << "C14=" << ui->comboBoxC14->currentIndex() << "\n"
-        << "C15=" << ui->comboBoxC15->currentIndex() << "\n"
+    out << "A0=" << ui->widget_PB0->get_current_index() << "\n"
+        << "A1=" << ui->widget_PB1->get_current_index() << "\n"
+        << "A2=" << ui->widget_PB2->get_current_index() << "\n"
+        << "A3=" << ui->widget_PB3->get_current_index() << "\n"
+        << "A4=" << ui->widget_PB4->get_current_index() << "\n"
+        << "A5=" << ui->widget_PB5->get_current_index() << "\n"
+        << "A6=" << ui->widget_PB6->get_current_index() << "\n"
+        << "A7=" << ui->widget_PB7->get_current_index() << "\n"
+        << "A8=" << ui->widget_PB8->get_current_index() << "\n"
+        << "A9=" << ui->widget_PB9->get_current_index() << "\n"
+        << "A10=" << ui->widget_PB10->get_current_index() << "\n"
+        << "A11=" << ui->widget_PB11->get_current_index() << "\n"
+        << "A12=" << ui->widget_PB12->get_current_index() << "\n"
+        << "A15=" << ui->widget_PB13->get_current_index() << "\n"
+        << "B0=" << ui->widget_PB14->get_current_index() << "\n"
+        << "B1=" << ui->widget_PB15->get_current_index() << "\n"
+        << "B3=" << ui->widget_PB16->get_current_index() << "\n"
+        << "B4=" << ui->widget_PB17->get_current_index() << "\n"
+        << "B5=" << ui->widget_PB18->get_current_index() << "\n"
+        << "B6=" << ui->widget_PB19->get_current_index() << "\n"
+        << "B7=" << ui->widget_PB20->get_current_index() << "\n"
+        << "B8=" << ui->widget_PB21->get_current_index() << "\n"
+        << "B9=" << ui->widget_PB22->get_current_index() << "\n"
+        << "B10=" << ui->widget_PB23->get_current_index() << "\n"
+        << "B11=" << ui->widget_PB24->get_current_index() << "\n"
+        << "B12=" << ui->widget_PB25->get_current_index() << "\n"
+        << "B13=" << ui->widget_PB26->get_current_index() << "\n"
+        << "B14=" << ui->widget_PB27->get_current_index() << "\n"
+        << "B15=" << ui->widget_PB28->get_current_index() << "\n"
+        << "C13=" << ui->widget_PB29->get_current_index() << "\n"
+        << "C14=" << ui->widget_PB30->get_current_index() << "\n"
+        << "C15=" << ui->widget_PB31->get_current_index() << "\n"
 
         << "Axis1Min=" << ui->widget_axis1->LeftPinValue() << "\n"
         << "Axis1Max=" << ui->widget_axis1->RightPinValue() << "\n"

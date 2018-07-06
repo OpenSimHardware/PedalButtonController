@@ -18,14 +18,17 @@ SOURCES += main.cpp\
     file_ops.cpp \
     board_types.cpp \
     oshaxiswca.cpp \
-    get_put_config.cpp
+    get_put_config.cpp \
+    oshpincombobox.cpp
 
 HEADERS  += oshstudio.h \
     hidapi.h \
-    oshaxiswca.h
+    oshaxiswca.h \
+    oshpincombobox.h
 
 FORMS    += oshstudio.ui \
-    oshaxiswca.ui
+    oshaxiswca.ui \
+    oshpincombobox.ui
 
 RESOURCES += \
     oshstudio.qrc
