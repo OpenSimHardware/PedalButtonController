@@ -2,9 +2,6 @@
 #include "ui_oshstudio.h"
 #include<QMessageBox>
 
-extern uint8_t Total_Single_encoders;
-extern struct single_encoders_pins single_encoders_store[14];
-
 void OSHStudio::loadFromFile()
 {
     QString line;
@@ -253,16 +250,19 @@ void OSHStudio::loadFromFile()
 
             line = in.readLine();
             value = line.section('=',1,1);
-            Total_Single_encoders=value.toUInt();
-            for (uint8_t i=0; i<14; i++) {
+            config.total_single_encoders=value.toUInt();
+            for (uint8_t i=0; i<MAX_SINGLE_ENCODERS; i++) {
                 line = in.readLine();
                 value = line.section('=',1,1);
-                single_encoders_store[i].pinA=value.toUInt();
+                config.single_encoder_pinA[i] = value.toUInt();
                 line = in.readLine();
                 value = line.section('=',1,1);
-                single_encoders_store[i].pinB=value.toUInt();
+                config.single_encoder_pinB[i] = value.toUInt();
             }
             showSingleEncodersTab();
+            line = in.readLine();
+            value = line.section('=',1,1);
+            ui->spinBox_RotSwitch_min_time->setValue(value.toUInt());
 
             file.close();
     }
@@ -371,35 +371,37 @@ void OSHStudio::saveToFile()
          << "Encoders_debounce=" << ui->spinBox_Rot_Debounce_time->value() << "\n"
          << "Buttons_debounce=" << ui->spinBox_Button_Debounce_time->value() << "\n";
 
-     out << "Total_Single_Encoders=" << Total_Single_encoders << "\n"
-         << "1st_pinA=" << single_encoders_store[0].pinA << "\n"
-         << "1st_pinB=" << single_encoders_store[0].pinB << "\n"
-         << "2nd_pinA=" << single_encoders_store[1].pinA << "\n"
-         << "2nd_pinB=" << single_encoders_store[1].pinB << "\n"
-         << "3rd_pinA=" << single_encoders_store[2].pinA << "\n"
-         << "3rd_pinB=" << single_encoders_store[2].pinB << "\n"
-         << "4th_pinA=" << single_encoders_store[3].pinA << "\n"
-         << "4th_pinB=" << single_encoders_store[3].pinB << "\n"
-         << "5th_pinA=" << single_encoders_store[4].pinA << "\n"
-         << "5th_pinB=" << single_encoders_store[4].pinB << "\n"
-         << "6th_pinA=" << single_encoders_store[5].pinA << "\n"
-         << "6th_pinB=" << single_encoders_store[5].pinB << "\n"
-         << "7th_pinA=" << single_encoders_store[6].pinA << "\n"
-         << "7th_pinB=" << single_encoders_store[6].pinB << "\n"
-         << "8th_pinA=" << single_encoders_store[7].pinA << "\n"
-         << "8th_pinB=" << single_encoders_store[7].pinB << "\n"
-         << "9th_pinA=" << single_encoders_store[8].pinA << "\n"
-         << "9th_pinB=" << single_encoders_store[8].pinB << "\n"
-         << "10th_pinA=" << single_encoders_store[9].pinA << "\n"
-         << "10th_pinB=" << single_encoders_store[9].pinB << "\n"
-         << "11th_pinA=" << single_encoders_store[10].pinA << "\n"
-         << "11th_pinB=" << single_encoders_store[10].pinB << "\n"
-         << "12th_pinA=" << single_encoders_store[11].pinA << "\n"
-         << "12th_pinB=" << single_encoders_store[11].pinB << "\n"
-         << "13th_pinA=" << single_encoders_store[12].pinA << "\n"
-         << "13th_pinB=" << single_encoders_store[12].pinB << "\n"
-         << "14th_pinA=" << single_encoders_store[13].pinA << "\n"
-         << "14th_pinB=" << single_encoders_store[13].pinB << "\n";
+     out << "Total_Single_Encoders=" << config.total_single_encoders << "\n"
+         << "1st_pinA=" << config.single_encoder_pinA[0] << "\n"
+         << "1st_pinB=" << config.single_encoder_pinB[0] << "\n"
+         << "2nd_pinA=" << config.single_encoder_pinA[1] << "\n"
+         << "2nd_pinB=" << config.single_encoder_pinB[1] << "\n"
+         << "3rd_pinA=" << config.single_encoder_pinA[2] << "\n"
+         << "3rd_pinB=" << config.single_encoder_pinB[2] << "\n"
+         << "4th_pinA=" << config.single_encoder_pinA[3] << "\n"
+         << "4th_pinB=" << config.single_encoder_pinB[3] << "\n"
+         << "5th_pinA=" << config.single_encoder_pinA[4] << "\n"
+         << "5th_pinB=" << config.single_encoder_pinB[4] << "\n"
+         << "6th_pinA=" << config.single_encoder_pinA[5] << "\n"
+         << "6th_pinB=" << config.single_encoder_pinB[5] << "\n"
+         << "7th_pinA=" << config.single_encoder_pinA[6] << "\n"
+         << "7th_pinB=" << config.single_encoder_pinB[6] << "\n"
+         << "8th_pinA=" << config.single_encoder_pinA[7] << "\n"
+         << "8th_pinB=" << config.single_encoder_pinB[7] << "\n"
+         << "9th_pinA=" << config.single_encoder_pinA[8] << "\n"
+         << "9th_pinB=" << config.single_encoder_pinB[8] << "\n"
+         << "10th_pinA=" << config.single_encoder_pinA[9] << "\n"
+         << "10th_pinB=" << config.single_encoder_pinB[9] << "\n"
+         << "11th_pinA=" << config.single_encoder_pinA[10] << "\n"
+         << "11th_pinB=" << config.single_encoder_pinB[10] << "\n"
+         << "12th_pinA=" << config.single_encoder_pinA[11] << "\n"
+         << "12th_pinB=" << config.single_encoder_pinB[11] << "\n"
+         << "13th_pinA=" << config.single_encoder_pinA[12] << "\n"
+         << "13th_pinB=" << config.single_encoder_pinB[12] << "\n"
+         << "14th_pinA=" << config.single_encoder_pinA[13] << "\n"
+         << "14th_pinB=" << config.single_encoder_pinB[13] << "\n";
+
+     out << "RotSwitch_min_time="<< ui->spinBox_RotSwitch_min_time->value() << "\n";
 
        file.close();
     }

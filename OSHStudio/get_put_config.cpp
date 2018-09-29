@@ -1,505 +1,386 @@
 #include "oshstudio.h"
 #include "ui_oshstudio.h"
-#include <windows.h>
+#include<QMessageBox>
+#include <QMutex>
 
 extern hid_device *handle_read;//, *handle_write;
-extern uint8_t AxisComb_StartPin, AxisComb_EndPin, AxisComb_Percent;
-extern struct single_encoders_pins single_encoders_store[14];
-extern uint8_t Total_Single_encoders;
-extern uint8_t AxisComb_StartPin, AxisComb_EndPin, AxisComb_Percent;
-extern QString pin_names[PINS];
 
-/*uint8_t NumberAnalogInputs,
-        Chain_PinA,
-        Chain_PinB,
-        Chain_Rotaries_1,
-        Chain_Rotaries_2,
-        Chain_Rotaries_4,
-        Single_Rotaries_PINA_1,
-        Single_Rotaries_PINB_1,
-        Single_Rotaries_PINA_2,
-        Single_Rotaries_PINB_2,
-        Single_Rotaries_PINA_4,
-        Single_Rotaries_PINB_4,
-        ButtonsRows,
-        ButtonsColumns,
-        Buttons,
-        RotSwitchPoles,
-        RotSwitchWires;
-*/
+void OSHStudio::gatherConfig_Slot(){
+    config.pin[0] = ui->widget_PB0->get_current_index();
+    config.pin[1] = ui->widget_PB1->get_current_index();
+    config.pin[2] = ui->widget_PB2->get_current_index();
+    config.pin[3] = ui->widget_PB3->get_current_index();
+    config.pin[4] = ui->widget_PB4->get_current_index();
+    config.pin[5] = ui->widget_PB5->get_current_index();
+    config.pin[6] = ui->widget_PB6->get_current_index();
+    config.pin[7] = ui->widget_PB7->get_current_index();
+    config.pin[8] = ui->widget_PB8->get_current_index();
+    config.pin[9] = ui->widget_PB9->get_current_index();
+    config.pin[10] = ui->widget_PB10->get_current_index();
+    config.pin[11] = ui->widget_PB11->get_current_index();
+    config.pin[12] = ui->widget_PB12->get_current_index();
+    config.pin[13] = ui->widget_PB13->get_current_index();
+    config.pin[14] = ui->widget_PB14->get_current_index();
+    config.pin[15] = ui->widget_PB15->get_current_index();
+    config.pin[16] = ui->widget_PB16->get_current_index();
+    config.pin[17] = ui->widget_PB17->get_current_index();
+    config.pin[18] = ui->widget_PB18->get_current_index();
+    config.pin[19] = ui->widget_PB19->get_current_index();
+    config.pin[20] = ui->widget_PB20->get_current_index();
+    config.pin[21] = ui->widget_PB21->get_current_index();
+    config.pin[22] = ui->widget_PB22->get_current_index();
+    config.pin[23] = ui->widget_PB23->get_current_index();
+    config.pin[24] = ui->widget_PB24->get_current_index();
+    config.pin[25] = ui->widget_PB25->get_current_index();
+    config.pin[26] = ui->widget_PB26->get_current_index();
+    config.pin[27] = ui->widget_PB27->get_current_index();
+    config.pin[28] = ui->widget_PB28->get_current_index();
+    config.pin[29] = ui->widget_PB29->get_current_index();
+    config.pin[30] = ui->widget_PB30->get_current_index();
+    config.pin[31] = ui->widget_PB31->get_current_index();
 
+    config.axes[0].axis_min_calib_value = ui->widget_axis1->LeftPinValue();
+    config.axes[0].axis_max_calib_value = ui->widget_axis1->RightPinValue();
+    config.axes[0].axis_special = (uint8_t)ui->widget_axis1->isAutoCalibEnabled();
+    config.axes[1].axis_min_calib_value = ui->widget_axis2->LeftPinValue();
+    config.axes[1].axis_max_calib_value = ui->widget_axis2->RightPinValue();
+    config.axes[1].axis_special = (uint8_t)ui->widget_axis2->isAutoCalibEnabled();
+    config.axes[2].axis_min_calib_value = ui->widget_axis3->LeftPinValue();
+    config.axes[2].axis_max_calib_value = ui->widget_axis3->RightPinValue();
+    config.axes[2].axis_special = (uint8_t)ui->widget_axis3->isAutoCalibEnabled();
+    config.axes[3].axis_min_calib_value = ui->widget_axis4->LeftPinValue();
+    config.axes[3].axis_max_calib_value = ui->widget_axis4->RightPinValue();
+    config.axes[3].axis_special = (uint8_t)ui->widget_axis4->isAutoCalibEnabled();
+    config.axes[4].axis_min_calib_value = ui->widget_axis5->LeftPinValue();
+    config.axes[4].axis_max_calib_value = ui->widget_axis5->RightPinValue();
+    config.axes[4].axis_special = (uint8_t)ui->widget_axis5->isAutoCalibEnabled();
+    config.axes[5].axis_min_calib_value = ui->widget_axis6->LeftPinValue();
+    config.axes[5].axis_max_calib_value = ui->widget_axis6->RightPinValue();
+    config.axes[5].axis_special = (uint8_t)ui->widget_axis6->isAutoCalibEnabled();
+
+    config.rotary_press_time = ui->spinBox__Rot_Press_time->value();
+    config.rotary_debounce_time = ui->spinBox_Rot_Debounce_time->value();
+    config.button_debounce_time = ui->spinBox_Button_Debounce_time->value();
+    config.usb_exchange_rate = ui->spinBox_USB_exchange->value();
+    config.rotswitch_press_time = ui->spinBox_RotSwitch_Press_time->value();
+
+    memcpy(config.usb_ps_uniq,ui->lineEdit_Device_ident->text().toLatin1(),10);
+
+    config.combined_axis_enabled = 0;
+    if (ui->checkBox_AxisComb->isChecked()) {
+        config.combined_axis_enabled = 1;
+        config.combined_axis1_mincalib_value = ui->widget_axisComb1->LeftPinValue();
+        config.combined_axis1_maxcalib_value = ui->widget_axisComb1->RightPinValue();
+        config.combined_axis2_mincalib_value = ui->widget_axisComb2->LeftPinValue();
+        config.combined_axis2_maxcalib_value = ui->widget_axisComb2->RightPinValue();
+        if (ui->widget_axisComb1->isAutoCalibEnabled()) config.combined_axis_pin1_autocalib = 1;
+        if (ui->widget_axisComb2->isAutoCalibEnabled()) config.combined_axis_pin2_autocalib= 1;
+        if (ui->radioButtonCoopwoork->isChecked()) config.combined_axis_cooperate = 1;
+        if (ui->radioButtonEachonhisown->isChecked()) config.combined_axis_separate = 1;
+        config.combined_axis_percent = ui->horizontalSliderAxisComb->value();
+        config.combined_axis_pin1 = convertPinnameToIndex(ui->comboBox_AxisCombBegin->currentText());
+        config.combined_axis_pin2 = convertPinnameToIndex(ui->comboBox_AxisCombEnd->currentText());
+    }
+
+    config.POV_config = 0;
+    if (ui->checkBox_POV1->isChecked()) config.POV_config |= 0x1;
+    if (ui->checkBox_POV2->isChecked()) config.POV_config |= 0x2;
+    if (ui->checkBox_POV3->isChecked()) config.POV_config |= 0x4;
+    if (ui->checkBox_POV4->isChecked()) config.POV_config |= 0x8;
+
+    config.analog_2_button_threshold = ui->horiSlider_A2B->value();
+    config.rotswitch_min_time = ui->spinBox_RotSwitch_min_time->value();
+
+    QString name_template_SE("widget_SE%1");
+    oshsingenc *SEwid;
+    for(int i =0; i < config.total_single_encoders; i++){
+        SEwid = ui->tabWidget->findChild<oshsingenc *>(name_template_SE.arg(i+1));
+        config.single_encoder_pinA[i] = SEwid->getPinA();
+        config.single_encoder_pinB[i] = SEwid->getPinB();
+    }
+}
 
 void OSHStudio::writeConfig_Slot()
 {
-    uint8_t buf[BUFFSIZE]={2,1,0};
-    uint8_t res=0;
+    uint8_t buf[BUFFSIZE]={0};
 
-    //gather pins config
-    buf[2]=ui->widget_PB0->get_current_index();
-    buf[3]=ui->widget_PB1->get_current_index();
-    buf[4]=ui->widget_PB2->get_current_index();
-    buf[5]=ui->widget_PB3->get_current_index();
-    buf[6]=ui->widget_PB4->get_current_index();
-    buf[7]=ui->widget_PB5->get_current_index();
-    buf[8]=ui->widget_PB6->get_current_index();
-    buf[9]=ui->widget_PB7->get_current_index();
-    buf[10]=ui->widget_PB8->get_current_index();
-    buf[11]=ui->widget_PB9->get_current_index();
-    buf[12]=ui->widget_PB10->get_current_index();
-    buf[13]=ui->widget_PB11->get_current_index();
-    buf[14]=ui->widget_PB12->get_current_index();
-    buf[15]=ui->widget_PB13->get_current_index();
-    buf[16]=ui->widget_PB14->get_current_index();
-    buf[17]=ui->widget_PB15->get_current_index();
-    buf[18]=ui->widget_PB16->get_current_index();
-    buf[19]=ui->widget_PB17->get_current_index();
-    buf[20]=ui->widget_PB18->get_current_index();
-    buf[21]=ui->widget_PB19->get_current_index();
-    buf[22]=ui->widget_PB20->get_current_index();
-    buf[23]=ui->widget_PB21->get_current_index();
-    buf[24]=ui->widget_PB22->get_current_index();
-    buf[25]=ui->widget_PB23->get_current_index();
-    buf[26]=ui->widget_PB24->get_current_index();
-    buf[27]=ui->widget_PB25->get_current_index();
-    buf[28]=ui->widget_PB26->get_current_index();
-    buf[29]=ui->widget_PB27->get_current_index();
-    buf[30]=ui->widget_PB28->get_current_index();
-    buf[31]=ui->widget_PB29->get_current_index();
-    buf[32]=ui->widget_PB30->get_current_index();
-    buf[33]=ui->widget_PB31->get_current_index();
+    gatherConfig_Slot();
 
+    config.packet_id1 = 2;
+    config.operation_code1 = 1;
 
-    //gather axises config
-    buf[34]=LOBYTE(ui->widget_axis1->LeftPinValue());
-    buf[35]=HIBYTE(ui->widget_axis1->LeftPinValue());
-    buf[36]=LOBYTE(ui->widget_axis1->RightPinValue());
-    buf[37]=HIBYTE(ui->widget_axis1->RightPinValue());
-    buf[38]=(uint8_t)ui->widget_axis1->isAutoCalibEnabled();
-
-    buf[39]=LOBYTE(ui->widget_axis2->LeftPinValue());
-    buf[40]=HIBYTE(ui->widget_axis2->LeftPinValue());
-    buf[41]=LOBYTE(ui->widget_axis2->RightPinValue());
-    buf[42]=HIBYTE(ui->widget_axis2->RightPinValue());
-    buf[43]=(uint8_t)ui->widget_axis2->isAutoCalibEnabled();
-
-    buf[44]=LOBYTE(ui->widget_axis3->LeftPinValue());
-    buf[45]=HIBYTE(ui->widget_axis3->LeftPinValue());
-    buf[46]=LOBYTE(ui->widget_axis3->RightPinValue());
-    buf[47]=HIBYTE(ui->widget_axis3->RightPinValue());
-    buf[48]=(uint8_t)ui->widget_axis3->isAutoCalibEnabled();
-
-    buf[49]=LOBYTE(ui->widget_axis4->LeftPinValue());
-    buf[50]=HIBYTE(ui->widget_axis4->LeftPinValue());
-    buf[51]=LOBYTE(ui->widget_axis4->RightPinValue());
-    buf[52]=HIBYTE(ui->widget_axis4->RightPinValue());
-    buf[53]=(uint8_t)ui->widget_axis4->isAutoCalibEnabled();
-
-    buf[54]=LOBYTE(ui->widget_axis5->LeftPinValue());
-    buf[55]=HIBYTE(ui->widget_axis5->LeftPinValue());
-    buf[56]=LOBYTE(ui->widget_axis5->RightPinValue());
-    buf[57]=HIBYTE(ui->widget_axis5->RightPinValue());
-    buf[58]=(uint8_t)ui->widget_axis5->isAutoCalibEnabled();
-
-    buf[59]=LOBYTE(ui->widget_axis6->LeftPinValue());
-    buf[60]=HIBYTE(ui->widget_axis6->LeftPinValue());
-    buf[61]=LOBYTE(ui->widget_axis6->RightPinValue());
-    buf[62]=HIBYTE(ui->widget_axis6->RightPinValue());
-    buf[63]=(uint8_t)ui->widget_axis6->isAutoCalibEnabled();
-
-//    send_write_packet(buf);
-
-//        for (uint8_t i=0; i<BUFFSIZE; i++){
-//            buf[i]=0;
-//        }
-
-    res=hid_write(handle_read, buf, BUFFSIZE);
-
-    Sleep(100);
-
-
-
-    buf[1]=2;
-    buf[2]=LOBYTE(ui->spinBox__Rot_Press_time->value());
-    buf[3]=HIBYTE(ui->spinBox__Rot_Press_time->value());
-    buf[4]=LOBYTE(ui->spinBox_Rot_Debounce_time->value());
-    buf[5]=HIBYTE(ui->spinBox_Rot_Debounce_time->value());
-    buf[6]=LOBYTE(ui->spinBox_Button_Debounce_time->value());
-    buf[7]=HIBYTE(ui->spinBox_Button_Debounce_time->value());
-    buf[8]=ui->spinBox_USB_exchange->value();
-    buf[9]=LOBYTE(ui->spinBox_RotSwitch_Press_time->value());
-    buf[10]=HIBYTE(ui->spinBox_RotSwitch_Press_time->value());
-
-    QString USB_PS_Uniq =ui->lineEdit_Device_ident->text();
-    for(uint8_t i=0; i <10; i++){
-        if (USB_PS_Uniq.at(i) != 0) {
-          buf[11+i] = (uint8_t)USB_PS_Uniq.at(i).toLatin1();
-        } else {
-            buf[11+i] = 0;
-            }
-    }
-
-
-    buf[21]=0;
-    if (ui->checkBox_AxisComb->isChecked()) {
-        buf[21]=1;
-        buf[22]=LOBYTE(ui->widget_axisComb1->LeftPinValue());
-        buf[23]=HIBYTE(ui->widget_axisComb1->LeftPinValue());
-        buf[24]=LOBYTE(ui->widget_axisComb1->RightPinValue());
-        buf[25]=HIBYTE(ui->widget_axisComb1->RightPinValue());
-        buf[26]=LOBYTE(ui->widget_axisComb2->LeftPinValue());
-        buf[27]=HIBYTE(ui->widget_axisComb2->LeftPinValue());
-        buf[28]=LOBYTE(ui->widget_axisComb2->RightPinValue());
-        buf[29]=HIBYTE(ui->widget_axisComb2->RightPinValue());
-        buf[30]=0;
-        if (ui->widget_axisComb1->isAutoCalibEnabled()) buf[30]|=0x1;
-        if (ui->widget_axisComb2->isAutoCalibEnabled()) buf[30]|=0x2;
-        if (ui->radioButtonCoopwoork->isChecked()) buf[30]|=0x4;
-//        if (ui->radioButtonEachonhisown->isChecked()) buf[30]|=0x8;
-        buf[61]=ui->horizontalSliderAxisComb->value();
-        buf[62]=convertPinnameToIndex(ui->comboBox_AxisCombBegin->currentText());
-        buf[63]=convertPinnameToIndex(ui->comboBox_AxisCombEnd->currentText());
-    }
-
-
-
-    buf[31] = Total_Single_encoders;
-    for (uint8_t i=0; i<14; i++) {
-        buf[32+(i*2)] = single_encoders_store[i].pinA;
-        buf[33+(i*2)] = single_encoders_store[i].pinB;
-    }
-
-    buf[60]=0;
-    if (ui->checkBox_POV1->isChecked()) buf[60]|=0x1;
-    if (ui->checkBox_POV2->isChecked()) buf[60]|=0x2;
-    if (ui->checkBox_POV3->isChecked()) buf[60]|=0x4;
-    if (ui->checkBox_POV4->isChecked()) buf[60]|=0x8;
-
-
-//    send_write_packet(buf);
-    res=hid_write(handle_read, buf, BUFFSIZE);
-
-    Sleep(100);
-
-    buf[1]=3;
-    buf[2]=LOBYTE(ui->horiSlider_A2B->value());
-    buf[3]=HIBYTE(ui->horiSlider_A2B->value());
-
-    res=hid_write(handle_read, buf, BUFFSIZE);
+    memcpy(buf, &(config.packet_id1), BUFFSIZE);
+    hid_write(handle_read, buf, BUFFSIZE);
 }
 
-void OSHStudio::setConfig_Slot(uint8_t buf[BUFFSIZE], uint8_t op_code){
-    wchar_t tmp[10];
-    wchar_t * USB_PS_Uniq;
-//    wchar_t * USB_SN_Uniq;
-//    struct sgl_enc_pins {
-//        uint8_t pinA;
-//        uint8_t pinB;
-//        uint8_t pinA_type;
-//        uint8_t pinB_type;
-    struct single_encoders_pins sgl_enc_tmp[14]={0,0,0,0};
+void OSHStudio::setConfig_Slot(){
 
-    if (op_code == 1) {
-        ui->widget_PB0->set_current_index(buf[2]);
-        ui->widget_PB1->set_current_index(buf[3]);
-        ui->widget_PB2->set_current_index(buf[4]);
-        ui->widget_PB3->set_current_index(buf[5]);
-        ui->widget_PB4->set_current_index(buf[6]);
-        ui->widget_PB5->set_current_index(buf[7]);
-        ui->widget_PB6->set_current_index(buf[8]);
-        ui->widget_PB7->set_current_index(buf[9]);
-        ui->widget_PB8->set_current_index(buf[10]);
-        ui->widget_PB9->set_current_index(buf[11]);
-        ui->widget_PB10->set_current_index(buf[12]);
-        ui->widget_PB11->set_current_index(buf[13]);
-        ui->widget_PB12->set_current_index(buf[14]);
-        ui->widget_PB13->set_current_index(buf[15]);
-        ui->widget_PB14->set_current_index(buf[16]);
-        ui->widget_PB15->set_current_index(buf[17]);
-        ui->widget_PB16->set_current_index(buf[18]);
-        ui->widget_PB17->set_current_index(buf[19]);
-        ui->widget_PB18->set_current_index(buf[20]);
-        ui->widget_PB19->set_current_index(buf[21]);
-        ui->widget_PB20->set_current_index(buf[22]);
-        ui->widget_PB21->set_current_index(buf[23]);
-        ui->widget_PB22->set_current_index(buf[24]);
-        ui->widget_PB23->set_current_index(buf[25]);
-        ui->widget_PB24->set_current_index(buf[26]);
-        ui->widget_PB25->set_current_index(buf[27]);
-        ui->widget_PB26->set_current_index(buf[28]);
-        ui->widget_PB27->set_current_index(buf[29]);
-        ui->widget_PB28->set_current_index(buf[30]);
-        ui->widget_PB29->set_current_index(buf[31]);
-        ui->widget_PB30->set_current_index(buf[32]);
-        ui->widget_PB31->set_current_index(buf[33]);
-
-        ui->widget_axis1->setMinCalibValue((buf[35]<<8) | buf[34]);
-        ui->widget_axis1->setMaxCalibValue((buf[37]<<8) | buf[36]);
-        ui->widget_axis1->setAutoCalib(buf[38]);
-
-        ui->widget_axis2->setMinCalibValue((buf[40]<<8) | buf[39]);
-        ui->widget_axis2->setMaxCalibValue((buf[42]<<8) | buf[41]);
-        ui->widget_axis2->setAutoCalib(buf[43]);
-
-        ui->widget_axis3->setMinCalibValue((buf[45]<<8) | buf[44]);
-        ui->widget_axis3->setMaxCalibValue((buf[47]<<8) | buf[46]);
-        ui->widget_axis3->setAutoCalib(buf[48]);
-
-        ui->widget_axis4->setMinCalibValue((buf[50]<<8) | buf[49]);
-        ui->widget_axis4->setMaxCalibValue((buf[52]<<8) | buf[51]);
-        ui->widget_axis4->setAutoCalib(buf[53]);
-
-        ui->widget_axis5->setMinCalibValue((buf[55]<<8) | buf[54]);
-        ui->widget_axis5->setMaxCalibValue((buf[57]<<8) | buf[56]);
-        ui->widget_axis5->setAutoCalib(buf[58]);
-
-        ui->widget_axis6->setMinCalibValue((buf[60]<<8) | buf[59]);
-        ui->widget_axis6->setMaxCalibValue((buf[62]<<8) | buf[61]);
-        ui->widget_axis6->setAutoCalib(buf[63]);
+    QString name_template("widget_PB%1");
+    for(int i = 0; i < 32; i++) {
+       oshpincombobox *pinComboBox = ui->tabWidget->findChild<oshpincombobox *>(name_template.arg(i));
+       pinComboBox->blockSignals(true);
+       pinComboBox->set_current_index(config.pin[i]);
+       pinComboBox->blockSignals(false);
     }
 
-    if (op_code == 2) {
-        ui->spinBox__Rot_Press_time->setValue((buf[3]<<8)+buf[2]);
-        ui->spinBox_Rot_Debounce_time->setValue((buf[5]<<8)+buf[4]);
-        ui->spinBox_Button_Debounce_time->setValue((buf[7]<<8)+buf[6]);
-        ui->spinBox_USB_exchange->setValue(buf[8]);
-        ui->spinBox_RotSwitch_Press_time->setValue((buf[10]<<8)+buf[9]);
+        ui->widget_axis1->setMinCalibValue(config.axes[0].axis_min_calib_value);
+        ui->widget_axis1->setMaxCalibValue(config.axes[0].axis_max_calib_value);
+        ui->widget_axis1->setAutoCalib(config.axes[0].axis_special);
 
+        ui->widget_axis2->setMinCalibValue(config.axes[1].axis_min_calib_value);
+        ui->widget_axis2->setMaxCalibValue(config.axes[1].axis_max_calib_value);
+        ui->widget_axis2->setAutoCalib(config.axes[1].axis_special);
 
-        for (uint8_t i=0; i<10; i++) {
-            tmp[i]=(wchar_t)buf[11+i];
-        }
-        USB_PS_Uniq=tmp;
-        ui->lineEdit_Device_ident->setText(QString::fromWCharArray(USB_PS_Uniq));
+        ui->widget_axis3->setMinCalibValue(config.axes[2].axis_min_calib_value);
+        ui->widget_axis3->setMaxCalibValue(config.axes[2].axis_max_calib_value);
+        ui->widget_axis3->setAutoCalib(config.axes[2].axis_special);
 
-        ui->widget_axisComb1->setMinCalibValue((buf[23]<<8)+buf[22]);
-        ui->widget_axisComb1->setMaxCalibValue((buf[25]<<8)+buf[24]);
-        ui->widget_axisComb2->setMinCalibValue((buf[27]<<8)+buf[26]);
-        ui->widget_axisComb2->setMaxCalibValue((buf[29]<<8)+buf[28]);
+        ui->widget_axis4->setMinCalibValue(config.axes[3].axis_min_calib_value);
+        ui->widget_axis4->setMaxCalibValue(config.axes[3].axis_max_calib_value);
+        ui->widget_axis4->setAutoCalib(config.axes[3].axis_special);
 
-        ui->widget_axisComb1->setAutoCalib(buf[30] & 0x01);
-        ui->widget_axisComb2->setAutoCalib((buf[30] & 0x02)>>1);
-        if (buf[30] & 0x4) ui->radioButtonCoopwoork->setChecked(true);
+        ui->widget_axis5->setMinCalibValue(config.axes[4].axis_min_calib_value);
+        ui->widget_axis5->setMaxCalibValue(config.axes[4].axis_max_calib_value);
+        ui->widget_axis5->setAutoCalib(config.axes[4].axis_special);
+
+        ui->widget_axis6->setMinCalibValue(config.axes[5].axis_min_calib_value);
+        ui->widget_axis6->setMaxCalibValue(config.axes[5].axis_max_calib_value);
+        ui->widget_axis6->setAutoCalib(config.axes[5].axis_special);
+
+        ui->spinBox__Rot_Press_time->setValue(config.rotary_press_time);
+        ui->spinBox_Rot_Debounce_time->setValue(config.rotary_debounce_time);
+        ui->spinBox_Button_Debounce_time->setValue(config.button_debounce_time);
+        ui->spinBox_USB_exchange->setValue(config.usb_exchange_rate);
+        ui->spinBox_RotSwitch_Press_time->setValue(config.rotswitch_press_time);
+
+        ui->lineEdit_Device_ident->setText(QString::fromLocal8Bit((char*)config.usb_ps_uniq));
+
+        ui->widget_axisComb1->setMinCalibValue(config.combined_axis1_mincalib_value);
+        ui->widget_axisComb1->setMaxCalibValue(config.combined_axis1_maxcalib_value);
+        ui->widget_axisComb2->setMinCalibValue(config.combined_axis2_mincalib_value);
+        ui->widget_axisComb2->setMaxCalibValue(config.combined_axis2_maxcalib_value);
+
+        ui->widget_axisComb1->setAutoCalib(config.combined_axis_pin1_autocalib);
+        ui->widget_axisComb2->setAutoCalib(config.combined_axis_pin2_autocalib);
+        if (config.combined_axis_cooperate) ui->radioButtonCoopwoork->setChecked(true);
           else ui->radioButtonEachonhisown->setChecked(true);
-//        if (buf[30] & 0b1000) ui->radioButtonEachonhisown->setChecked(true);
-//          else ui->radioButtonEachonhisown->setChecked(false);
 
-        Total_Single_encoders=buf[31];
-        for (uint8_t i=0; i<14; i++) {
-            sgl_enc_tmp[i].pinA=buf[32+(i*2)] ;
-            sgl_enc_tmp[i].pinB=buf[33+(i*2)] ;
-        }
 
-        if (buf[60] & 0x1) ui->checkBox_POV1->setChecked(true);
+        if (config.POV_config & 0x1) ui->checkBox_POV1->setChecked(true);
             else ui->checkBox_POV1->setChecked(false);
-        if (buf[60] & 0x2) ui->checkBox_POV2->setChecked(true);
+        if (config.POV_config & 0x2) ui->checkBox_POV2->setChecked(true);
             else ui->checkBox_POV2->setChecked(false);
-        if (buf[60] & 0x4) ui->checkBox_POV3->setChecked(true);
+        if (config.POV_config & 0x4) ui->checkBox_POV3->setChecked(true);
             else ui->checkBox_POV3->setChecked(false);
-        if (buf[60] & 0x8) ui->checkBox_POV4->setChecked(true);
+        if (config.POV_config & 0x8) ui->checkBox_POV4->setChecked(true);
             else ui->checkBox_POV4->setChecked(false);
 
 
-            ui->horizontalSliderAxisComb->setValue(buf[61]);
-            ui->comboBox_AxisCombBegin->setCurrentText(pin_names[buf[62]]);
-            ui->comboBox_AxisCombEnd->setCurrentText(pin_names[buf[63]]);
-            if (buf[21]==1) ui->checkBox_AxisComb->setChecked(true);
+            ui->horizontalSliderAxisComb->setValue(config.combined_axis_percent);
+            ui->comboBox_AxisCombBegin->setCurrentText(pin_names[config.combined_axis_pin1]);
+            ui->comboBox_AxisCombEnd->setCurrentText(pin_names[config.combined_axis_pin2]);
+            if (config.combined_axis_enabled) ui->checkBox_AxisComb->setChecked(true);
                 else ui->checkBox_AxisComb->setChecked(false);
 
-        for (uint8_t i=0; i<Total_Single_encoders; i++){
-            for (uint8_t j=0; j<Total_Single_encoders; j++) {
-                if (sgl_enc_tmp[i].pinA == single_encoders_store[j].pinA) {
-                    sgl_enc_tmp[i].pinA_type=single_encoders_store[j].pinA_type;
-                }
-                if (sgl_enc_tmp[i].pinB == single_encoders_store[j].pinB) {
-                    sgl_enc_tmp[i].pinB_type=single_encoders_store[j].pinB_type;
-                }
-            }
-        }
-        for (uint8_t i=0; i<Total_Single_encoders; i++) {
-            single_encoders_store[i].pinA=sgl_enc_tmp[i].pinA;
-            single_encoders_store[i].pinB=sgl_enc_tmp[i].pinB;
-            single_encoders_store[i].pinA_type=sgl_enc_tmp[i].pinA_type;
-            single_encoders_store[i].pinB_type=sgl_enc_tmp[i].pinB_type;
-        }
         showSingleEncodersTab();
 
-    }
+        ui->horiSlider_A2B->setValue(config.analog_2_button_threshold);
+        ui->spinBox_RotSwitch_min_time->setValue(config.rotswitch_min_time);
 
-
-    if (op_code == 3) {
-        ui->horiSlider_A2B->setValue((buf[3]<<8)+buf[2]);
-    }
-
-    buf[2]=LOBYTE(ui->horiSlider_A2B->value());
-    buf[3]=HIBYTE(ui->horiSlider_A2B->value());
-
-
+        gatherPinsConf();
+        drawHelp();
 }
 
 void OSHStudio::resetConfig_Slot(){
-    uint8_t buf[BUFFSIZE]={0};
+    for (uint8_t i=0; i<MAX_AXES; i++){
+        config.axes[i].axis_min_calib_value = 0;
+        config.axes[i].axis_max_calib_value = 4095;
+        config.axes[i].axis_special = 0;
+    }
 
-    setConfig_Slot(buf,1);
-//    setConfig_Slot(buf,2);
+    for (uint8_t i=0; i<USEDPINS; i++){
+        config.pin[i] = Not_Used;
+    }
+
+    config.rotary_press_time = 50;
+    config.rotary_debounce_time = 10;
+    config.rotswitch_press_time = 100;
+    config.button_debounce_time = 50;
+    config.combined_axis1_mincalib_value = 0;
+    config.combined_axis1_maxcalib_value = 4095;
+    config.combined_axis2_mincalib_value = 0;
+    config.combined_axis2_maxcalib_value = 4095;
+
+    for (uint8_t i=0;i<10;++i){
+        config.usb_ps_uniq[i] = 0;
+    }
+
+    config.usb_exchange_rate = 16;
+    config.combined_axis_enabled = 0;
+    config.combined_axis_cooperate = 1;
+    config.combined_axis_separate = 0;
+    config.combined_axis_pin1_autocalib = 0;
+    config.combined_axis_pin2_autocalib = 0;
+
+    config.total_single_encoders = 0;
+    for (uint8_t i=0;i<MAX_SINGLE_ENCODERS;++i){
+        config.single_encoder_pinA[i] = 0;
+        config.single_encoder_pinB[i] = 0;
+    }
+
+    config.POV_config = 0;
+    config.combined_axis_percent = 50;
+    config.combined_axis_pin1 = 4;
+    config.combined_axis_pin2 = 5;
+
+    config.analog_2_button_threshold = 2048;
+    config.rotswitch_min_time = 0;
+
+    setConfig_Slot();
 }
 
 void OSHStudio::restoreConfig_Slot(){
-    uint8_t buf[BUFFSIZE]={0};
-
-    for (uint8_t i=2; i<8; i++){
-        buf[i]=AnalogMedSmooth;
-    }
-    buf[8]=Chain_Rotary_Enc_1;
-    buf[9]=Button_COLUMN;
-    buf[10]=Chain_Rotary_Enc_1;
-    buf[11]=Chain_Rotary_Enc_1;
-    buf[12]=Chain_Rotary_Enc_1;
-    buf[15]=Chain_Rotary_Enc_1;
-    buf[16]=Chain_Rotary_Enc_1;
-    buf[17]=Chain_Rotary_Enc_1;
-    buf[18]=Button_COLUMN;
-    for (uint8_t i=19; i<25; i++){
-        buf[i]=Button_ROW;
-    }
-    buf[25]=Chain_Rotary_PINA;
-    buf[26]=Chain_Rotary_PINB;
-    buf[27]=Button_COLUMN;
-    buf[28]=Chain_Rotary_Enc_1;
-    buf[29]=Chain_Rotary_Enc_1;
-    buf[30]=Chain_Rotary_Enc_1;
-    buf[31]=Button_COLUMN;
-    buf[32]=Button_COLUMN;
-    buf[33]=Button_COLUMN;
-
-    buf[34]=0;
-    buf[35]=0;
-    buf[36]=0xFF;
-    buf[37]=0x0F;
-
-    buf[39]=0;
-    buf[40]=0;
-    buf[41]=0xFF;
-    buf[42]=0x0F;
-
-    buf[44]=0;
-    buf[45]=0;
-    buf[46]=0xFF;
-    buf[47]=0x0F;
-
-    buf[49]=0;
-    buf[50]=0;
-    buf[51]=0xFF;
-    buf[52]=0x0F;
-
-    buf[54]=0;
-    buf[55]=0;
-    buf[56]=0xFF;
-    buf[57]=0x0F;
-
-    buf[59]=0;
-    buf[60]=0;
-    buf[61]=0xFF;
-    buf[62]=0x0F;
-
- //   buf[63]=0;
-
-    setConfig_Slot(buf,1);
-
-    for (uint8_t i=0; i<BUFFSIZE; i++){
-        buf[i]=0;
+    for (uint8_t i=0;i<MAX_AXES;i++){
+        config.axes[i].axis_min_calib_value = 0;
+        config.axes[i].axis_max_calib_value = 4095;
+        config.axes[i].axis_special = 0;
     }
 
-    buf[2]=50;
-    buf[3]=0;
-    buf[4]=10;
-    buf[5]=0;
-    buf[6]=50;
-    buf[7]=0;
-    buf[8]=0x10;
-    buf[9]=100;
-    buf[10]=0;
-    buf[11]=0;
+    config.pin[0] = AnalogMedSmooth;
+    config.pin[1] = AnalogMedSmooth;
+    config.pin[2] = AnalogMedSmooth;
+    config.pin[3] = AnalogMedSmooth;
+    config.pin[4] = AnalogMedSmooth;
+    config.pin[5] = AnalogMedSmooth;
+    config.pin[6] = Chain_Rotary_Enc_1;
+    config.pin[7] = Button_COLUMN;
+    config.pin[8] = Chain_Rotary_Enc_1;
+    config.pin[9] = Chain_Rotary_Enc_1;
+    config.pin[10] = Chain_Rotary_Enc_1;
+    config.pin[11] = Not_Used;
+    config.pin[12] = Not_Used;
+    config.pin[13] = Chain_Rotary_Enc_1;
+    config.pin[14] = Chain_Rotary_Enc_1;
+    config.pin[15] = Chain_Rotary_Enc_1;
+    config.pin[16] = Button_COLUMN;
+    config.pin[17] = Button_ROW;
+    config.pin[18] = Button_ROW;
+    config.pin[19] = Button_ROW;
+    config.pin[20] = Button_ROW;
+    config.pin[21] = Button_ROW;
+    config.pin[22] = Button_ROW;
+    config.pin[23] = Chain_Rotary_PINA;
+    config.pin[24] = Chain_Rotary_PINB;
+    config.pin[25] = Button_COLUMN;
+    config.pin[26] = Chain_Rotary_Enc_1;
+    config.pin[27] = Chain_Rotary_Enc_1;
+    config.pin[28] = Chain_Rotary_Enc_1;
+    config.pin[29] = Button_COLUMN;
+    config.pin[30] = Button_COLUMN;
+    config.pin[31] = Button_COLUMN;
 
-    buf[21]=0;
-    buf[22]=0;
-    buf[23]=0;
-    buf[24]=0xFF;
-    buf[25]=0x0F;
-    buf[26]=0;
-    buf[27]=0;
-    buf[28]=0xFF;
-    buf[29]=0x0F;
-    buf[30]=4;
+    config.rotary_press_time = 50;
+    config.rotary_debounce_time = 10;
+    config.rotswitch_press_time = 100;
+    config.button_debounce_time = 50;
+    config.combined_axis1_mincalib_value = 0;
+    config.combined_axis1_maxcalib_value = 4095;
+    config.combined_axis2_mincalib_value = 0;
+    config.combined_axis2_maxcalib_value = 4095;
 
-    buf[61]=50;
-    buf[62]=4;
-    buf[63]=5;
+    for (uint8_t i=0;i<10;++i){
+        config.usb_ps_uniq[i] = 0;
+    }
 
-    setConfig_Slot(buf,2);
+    config.usb_exchange_rate = 16;
+    config.combined_axis_enabled = 0;
+    config.combined_axis_cooperate = 1;
+    config.combined_axis_separate = 0;
+    config.combined_axis_pin1_autocalib = 0;
+    config.combined_axis_pin2_autocalib = 0;
 
-    buf[2] = 0x00;
-    buf[3] = 0x08;
+    config.total_single_encoders = 0;
+    for (uint8_t i=0;i<MAX_SINGLE_ENCODERS;++i){
+        config.single_encoder_pinA[i] = 0;
+        config.single_encoder_pinB[i] = 0;
+    }
 
-    setConfig_Slot(buf,3);
+    config.POV_config = 0;
+    config.combined_axis_percent = 50;
+    config.combined_axis_pin1 = 4;
+    config.combined_axis_pin2 = 5;
 
+    config.analog_2_button_threshold = 2048;
+    config.rotswitch_min_time = 0;
+
+    setConfig_Slot();
 }
 
 void OSHStudio::getConfig_Slot()
 {
-    uint8_t buf[BUFFSIZE]={0};
     uint8_t bufrep2[2]={3,1};
-    uint8_t res=0,j=0;
 
-
-    do {
-        res=hid_write(handle_read, bufrep2, 2);
-        res=hid_read(handle_read, buf, BUFFSIZE);
-        j++;
-       } while ((buf[0] != 4) || j<100 );
-//    if (buf[1] == 1) {
-        setConfig_Slot(buf,1);
-//    }
-
-    for (uint8_t i=1; i<BUFFSIZE; i++) {
-        buf[i]=0;
-    }
-
-    bufrep2[1]=2;
-    j=0;
-    do {
-        res=hid_write(handle_read, bufrep2, 2);
-        res=hid_read(handle_read, buf, BUFFSIZE);
-        j++;
-       } while ((buf[0] != 4) || j<100 );
-//    if (buf[1] == 2) {
-        setConfig_Slot(buf,2);
-//    }
-
-        bufrep2[1]=3;
-        j=0;
-        do {
-            res=hid_write(handle_read, bufrep2, 2);
-            res=hid_read(handle_read, buf, BUFFSIZE);
-            j++;
-           } while ((buf[0] != 4) || j<100 );
-    //    if (buf[1] == 2) {
-            setConfig_Slot(buf,3);
-    //    }
-
+    hid_write(handle_read, bufrep2, 2);
 }
 
 
-void OSHStudio::send_write_packet(uint8_t buf[BUFFSIZE])
-{
-    uint8_t answer[BUFFSIZE]={0};
-    uint8_t res=0;
-    uint8_t j=0;
+void OSHStudio::getConfigPacket(uint8_t * buf){
+    uint8_t next_req[BUFFSIZE]={3,0};
+    static QMutex mutex_for_load;
+    switch (buf[1]){
+    case 1: {
+        memcpy(&(config.packet_id1), buf, BUFFSIZE);
+        next_req[1]=2;
+        hid_write(handle_read, next_req, BUFFSIZE);
+        break;
+        }
+    case 2: {
+        memcpy(&(config.packet_id2), buf, BUFFSIZE);
+        next_req[1]=3;
+        hid_write(handle_read, next_req, BUFFSIZE);
+        break;
+        }
+    case 3: {
+        memcpy(&(config.packet_id3), buf, BUFFSIZE);
+        next_req[1]=0xFF; // EOT flag
+        hid_write(handle_read, next_req, BUFFSIZE);
+        setConfig_Slot();
+        if(mutex_for_load.tryLock()) {
+            QMessageBox::information(this, tr("Success!"),
+                                     tr("Board's config loaded successfully."));
+            mutex_for_load.unlock();
+        }
+        break;
+        }
+    }
+}
 
-    do {
-        res=hid_write(handle_read, buf, BUFFSIZE);
-        res=hid_read(handle_read, answer, BUFFSIZE);
-        j++;
-        Sleep(1);
-       } while ((answer[0] != 4) || j<50 );
-    if (answer[1] == 255) return;
+void OSHStudio::getACKpacket(uint8_t confirmed_packet){
+    uint8_t buf[BUFFSIZE] = {0};
+    static QMutex mutex_for_save;
+
+    config.packet_id1 = 2;
+    config.packet_id2 = 2;
+    config.packet_id3 = 2;
+    config.operation_code1 = 1;
+    config.operation_code2 = 2;
+    config.operation_code3 = 3;
+
+    switch(confirmed_packet){
+    case 1: memcpy(buf, &(config.packet_id2), BUFFSIZE);
+            hid_write(handle_read, buf, BUFFSIZE);
+            break;
+    case 2: memcpy(buf, &(config.packet_id3), BUFFSIZE);
+            hid_write(handle_read, buf, BUFFSIZE);
+            break;
+    case 3: buf[0] = 2;
+            buf[1] = 255; //EOT marker
+            hid_write(handle_read, buf, BUFFSIZE);
+            if(mutex_for_save.tryLock()) {
+                QMessageBox::information(this, tr("Success!"),
+                                         tr("Config saved successfully to the board"));
+                mutex_for_save.unlock();
+            }
+            break;
+    }
 }

@@ -31,16 +31,18 @@
 #include "keypad.h"
 #include "usbd_customhid.h"
 #include "usb_device.h"
+#include "..\common_types\common_structs.h"
 
 DMA_HandleTypeDef hdma_adc1;
 volatile uint8_t USBSendBuffer[USEDPINS+1]={1,0};			//1 report id, 8 bytes buttons, 12 bytes for 6 axes
-volatile extern uint16_t Rot_Press_Time;
+//volatile extern uint16_t Rot_Press_Time;
+volatile extern struct total_config_ config;
 
 int main(void)
 
 {
 	extern volatile struct rots RotaryStore[USEDPINS];
-    extern uint8_t Number_Rotaries, Number_Single_Rotaries;
+    extern uint8_t Number_Rotaries;//, Number_Single_Rotaries;
     extern uint8_t Number_Buttons;
     extern uint8_t Number_RotSwitches;
 //    extern uint8_t Number_RotSwitches;
@@ -48,9 +50,9 @@ int main(void)
     extern uint8_t encoders_offset;
     extern volatile uint64_t millis;
     extern struct keypad buttons[MAXBUTTONS];
-    uint8_t chk=0, packet_counter=0;
-    extern USBD_HandleTypeDef  *hUsbDevice_0;
-    extern uint8_t POV_config;
+    uint8_t chk=0;
+//    extern USBD_HandleTypeDef  *hUsbDevice_0;
+//    extern uint8_t POV_config;
 
 
 	const uint8_t ButtonsCodes[8] = {
@@ -80,6 +82,7 @@ int main(void)
   gpio_init();
 //  adc_init();
   MX_USB_DEVICE_Init();
+
 
   while (1)
   {
@@ -118,7 +121,7 @@ int main(void)
 	  	 CheckRotaries();
 
 	  	 for (uint8_t i=0;i<4;i++) {
-	  		 if (POV_config & (0x1<<i)) {
+	  		 if (config.POV_config & (0x1<<i)) {
 	  			 chk = buttons[i*4].pressed<<3 |
 	  					 (buttons[i*4+1].pressed<<2) |
 	  					 (buttons[i*4+2].pressed<<1) |
@@ -141,7 +144,7 @@ int main(void)
 	  	 }
 
 		 for (uint8_t i=0;i<Number_Buttons+Number_RotSwitches;i++) {
-			if ((buttons[i].pressed) && !(POV_config & (0x1<<(i/4)))){
+			if ((buttons[i].pressed) && !(config.POV_config & (0x1<<(i/4)))){
 				USBSendBuffer[i/8+1] |= ButtonsCodes[i%8];
 			 } else {
 				 USBSendBuffer[i/8+1] &= ~ButtonsCodes[i%8];
@@ -149,7 +152,7 @@ int main(void)
 		}
 
 
-	  for (uint8_t i=0;i<Number_Rotaries + Number_Single_Rotaries;i++){
+	  for (uint8_t i=0;i<Number_Rotaries + config.total_single_encoders;i++){
 
 				  diff = millis - RotaryStore[i].time_pressed;
 
@@ -160,7 +163,7 @@ int main(void)
 
 
 				  if (RotaryStore[i].pressed == DIR_CW) {
-					  if ( diff > Rot_Press_Time){
+					  if ( diff > config.rotary_press_time){
 						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
 						  RotaryStore[i].pressed = 0;
 					  }
@@ -169,7 +172,7 @@ int main(void)
 				  	 }
 
 				  if (RotaryStore[i].pressed == DIR_CCW) {
-					  if (diff > Rot_Press_Time){
+					  if (diff > config.rotary_press_time){
 						  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
 						  RotaryStore[i].pressed = 0;
 					  }
@@ -180,7 +183,7 @@ int main(void)
 
 
 	  //We should send report only if some action exist
-			  for (uint8_t i=1;i<21;i++) {
+			/*  for (uint8_t i=1;i<21;i++) {
 				  chk |= USBSendBuffer[i];
 			  }
 			  for (uint8_t i=21;i<25;i++) {
@@ -192,6 +195,6 @@ int main(void)
 			  } else {
 				  packet_counter++;
 				  if (packet_counter < 6) USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
-			  }
+			  }*/
   }
 }

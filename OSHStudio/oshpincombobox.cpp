@@ -49,8 +49,8 @@ void oshpincombobox::on_comboBox_currentIndexChanged(int index)
         case Single_Rotary_PINB_4:color_scheme="QComboBox { color: black; background-color: #66cc66; }";break;
         case Button_ROW:        color_scheme="QComboBox { color: white; background-color: #009900; }";break;
         case Button_COLUMN:     color_scheme="QComboBox { color: white; background-color: #00cc00; }";break;
-        case Button:            color_scheme="QComboBox { color: white; background-color: #00ff00; }";break;
-        case Button_GND:        color_scheme="QComboBox { color: white; background-color: #00ff00; }";break;
+        case Button:            color_scheme="QComboBox { color: black; background-color: #00ff00; }";break;
+        case Button_GND:        color_scheme="QComboBox { color: black; background-color: #00ff00; }";break;
         case RotSwPole:         color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case RotSwWire:         color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case Not_Used:          color_scheme="QComboBox { color: black; background-color: light gray; }";break;

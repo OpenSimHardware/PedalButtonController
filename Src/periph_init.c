@@ -28,161 +28,139 @@
 
 #include <periph_init.h>
 #include <keypad.h>
+#include <rotary.h>
+#include "..\common_types\common_structs.h"
 
-// default ports configuration
-volatile struct pin_conf pins[USEDPINS] = {
-//Default config
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},		//A0
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},		//A1
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, 		//A2
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
-//		{Button_COLUMN, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, //A7
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},	//A8
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 	//A9
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},	//A10
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},	//A11
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},	//A12
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},	//A15
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},	//B0
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 	//B1
-//		{Button_COLUMN, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},	//B3
-//		{Button_ROW,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, //B4
-//		{Button_ROW,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, //B5
-//		{Button_ROW, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 6}, 	//B6
-//		{Button_ROW, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 	//B7
-//		{Button_ROW, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 	//B8
-//		{Button_ROW, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 	//B9
-//		{Chain_Rotary_PINA, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},	//B10
-//		{Chain_Rotary_PINB, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},	//B11
-//		{Button_COLUMN, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},//B12
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
-//		{Chain_Rotary_Enc_1, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
-//		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
-//		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},//C14
-//		{Button_COLUMN, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
-//Config for DimSim
-//		{AnalogMedSmooth, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},		//A0
-//		{Analog2Button, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},		//A1
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, 		//A2
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
-//		{Not_Used, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, //A7
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},	//A8
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 	//A9
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},	//A10
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},	//A11
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},	//A12
-//		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},	//A15
-//		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},	//B0
-//		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 	//B1
-//		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},	//B3
-//		{Not_Used,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, //B4
-//		{Not_Used,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, //B5
-//		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 6}, 	//B6
-//		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 	//B7
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 	//B8
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 	//B9
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},	//B10
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},	//B11
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},//B12
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
-//		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
-//		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
-//		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},//C14
-//		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
-//Config for DimSim_button
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},		//A0
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},		//A1
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, 		//A2
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
-		{Button_GND, (uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, //A7
-		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},	//A8
-		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 	//A9
-		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},	//A10
-		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},	//A11
-		{Not_Used, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},	//A12
-		{Button_GND, (uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},	//A15
-		{Button_GND, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},	//B0
-		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 	//B1
-		{Button_GND, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},	//B3
-		{Button_GND,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, //B4
-		{Button_GND,	(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, //B5
-		{Button_GND, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 6}, 	//B6
-		{Not_Used, (uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 	//B7
-		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 	//B8
-		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 	//B9
-		{Button_GND, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},	//B10
-		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},	//B11
-		{Button_GND, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},//B12
-		{Button_GND, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},	//B13
-		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},	//B14
-		{Not_Used, (uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},	//B15
-		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},//C13
-		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},//C14
-		{Not_Used, (uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},//C15
-};
-
-//default axises configuration
-volatile struct axis_conf axises[ADC_BUFF_SIZE] =
-{
-//		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0x1E,0,0xA3,0x03,0,0x1E,0x3A3},   // for DimSim min_cal_value=30, max_cal_value=1228/0.3
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
-		{0,0,0xFF,0x0F,0,0,0xFFF},
+const struct pin_conf pins[USEDPINS] = {
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},		//A0
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},		//A1
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, 		//A2
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
+		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, 		//A7
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},		//A8
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 		//A9
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},		//A10
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},		//A11
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},		//A12
+		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},		//A15
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},		//B0
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 		//B1
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},		//B3
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, 		//B4
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, 		//B5
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 6}, 		//B6
+		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 		//B7
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 		//B8
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 		//B9
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},		//B10
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},		//B11
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},		//B12
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},		//B13
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},		//B14
+		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},		//B15
+		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},		//C13
+		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},		//C14
+		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},		//C15
 };
 
 
 //default parameters
-volatile uint16_t Rot_Press_Time=50;
-volatile uint16_t Rot_Debounce_Time=10;
-volatile uint16_t Button_Debounce_Time=50;
-volatile uint16_t Button_Press_time=500;
-volatile uint16_t RotSwitch_Press_Time=100;
+volatile struct total_config_ config = {
+			.packet_id1 = 4,
+			.packet_id2 = 4,
+			.packet_id3 = 4,
+			.operation_code1 = 1,
+			.operation_code2 = 2,
+			.operation_code3 = 3,
+			.rotary_press_time = 50,
+			.rotary_debounce_time = 10,
+			.button_debounce_time = 50,
+			.rotswitch_press_time = 100,
+			.rotswitch_min_time = 0,
+			.usb_exchange_rate = 16,
+			.combined_axis1_mincalib_value = 0,
+			.combined_axis1_maxcalib_value = 4095,
+			.combined_axis2_mincalib_value = 0,
+			.combined_axis2_maxcalib_value = 4095,
+			.combined_axis_percent = 50,
+			.combined_axis_pin1 = 4,
+			.combined_axis_pin2 = 5,
+			.combined_axis_enabled = 0,
+			.total_single_encoders = 0,
+			.combined_axis_cooperate = 1,
+			.combined_axis_separate = 0,
+			.combined_axis_pin1_autocalib = 0,
+			.combined_axis_pin2_autocalib = 0,
+			.analog_2_button_threshold = 600, //for DimSim
+			.POV_config = 0,
+			.axes[0].axis_min_calib_value = 0x1E, //for DimSim
+			.axes[0].axis_max_calib_value = 0x3A3, //for DimSim
+			.axes[0].axis_special = 0,
+			.axes[1].axis_min_calib_value = 0,
+			.axes[1].axis_max_calib_value = 4095,
+			.axes[1].axis_special = 0,
+			.axes[2].axis_min_calib_value = 0,
+			.axes[2].axis_max_calib_value = 4095,
+			.axes[2].axis_special = 0,
+			.axes[3].axis_min_calib_value = 0,
+			.axes[3].axis_max_calib_value = 4095,
+			.axes[3].axis_special = 0,
+			.axes[4].axis_min_calib_value = 0,
+			.axes[4].axis_max_calib_value = 4095,
+			.axes[4].axis_special = 0,
+			.axes[5].axis_min_calib_value = 0,
+			.axes[5].axis_max_calib_value = 4095,
+			.axes[5].axis_special = 0,
+			.pin[0] = Button_GND,		//A0	//AnalogMedSmooth	//AnalogMedSmooth
+			.pin[1] = Button_GND,		//A1	//Analog2Button	//AnalogMedSmooth
+			.pin[2] = Button_GND, 		//A2	//Not_Used		//AnalogMedSmooth
+			.pin[3] = Button_GND, 		//A3	//Not_Used		//AnalogMedSmooth
+			.pin[4] = Button_GND, 		//A4	//Not_Used		//AnalogMedSmooth
+			.pin[5] = Button_GND, 		//A5	//Not_Used		//AnalogMedSmooth
+			.pin[6] = Button_GND, 		//A6	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[7] = Button_GND, 		//A7	//Not_Used		//Button_COLUMN
+			.pin[8] = Button_GND, 		//A8	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[9] = Button_GND, 	 	//A9	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[10] = Button_GND, 		//A10	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[11] = Not_Used, 		//A11	//Not_Used		//Not_Used
+			.pin[12] = Not_Used, 		//A12	//Not_Used		//Not_Used
+			.pin[13] = Button_GND, 		//A15	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[14] = Button_GND, 		//B0	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[15] = Button_GND, 	 	//B1	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[16] = Button_GND, 		//B3	//Not_Used		//Button_COLUMN
+			.pin[17] = Button_GND,		//B4	//Not_Used		//Button_ROW
+			.pin[18] = Button_GND,		//B5	//Not_Used		//Button_ROW
+			.pin[19] = Button_GND, 		//B6	//Not_Used		//Button_ROW
+			.pin[20] = Button_GND, 	 	//B7	//Not_Used		//Button_ROW
+			.pin[21] = Button_GND, 	 	//B8	//Not_Used		//Button_ROW
+			.pin[22] = Button_GND, 	 	//B9	//Not_Used		//Button_ROW
+			.pin[23] = Button_GND, 		//B10	//Not_Used		//Chain_Rotary_PINA
+			.pin[24] = Button_GND, 		//B11	//Not_Used		//Chain_Rotary_PINB
+			.pin[25] = Button_GND, 		//B12	//Not_Used		//Button_COLUMN
+			.pin[26] = Button_GND, 		//B13	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[27] = Button_GND, 		//B14	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[28] = Button_GND, 		//B15	//Not_Used		//Chain_Rotary_Enc_1
+			.pin[29] = Button_GND, 		//C13	//Not_Used		//Button_COLUMN
+			.pin[30] = Button_GND, 		//C14	//Not_Used		//Button_COLUMN
+			.pin[31] = Button_GND, 		//C15	//Not_Used		//Button_COLUMN
+};
 
 uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
-volatile uint8_t USB_Product_String_Unique[10] = {0};
 uint8_t USB_Serial_Number_Unique[15] = {0};
-volatile uint8_t USB_polling_interval=0x10;
-volatile uint8_t AxisComb_Percent=50;
-volatile uint8_t AxisComb_pin1=4;
-volatile uint8_t AxisComb_pin2=5;
-volatile uint8_t AxisCombEnabled=0;
-volatile uint16_t AxisCombPin1Min=0;
-volatile uint16_t AxisCombPin1Max=4095;
-volatile uint16_t AxisCombPin2Min=0;
-volatile uint16_t AxisCombPin2Max=4095;
-volatile uint8_t AxisCombPin1AC=0;
-volatile uint8_t AxisCombPin2AC=0;
-volatile uint8_t AxisCombCoop=1;
-volatile uint8_t AxisCombSep=0;
-//volatile uint16_t Analog2ButtonThreshold=2048;
-volatile uint16_t Analog2ButtonThreshold=600; // for DimSim
 
 volatile uint8_t Number_AnalogButtons=0;
 uint8_t Number_DigiButtons=0;
+volatile uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE]={0};
+volatile uint8_t config_flag=0;
+
+volatile struct rot_conf Single_rotaries[USEDPINS] = {0};
 
 
-
+//TODO not sure why it needs to be global
 uint8_t USB_Product_String[31] = {
 		79, // O
 		83, // S
@@ -203,21 +181,14 @@ uint8_t USB_Product_String[31] = {
 		114, // r
 };
 
-
-
-volatile struct rot_conf Single_rotaries[USEDPINS] = {0};
-
-volatile uint8_t POV_config=0;
-
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0,
-		Number_Single_Rotaries=0,
+		//Number_Single_Rotaries=0,
 		Number_Rows=0,
 		Number_Columns=0,
 		Number_Buttons=0,
 		Number_Simple_Buttons=0,
-		Number_Poles=0,
 		Number_Wires=0,
 		Number_RotSwitches=0;
 //uint8_t buttons_offset=0;
@@ -236,8 +207,8 @@ void gpio_init(void) {
 	// GPIO Ports Clock for GPIOA/B/C/D
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPBEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_IOPDEN;
 	// Disable JTAG and SWD
-	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
-	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
+//	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+//	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
 
 	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
 		write_flash();
@@ -252,18 +223,38 @@ void gpio_init(void) {
 
 }
 
+
 void custom_usb_config(void) {
 	uint8_t i=0;
 	uint32_t * curradr;
 	uint32_t id1,id2,id3;
 	uint8_t mod;
 
+	USB_Product_String[0] = 79; // O
+	USB_Product_String[1] = 83; // S
+	USB_Product_String[2] = 72; // H
+	USB_Product_String[3] = 32; // Space
+	USB_Product_String[4] = 80; // P
+	USB_Product_String[5] = 66; // B
+	USB_Product_String[6] = 32; // Space
+	USB_Product_String[7] = 67; // C
+	USB_Product_String[8] = 111; // o
+	USB_Product_String[9] = 110; // n
+	USB_Product_String[10] = 116; // t
+	USB_Product_String[11] = 114; // r
+	USB_Product_String[12] = 111; // o
+	USB_Product_String[13] = 108; // l
+	USB_Product_String[14] = 108; // l
+	USB_Product_String[15] = 101; // e
+	USB_Product_String[16] = 114; // r
+	USB_Product_String[17] = 0;
 
-	if (USB_Product_String_Unique[0]) {
+
+	if (config.usb_ps_uniq[0]) {
 		USB_Product_String[17] = 32; // Space
 		USB_Product_String[18] = 40; // (
-		while ((USB_Product_String_Unique[i]) && (i < 10)) {
-			USB_Product_String[19+i] = USB_Product_String_Unique[i];
+		while ((config.usb_ps_uniq[i]) && (i < 10)) {
+			USB_Product_String[19+i] = config.usb_ps_uniq[i];
 			i++;
 		}
 
@@ -297,7 +288,8 @@ void custom_usb_config(void) {
 
  	USBD_SERIALNUMBER_STRING_FS = USB_Serial_Number_Unique;
 
-	USBD_CUSTOM_HID_CfgDesc[33]=USB_polling_interval;
+
+ 	USBD_CUSTOM_HID_CfgDesc[33]=config.usb_exchange_rate;
 }
 
 uint8_t uint8_to_32(uint8_t value) {
@@ -312,6 +304,51 @@ void gpio_ports_config(void) {
 			tmpbsrrvalue=0,
 			i,
 			tmp=0;
+	uint8_t Number_Poles = 0;
+	//TODO make it as struct & pass ptr to it to functions
+	Number_Channels = 0;
+	Number_AnalogButtons = 0;
+	Number_DigiButtons = 0;
+	extern volatile struct rots RotaryStore[USEDPINS];
+	extern struct keypad buttons[MAXBUTTONS];
+
+	for (uint8_t i=0; i<USEDPINS; i++) {
+			Single_rotaries[i].PINA_IDR = 0;
+			Single_rotaries[i].PINA_Type = 0;
+			Single_rotaries[i].PINAmask = 0;
+			Single_rotaries[i].PINB_IDR = 0;
+			Single_rotaries[i].PINB_Type = 0;
+			Single_rotaries[i].PINBmask = 0;
+			RotaryStore[i].pressed = 0;
+			RotaryStore[i].state = 0;
+			RotaryStore[i].time_pressed = 0;
+		}
+	Rot_PINA_IDR = 0;
+	Rot_PINB_IDR = 0;
+	Rot_PINA_pin = 0;
+	Rot_PINB_pin = 0;
+	Number_Rotaries = 0;
+	Number_Rows = 0;
+	Number_Columns = 0;
+	Number_Buttons = 0;
+	Number_Simple_Buttons = 0;
+	Number_Wires = 0;
+	Number_RotSwitches = 0;
+	encoders_offset = 0;
+
+	for (uint8_t i=0; i<ADC_BUFF_SIZE; i++) {
+		ADC1Values[i] = 0;
+		ADC1Prevs_Values[i] = 0;
+	}
+
+	for (uint8_t i=0; i<MAXBUTTONS; i++){
+		buttons[i].current_state = 0;
+		buttons[i].pressed = 0;
+		buttons[i].prev_state = 0;
+		buttons[i].time_pressed = 0;
+	}
+
+
 //	uint8_t Number_Single_Rotaries_PINA=0,
 //			Number_Single_Rotaries_PINB=0;
 
@@ -331,7 +368,7 @@ void gpio_ports_config(void) {
 	// making registers configuration;
 
 	for (i=0;i<USEDPINS;i++){
-		switch (pins[i].pin_type) {
+		switch (config.pin[i]) {
 		case Not_Used:		tmpconfvalue=0x4;
 							tmpbsrrvalue=0x10;
 							break;
@@ -423,13 +460,13 @@ void gpio_ports_config(void) {
 		*pins[i].bsrr_reg_addr 	= 1 << (pins[i].pin_number+tmpbsrrvalue);
 	}
 
-	for (uint8_t i=0; i<Number_Single_Rotaries; i++) {
-		Single_rotaries[i].PINA_IDR=pins[Single_rotaries[i].PINA].idr_reg_addr;
-		Single_rotaries[i].PINA_Type=pins[Single_rotaries[i].PINA].pin_type;
-		Single_rotaries[i].PINAmask=(0x1<<pins[Single_rotaries[i].PINA].pin_number);
-		Single_rotaries[i].PINB_IDR=pins[Single_rotaries[i].PINB].idr_reg_addr;
-		Single_rotaries[i].PINB_Type=pins[Single_rotaries[i].PINB].pin_type;
-		Single_rotaries[i].PINBmask=(0x1<<pins[Single_rotaries[i].PINB].pin_number);
+	for (uint8_t i=0; i<config.total_single_encoders; i++) {
+		Single_rotaries[i].PINA_IDR=pins[config.single_encoder_pinA[i]].idr_reg_addr;
+		Single_rotaries[i].PINA_Type=config.pin[config.single_encoder_pinA[i]];
+		Single_rotaries[i].PINAmask=(0x1<<pins[config.single_encoder_pinA[i]].pin_number);
+		Single_rotaries[i].PINB_IDR=pins[config.single_encoder_pinB[i]].idr_reg_addr;
+		Single_rotaries[i].PINB_Type=config.pin[config.single_encoder_pinB[i]];
+		Single_rotaries[i].PINBmask=(0x1<<pins[config.single_encoder_pinB[i]].pin_number);
 	}
 
 	Number_DigiButtons = Number_Columns*Number_Rows + Number_Simple_Buttons;
@@ -441,21 +478,28 @@ void gpio_ports_config(void) {
 
 	adc_init();
 
-	for (uint8_t i=0;i<AXISES;i++) {
-			  if (axises[i].special == 1) {
-				  axises[i].calib_min = 4095;
-				  axises[i].calib_max = 1;
+	for (uint8_t i=0;i<MAX_AXES;i++) {
+			  if (config.axes[i].axis_special == 1) {
+				  config.axes[i].axis_min_calib_value = 4095;
+				  config.axes[i].axis_max_calib_value = 1;
 			  }
 		  }
 
-	if (AxisCombEnabled) {
+	if (config.combined_axis_enabled) {
 		uint8_t lastaxis=0;
-		if (Number_Channels-Number_AnalogButtons > AXISES) lastaxis=5; else lastaxis=Number_Channels-Number_AnalogButtons;
-		axises[lastaxis].calib_min=AxisCombPin1Min;
-		axises[lastaxis].calib_min=AxisCombPin1Max;
-
+		if (Number_Channels-Number_AnalogButtons > MAX_AXES) lastaxis=5; else lastaxis=Number_Channels-Number_AnalogButtons;
+		config.axes[lastaxis].axis_min_calib_value = config.combined_axis1_mincalib_value;
+		config.axes[lastaxis].axis_max_calib_value = config.combined_axis1_maxcalib_value;
 	}
-	//for (uint8_t i=0; i<Number_Channels-Number_AnalogButtons)
+}
+
+void periph_deinit(void){
+	//ADC deinit
+	ADC1->CR2 |= (uint32_t)0x0;
+	//clock disable
+	//RCC->APB2ENR = 0;
+	//RCC->AHBENR = 0;
+	//RCC->APB1ENR = 0;
 }
 
 void adc_init(void) {
@@ -518,9 +562,9 @@ void adc_init(void) {
 	uint8_t channel=0;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
-		if ((pins[i].pin_type == AnalogNoSmooth) || (pins[i].pin_type == AnalogLowSmooth) ||
-				(pins[i].pin_type == AnalogMedSmooth) || (pins[i].pin_type == AnalogHighSmooth) ||
-				(pins[i].pin_type == Analog2Button)) {
+		if ((config.pin[i] == AnalogNoSmooth) || (config.pin[i] == AnalogLowSmooth) ||
+				(config.pin[i] == AnalogMedSmooth) || (config.pin[i] == AnalogHighSmooth) ||
+				(config.pin[i] == Analog2Button)) {
 			if (channel < 6) {
 				//ADC1->SQR3 |= channel << (5*channel);
 				ADC1->SQR3 |= pins[i].pin_number << (5*channel);
@@ -600,7 +644,7 @@ void fill_buffer_4_axises(void) {
 	  uint8_t AnalogButton=0;
 
 	  for (uint8_t i=0;i<USEDPINS;i++) {
-		  switch (pins[i].pin_type) {
+		  switch (config.pin[i]) {
 		  	  case AnalogNoSmooth:		  processing_axises(Ainput++, 100, i); break;
 		  	  case AnalogLowSmooth:	  	  processing_axises(Ainput++, 60, i); break;
 		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 30, i); break;
@@ -630,7 +674,7 @@ static uint8_t Axis=0;
 	if (Kstab > 199) {
 		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 		ADC1Prevs_Values[Ainput] = optvalue;
-		if (curr > Analog2ButtonThreshold) {
+		if (curr > config.analog_2_button_threshold) {
 			SetButtonState(Kstab-200 + Number_DigiButtons, 1);
 		} else {
 			SetButtonState(Kstab-200 + Number_DigiButtons, 0);
@@ -641,25 +685,25 @@ static uint8_t Axis=0;
 	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 
 
-	if (axises[Axis].special == 1) {
-		if (curr < axises[Axis].calib_min) axises[Axis].calib_min = curr;
-		if (curr > axises[Axis].calib_max) axises[Axis].calib_max = curr;
+	if (config.axes[Axis].axis_special == 1) {
+		if (curr < config.axes[Axis].axis_min_calib_value) config.axes[Axis].axis_min_calib_value = curr;
+		if (curr > config.axes[Axis].axis_max_calib_value) config.axes[Axis].axis_max_calib_value = curr;
 	} else {
-		if (optvalue < axises[Axis].calib_min) optvalue = axises[Axis].calib_min;
-		if (optvalue > axises[Axis].calib_max) optvalue = axises[Axis].calib_max;
+		if (optvalue < config.axes[Axis].axis_min_calib_value) optvalue = config.axes[Axis].axis_min_calib_value;
+		if (optvalue > config.axes[Axis].axis_max_calib_value) optvalue = config.axes[Axis].axis_max_calib_value;
 	}
 
 	ADC1Prevs_Values[Ainput] = optvalue;
 
-	if (AxisCombEnabled) {
+	if (config.combined_axis_enabled) {
 		Number_Axes-=2;
-	if ((i == AxisComb_pin1) || (i == AxisComb_pin2)){
+	if ((i == config.combined_axis_pin1) || (i == config.combined_axis_pin2)){
 		pincount++;
-		if (i == AxisComb_pin1) optvalue = map(optvalue, AxisCombPin1Min, AxisCombPin1Max, 0, 4095);
-			else optvalue = map(optvalue, AxisCombPin2Min, AxisCombPin2Max, 0, 4095);
-		if (AxisCombCoop) {
-			if (i == AxisComb_pin1) endvalue=AxisComb_Percent;
-				else endvalue=100-AxisComb_Percent;
+		if (i == config.combined_axis_pin1) optvalue = map(optvalue, config.combined_axis1_mincalib_value, config.combined_axis1_maxcalib_value, 0, 4095);
+			else optvalue = map(optvalue, config.combined_axis2_mincalib_value, config.combined_axis2_maxcalib_value, 0, 4095);
+		if (config.combined_axis_cooperate) {
+			if (i == config.combined_axis_pin1) endvalue=config.combined_axis_percent;
+				else endvalue=100-config.combined_axis_percent;
 			optvalue=(optvalue*endvalue)/100;
 			if (pincount==1)  {
 				AxisComboValue=optvalue;
@@ -680,7 +724,7 @@ static uint8_t Axis=0;
 		//Axis=5;
 		if (pincount==2) pincount=0;
 		//Combined axis will be always on AXIS6
-		mapvalue = map(optvalue, axises[5].calib_min, axises[5].calib_max, 0, 4095);
+		mapvalue = map(optvalue, config.axes[5].axis_min_calib_value, config.axes[5].axis_max_calib_value, 0, 4095);
 //		ADC1Prevs_Values[Ainput] = optvalue;
 		USBSendBuffer[9+(10)] = LOBYTE(mapvalue);
 		USBSendBuffer[10+(10)] = HIBYTE(mapvalue);
@@ -689,13 +733,13 @@ static uint8_t Axis=0;
 	}
 
 
-	mapvalue = map(optvalue, axises[Axis].calib_min, axises[Axis].calib_max, 0, 4095);
+	mapvalue = map(optvalue, config.axes[Axis].axis_min_calib_value, config.axes[Axis].axis_max_calib_value, 0, 4095);
 
 	USBSendBuffer[9+(2*Axis)] = LOBYTE(mapvalue);
 	USBSendBuffer[10+(2*Axis)] = HIBYTE(mapvalue);
 	Axis++;
 
-	if ((Axis > AXISES-1) || (Axis > Number_Axes)) Axis=0;
+	if ((Axis > MAX_AXES-1) || (Axis > Number_Axes)) Axis=0;
 }
 
 

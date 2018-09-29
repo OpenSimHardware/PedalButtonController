@@ -37,6 +37,8 @@
 
 /* USER CODE BEGIN 0 */
 #include "keypad.h"
+#include "usbd_customhid.h"
+#include "..\common_types\common_defines.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -147,10 +149,21 @@ void DebugMon_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-	extern volatile uint64_t millis;
+	extern volatile uint64_t millis; //TODO make it via timers
+	extern volatile uint8_t USBSendBuffer[USEDPINS+1];
+	extern volatile uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
+	extern volatile uint8_t config_flag;
+    extern USBD_HandleTypeDef  *hUsbDevice_0;
+
 
     millis++;
 	CheckButtons();
+
+	if (config_flag) {
+		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+	} else {
+		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+	}
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();

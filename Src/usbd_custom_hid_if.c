@@ -33,6 +33,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_custom_hid_if.h"
 /* USER CODE BEGIN INCLUDE */
+#include "..\common_types\common_structs.h"
+#include "periph_init.h"
 /* USER CODE END INCLUDE */
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
@@ -129,14 +131,9 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
-	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
+	    0x95, 0x3F,                     //   REPORT_COUNT (63)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
-//	    0x85, 0x06,                    //   REPORT_ID (6)
-//	    0x09, 0x01,                    //   USAGE (Vendor Usage 1)
-//	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
-//	    0x75, 0x08,                    //   REPORT_SIZE (8)
-//	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 	    0x85, 0x03,                    //   REPORT_ID (3)
 	    0x09, 0x02,                    //   USAGE (Vendor Usage 2)
 	    0x95, 0x01,                    //   REPORT_COUNT (1)
@@ -144,14 +141,14 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	    0x91, 0x82,                    //   OUTPUT (Data,Var,Abs,Vol)
 	    0x85, 0x04,                    //   REPORT_ID (4)
 	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
-	    0x95, 0x3F, //0x20,                    //   REPORT_COUNT (32)
+	    0x95, 0x3F,                     //   REPORT_COUNT (63)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
 	    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
-//	    0x85, 0x05,                    // 	REPORT_ID (5)
-//	    0x09, 0x03,                    // 	USAGE (Vendor Usage 3)
-//	    0x95, 0x3F, //0x20,                    // 	REPORT_COUNT (32)
-//	    0x75, 0x08,                    // 	REPORT_SIZE (8)
-//	    0x81, 0x82,                    // 	INPUT (Data,Var,Abs,Vol)
+	    0x85, 0x05,                    //   REPORT_ID (5)
+	    0x09, 0x03,                    //   USAGE (Vendor Usage 3)
+	    0x95, 0x3F,                     //   REPORT_COUNT (63)
+	    0x75, 0x08,                    //   REPORT_SIZE (8)
+	    0x81, 0x82,                    //   INPUT (Data,Var,Abs,Vol)
 	    0xc0                           // END_COLLECTION
 
 }; 
@@ -161,32 +158,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
   extern struct pin_conf pins[USEDPINS];
-  extern struct axis_conf axises[AXISES];
-  extern uint8_t POV_config;
-  volatile extern uint16_t Rot_Press_Time;
-  volatile extern uint16_t Rot_Debounce_Time;
-  volatile extern uint16_t Button_Debounce_Time;
-  volatile extern uint16_t Button_Press_time;
-  volatile extern uint16_t RotSwitch_Press_Time;
-  volatile extern uint8_t USB_Product_String_Unique[10];
   volatile extern uint8_t USB_Serial_Number_Unique[13];
-  volatile extern uint8_t USB_polling_interval;
-  volatile extern struct rot_conf Single_rotaries[USEDPINS];
-  extern uint8_t Number_Single_Rotaries;
-  volatile extern uint8_t AxisComb_Percent;
-  volatile extern uint8_t AxisComb_pin1;
-  volatile extern uint8_t AxisComb_pin2;
-  volatile extern uint8_t AxisCombEnabled;
-  volatile extern uint16_t AxisCombPin1Min;
-  volatile extern uint16_t AxisCombPin1Max;
-  volatile extern uint16_t AxisCombPin2Min;
-  volatile extern uint16_t AxisCombPin2Max;
-  volatile extern uint8_t AxisCombPin1AC;
-  volatile extern uint8_t AxisCombPin2AC;
-  volatile extern uint8_t AxisCombCoop;
-  volatile extern uint8_t AxisCombSep;
-  volatile extern uint16_t Analog2ButtonThreshold;
-
+  volatile extern uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
+  volatile extern uint8_t config_flag;
+  volatile extern struct total_config_ config;
+  extern volatile uint8_t USBSendBuffer[USEDPINS+1];
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -261,161 +237,70 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 	USBD_CUSTOM_HID_HandleTypeDef     *hhid = (USBD_CUSTOM_HID_HandleTypeDef*)hUsbDevice_0->pClassData;
 	uint8_t report_id=0;
 	uint8_t code=0;
-	uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE]={0};
-//	uint8_t answer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE]={0};
-	uint8_t index=0;
-static	uint8_t packet1=0, packet2=0, packet3=0;
 
 	report_id = hhid->Report_buf[0];
 	code = hhid->Report_buf[1];
 
 	if (report_id == 3) {
+		config.packet_id1 = 4;
+		config.packet_id2 = 4;
+		config.packet_id3 = 4;
 		if (code == 1) {
-			send_buffer[0] = 4;
-			send_buffer[1] = 1;
-			for (uint8_t i=1;i<USEDPINS+1;i++){
-				send_buffer[i+1] = pins[i-1].pin_type;
-			}
-			index=USEDPINS+2;
-			for (uint8_t i=0;i<AXISES;i++) {
-				send_buffer[index++] = axises[i].calib_min_lowbyte;
-				send_buffer[index++] = axises[i].calib_min_hibyte;
-				send_buffer[index++] = axises[i].calib_max_lowbyte;
-				send_buffer[index++] = axises[i].calib_max_hibyte;
-				send_buffer[index++] = axises[i].special;
-			}
-			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			config_flag = 1;
+			memcpy(send_buffer, &(config.packet_id1), BUFFSIZE);
 		}
 		if (code == 2) {
-			send_buffer[0] = 4;
-			send_buffer[1] = 2;
-			send_buffer[2]=LOBYTE(Rot_Press_Time);
-			send_buffer[3]=HIBYTE(Rot_Press_Time);
-			send_buffer[4]=LOBYTE(Rot_Debounce_Time);
-			send_buffer[5]=HIBYTE(Rot_Debounce_Time);
-			send_buffer[6]=LOBYTE(Button_Debounce_Time);
-			send_buffer[7]=HIBYTE(Button_Debounce_Time);
-			send_buffer[8]=USB_polling_interval;
-			send_buffer[9]=LOBYTE(RotSwitch_Press_Time);
-			send_buffer[10]=HIBYTE(RotSwitch_Press_Time);
-
-			for (uint8_t i=0; i<10; i++) {
-				send_buffer[11+i]=USB_Product_String_Unique[i];
-			}
-			send_buffer[21]=AxisCombEnabled;
-			send_buffer[22]=LOBYTE(AxisCombPin1Min);
-			send_buffer[23]=HIBYTE(AxisCombPin1Min);
-			send_buffer[24]=LOBYTE(AxisCombPin1Max);
-			send_buffer[25]=HIBYTE(AxisCombPin1Max);
-			send_buffer[26]=LOBYTE(AxisCombPin2Min);
-			send_buffer[27]=HIBYTE(AxisCombPin2Min);
-			send_buffer[28]=LOBYTE(AxisCombPin2Max);
-			send_buffer[29]=HIBYTE(AxisCombPin2Max);
-			send_buffer[30]=0;
-			if (AxisCombSep) send_buffer[30]|=0x8;
-			if (AxisCombCoop) send_buffer[30]|=0x4;
-			if (AxisCombPin2AC) send_buffer[30]|=0x2;
-			if (AxisCombPin1AC) send_buffer[30]|=0x1;
-
-			send_buffer[31]=Number_Single_Rotaries;
-			for (uint8_t i=0; i<14; i++) {
-				send_buffer[32+(i*2)]=Single_rotaries[i].PINA;
-				send_buffer[33+(i*2)]=Single_rotaries[i].PINB;
-			}
-			send_buffer[60] = POV_config;
-			send_buffer[61] = AxisComb_Percent;
-			send_buffer[62] = AxisComb_pin1;
-			send_buffer[63] = AxisComb_pin2;
-			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-
-			for (uint8_t i=0;i<USBD_CUSTOMHID_OUTREPORT_BUF_SIZE;i++) {
-				send_buffer[i]=0;
-			}
+			memcpy(send_buffer, &(config.packet_id2), BUFFSIZE);
 		}
 		if (code == 3) {
-			send_buffer[0] = 4;
-			send_buffer[1] = 3;
-			send_buffer[2] = LOBYTE(Analog2ButtonThreshold);
-			send_buffer[3] = HIBYTE(Analog2ButtonThreshold);
-			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			memcpy(send_buffer, &(config.packet_id3), BUFFSIZE);
 		}
+		if (code == 0xFF) config_flag=0;
 
 
 	}
 
 	if (report_id == 2) {
-		send_buffer[0]=4;
-		send_buffer[1]=255; //OK code
+		send_buffer[0]=5;
 		if (hhid->Report_buf[1] == 1){
-			packet1++;
-			for (uint8_t i=0;i<USEDPINS;i++) {
-				pins[i].pin_type = hhid->Report_buf[i+2];
-			}
-			for (uint8_t i=0;i<AXISES;i++) {
-				axises[i].calib_min_lowbyte = hhid->Report_buf[USEDPINS+2+i*5];
-				axises[i].calib_min_hibyte = hhid->Report_buf[USEDPINS+3+i*5];
-				axises[i].calib_max_lowbyte = hhid->Report_buf[USEDPINS+4+i*5];
-				axises[i].calib_max_hibyte = hhid->Report_buf[USEDPINS+5+i*5];
-				axises[i].special = hhid->Report_buf[USEDPINS+6+i*5];
-			}
-		//	USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-		//	POV_config = hhid->Report_buf[63];
+			send_buffer[1]=1;
+			config_flag = 1;
+			memcpy(&(config.packet_id1), hhid->Report_buf, BUFFSIZE);
 		}
 		if (hhid->Report_buf[1] == 2) {
-			packet2++;
-			Rot_Press_Time=(hhid->Report_buf[3]<<8)+hhid->Report_buf[2];
-			Rot_Debounce_Time=(hhid->Report_buf[5]<<8)+hhid->Report_buf[4] ;
-			Button_Debounce_Time=(hhid->Report_buf[7]<<8)+hhid->Report_buf[6];
-//			Button_Press_time=(hhid->Report_buf[8]<<8)+hhid->Report_buf[7];
-			USB_polling_interval=hhid->Report_buf[8];
-			RotSwitch_Press_Time=(hhid->Report_buf[10]<<8)+hhid->Report_buf[9];
-
-			for (uint8_t i=0; i<10; i++) {
-				USB_Product_String_Unique[i]=hhid->Report_buf[11+i];
-			}
-
-
-		        AxisCombEnabled=hhid->Report_buf[21];
-		        AxisCombPin1Min=(hhid->Report_buf[23]<<8)+hhid->Report_buf[22];
-		        AxisCombPin1Max=(hhid->Report_buf[25]<<8)+hhid->Report_buf[24];
-		        AxisCombPin2Min=(hhid->Report_buf[27]<<8)+hhid->Report_buf[26];
-		        AxisCombPin2Max=(hhid->Report_buf[29]<<8)+hhid->Report_buf[28];
-		        AxisCombPin1AC=hhid->Report_buf[30]&0b0001;
-		        AxisCombPin2AC=(hhid->Report_buf[30]&0b0010)>>1;
-		        AxisCombCoop=(hhid->Report_buf[30]&0b0100)>>2;
-		        AxisCombSep=(hhid->Report_buf[30]&0b1000)>>3;
-
-//			for (uint8_t i=0; i<10; i++) {
-//				USB_Serial_Number_Unique[i+2]=hhid->Report_buf[21+i];
-//			}
-
-			Number_Single_Rotaries=hhid->Report_buf[31];
-			for (uint8_t i=0; i<14; i++) {
-				Single_rotaries[i].PINA=hhid->Report_buf[32+(i*2)];
-				Single_rotaries[i].PINB=hhid->Report_buf[33+(i*2)];
-			}
-			POV_config = hhid->Report_buf[60];
-			AxisComb_Percent = hhid->Report_buf[61];
-			AxisComb_pin1 = hhid->Report_buf[62];
-			AxisComb_pin2 = hhid->Report_buf[63];
-
-		//	USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			send_buffer[1]=2;
+			memcpy(&(config.packet_id2), hhid->Report_buf, BUFFSIZE);
 		}
 
 		if (hhid->Report_buf[1] == 3) {
-			packet3++;
-			Analog2ButtonThreshold = (hhid->Report_buf[3]<<8)+hhid->Report_buf[2];
-		}
-
-
-		if ((packet1) && (packet2) && (packet3)) {
-			packet1=0; packet2=0; packet3=0;
+			send_buffer[1]=3;
+			memcpy(&(config.packet_id3), hhid->Report_buf, BUFFSIZE);
 			erase_flash();
 			write_flash();
-			NVIC_SystemReset();
 		}
-	//	get_config();
-	//	gpio_ports_config();
+		if (hhid->Report_buf[1] == 255) {
+			config_flag = 0;
+
+			USBSendBuffer[0] = 1;
+			for (uint8_t i=1; i<USEDPINS+1; i++){
+				USBSendBuffer[i]=0;
+			}
+			// Null point for Hat Switches
+			USBSendBuffer[21] = 8;
+			USBSendBuffer[22] = 8;
+			USBSendBuffer[23] = 8;
+			USBSendBuffer[24] = 8;
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+
+			//periph_deinit();
+			//sysclock_init();
+			//gpio_init();
+			gpio_ports_config();
+			//HAL_Delay(100);
+			//__disable_irq();
+			//NVIC_SystemReset();
+			//__enable_irq();
+		}
 	}
 
 

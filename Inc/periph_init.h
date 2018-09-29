@@ -34,42 +34,16 @@
 #include <stm32f1xx.h>
 #include <flash_store.h>
 #include <usbd_def.h>
+#include "../common_types/common_structs.h"
 
-#define USEDPINS 32
-#define AXISES 6
+//#define USEDPINS 32
+//#define AXISES 6
 #define ADC_BUFF_SIZE 12
 #define UNIQUEIDREG 0x1FFFF7E8
 
 
-typedef enum {
-	Not_Used = 0,
-	AnalogNoSmooth = 1,
-	AnalogLowSmooth = 2,
-	AnalogMedSmooth = 3,
-	AnalogHighSmooth = 4,
-	Analog2Button = 5,
-	Chain_Rotary_PINA = 6,
-	Chain_Rotary_PINB = 7,
-	Chain_Rotary_Enc_1 = 8,
-	Chain_Rotary_Enc_2 = 9,
-	Chain_Rotary_Enc_4 = 10,
-	Single_Rotary_PINA_1 = 11,
-	Single_Rotary_PINB_1 = 12,
-	Single_Rotary_PINA_2 = 13,
-	Single_Rotary_PINB_2 = 14,
-	Single_Rotary_PINA_4 = 15,
-	Single_Rotary_PINB_4 = 16,
-	Button_ROW = 17,
-	Button_COLUMN = 18,
-	Button = 19,
-	Button_GND = 20,
-	RotSwPole = 21,
-	RotSwWire = 22,
-} pintype;
-
-
 struct pin_conf {
-		pintype pin_type;
+//		pintype pin_type;
 		uint32_t * conf_reg_addr;
 		uint32_t * bsrr_reg_addr;
 		uint32_t * idr_reg_addr;
@@ -81,21 +55,21 @@ struct rot_conf {
 		pintype PINB_Type;
 		uint32_t * PINA_IDR;
 		uint32_t * PINB_IDR;
-		uint16_t PINA;
-		uint16_t PINB;
+//		uint16_t PINA;
+//		uint16_t PINB;
 		uint16_t PINAmask;
 		uint16_t PINBmask;
 	};
 
-struct axis_conf {
-	uint8_t calib_min_lowbyte;
-	uint8_t calib_min_hibyte;
-	uint8_t calib_max_lowbyte;
-	uint8_t calib_max_hibyte;
-	uint8_t special;
-	uint32_t calib_min;
-	uint32_t calib_max;
-};
+//struct axis_conf {
+//	uint8_t calib_min_lowbyte;
+//	uint8_t calib_min_hibyte;
+//	uint8_t calib_max_lowbyte;
+//	uint8_t calib_max_hibyte;
+//	uint8_t special;
+//	uint32_t calib_min;
+//	uint32_t calib_max;
+//};
 
 struct rot_switches {
 	uint8_t state;
@@ -112,5 +86,6 @@ void fill_buffer_4_axises(void);
 uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 void custom_usb_config(void);
 uint8_t uint8_to_32(uint8_t value);
+void periph_deinit(void);
 
 #endif /* PERIPH_INIT_H_ */

@@ -27,13 +27,15 @@
  * */
 
 #include "keypad.h"
+#include "..\common_types\common_structs.h"
 
 extern struct pin_conf pins[USEDPINS];
 extern uint8_t Number_Rows, Number_Columns;
 uint64_t millis;
 struct keypad buttons[MAXBUTTONS];
-volatile extern uint16_t Button_Debounce_Time;
-volatile extern uint16_t RotSwitch_Press_Time;
+volatile extern struct total_config_ config;
+//volatile extern uint16_t Button_Debounce_Time;
+//volatile extern uint16_t RotSwitch_Press_Time;
 
 
 void CheckButtons(void) {
@@ -43,13 +45,13 @@ void CheckButtons(void) {
 	button = Number_Rows*Number_Columns;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
-		if ((pins[i].pin_type == Button_COLUMN) || (pins[i].pin_type == RotSwPole)) {
+		if ((config.pin[i] == Button_COLUMN) || (config.pin[i] == RotSwPole)) {
 			*(pins[i].bsrr_reg_addr) = 0x1<<pins[i].pin_number;
-			if (pins[i].pin_type == Button_COLUMN) CheckRows(column++);
-			if (pins[i].pin_type == RotSwPole) CheckWires(pole++);
+			if (config.pin[i] == Button_COLUMN) CheckRows(column++);
+			if (config.pin[i] == RotSwPole) CheckWires(pole++);
 			*(pins[i].bsrr_reg_addr) = 0x1<<(pins[i].pin_number+16);
 		}
-		if (pins[i].pin_type == Button) {
+		if (config.pin[i] == Button) {
 			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
 				rowstate = 1;
 			  } else {
@@ -57,7 +59,7 @@ void CheckButtons(void) {
 			  };
 			SetButtonState(button++,rowstate);
 		}
-		if (pins[i].pin_type == Button_GND) {
+		if (config.pin[i] == Button_GND) {
 			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
 				rowstate = 0;
 			  } else {
@@ -72,19 +74,21 @@ void CheckWires(uint8_t pole) {
 	volatile uint8_t rowstate=0, button=0, wire=0;
 	extern uint8_t Number_Wires;
 	extern uint8_t Number_Buttons;
-//	extern uint8_t Number_Simple_Buttons;
+	static uint64_t last_press_rotswitch = 0;
 
 
 	for (uint8_t i=0;i<USEDPINS;i++){
-		if (pins[i].pin_type == RotSwWire) {
-			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
-				rowstate = 1;
-			  } else {
-				rowstate = 0;
-			  };
+		if (config.pin[i] == RotSwWire) {
+			rowstate = 0;
+			if ((*pins[i].idr_reg_addr) & ((0x1<<(pins[i].pin_number)) != 0))   {
+				if ((millis - last_press_rotswitch) > config.rotswitch_min_time){
+					rowstate = 1;
+				}
+				last_press_rotswitch = millis;
+			}
 			button = pole*Number_Wires + wire + Number_Buttons; //Number_Simple_Buttons;
 			if ((buttons[button].pressed == 1) &&  //if already pressed and longer then presstime
-					 (millis - buttons[button].time_pressed  > RotSwitch_Press_Time)) { //then reset
+					 (millis - buttons[button].time_pressed  > config.rotswitch_press_time)) { //then reset
 						buttons[button].pressed = 0;
 						} else {
 							//SetButtonState(button,rowstate);
@@ -102,7 +106,7 @@ void CheckRows(uint8_t column) {
 //	extern uint8_t Number_Simple_Buttons;
 
 	for (uint8_t i=0;i<USEDPINS;i++){
-		if (pins[i].pin_type == Button_ROW) {
+		if (config.pin[i] == Button_ROW) {
 			if (((*pins[i].idr_reg_addr) & 0x1<<(pins[i].pin_number)) != 0)   {
 				rowstate = 1;
 			  } else {
@@ -136,7 +140,7 @@ void SetButtonState(uint8_t i, uint8_t rowstate) {
 
 		if ((buttons[i].prev_state == 1) &&			//if previous state is HIGH and time since 1st push is
 				(!(buttons[i].current_state)) && 	//more than debounce time then button is pressed
-			 (millis - buttons[i].time_pressed  > Button_Debounce_Time)) {
+			 (millis - buttons[i].time_pressed  > config.button_debounce_time)) {
 				buttons[i].pressed = 1;
 				buttons[i].current_state = 1;
 				buttons[i].time_pressed = millis;

@@ -36,6 +36,7 @@
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_conf.h"
+#include "..\common_types\common_structs.h"
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
@@ -64,7 +65,7 @@
 //#define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
 #define USBD_CONFIGURATION_STRING_FS     "OSH PB Controller Config"
 #define USBD_INTERFACE_STRING_FS     "OSH PB Controller Interface"
-#define FIRMWARERELEASE 14
+//#define FIRMWARERELEASE 14
 
 extern uint8_t * USBD_PRODUCT_STRING_FS;
 extern uint8_t * USBD_SERIALNUMBER_STRING_FS;

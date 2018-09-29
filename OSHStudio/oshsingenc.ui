@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oshsingenc</class>
+ <widget class="QWidget" name="oshsingenc">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>199</width>
+    <height>72</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QComboBox" name="comboBox_SEB">
+   <property name="geometry">
+    <rect>
+     <x>98</x>
+     <y>50</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_SEA">
+   <property name="geometry">
+    <rect>
+     <x>98</x>
+     <y>0</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_SE2">
+   <property name="geometry">
+    <rect>
+     <x>-2</x>
+     <y>0</y>
+     <width>91</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="oshstudio.qrc">:/Images/1053081_zps20151924.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_SE2_CPin">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>30</y>
+     <width>47</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>+3.3V</string>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="oshstudio.qrc"/>
+ </resources>
+ <connections/>
+</ui>
