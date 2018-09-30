@@ -182,12 +182,11 @@ void OSHStudio::setConfig_Slot(){
             if (config.combined_axis_enabled) ui->checkBox_AxisComb->setChecked(true);
                 else ui->checkBox_AxisComb->setChecked(false);
 
-        showSingleEncodersTab();
-
         ui->horiSlider_A2B->setValue(config.analog_2_button_threshold);
         ui->spinBox_RotSwitch_min_time->setValue(config.rotswitch_min_time);
 
         gatherPinsConf();
+        showSingleEncodersTab();
         drawHelp();
 }
 

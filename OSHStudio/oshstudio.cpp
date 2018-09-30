@@ -378,7 +378,6 @@ void OSHStudio::gatherPinsConf()
     RotSwitchWires=0;
     PINAlist.clear();
     PINBlist.clear();
-    config.total_single_encoders=0;
     QStringList AxisComb1;
 
 

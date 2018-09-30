@@ -31,41 +31,41 @@
 #include <rotary.h>
 #include "..\common_types\common_structs.h"
 
-const struct pin_conf pins[USEDPINS] = {
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 0},		//A0
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 1},		//A1
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 2}, 		//A2
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 3}, 		//A3
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 4}, 		//A4
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 5}, 		//A5
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 6}, 		//A6
-		{(uint32_t *)0x40010800, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 7}, 		//A7
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 8},		//A8
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 9}, 		//A9
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 10},		//A10
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 11},		//A11
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 12},		//A12
-		{(uint32_t *)0x40010804, (uint32_t *)0x40010810, (uint32_t *)0x40010808, 15},		//A15
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 0},		//B0
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 1}, 		//B1
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 3},		//B3
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 4}, 		//B4
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 5}, 		//B5
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 6}, 		//B6
-		{(uint32_t *)0x40010c00, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 7}, 		//B7
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 8}, 		//B8
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 9}, 		//B9
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 10},		//B10
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 11},		//B11
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 12},		//B12
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 13},		//B13
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 14},		//B14
-		{(uint32_t *)0x40010c04, (uint32_t *)0x40010c10, (uint32_t *)0x40010c08, 15},		//B15
-		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 13},		//C13
-		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 14},		//C14
-		{(uint32_t *)0x40011004, (uint32_t *)0x40011010, (uint32_t *)0x40011008, 15},		//C15
-};
 
+const struct pin_conf pins[USEDPINS] = {
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 0},		//A0
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 1},		//A1
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 2}, 		//A2
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 3}, 		//A3
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 4}, 		//A4
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 5}, 		//A5
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 6}, 		//A6
+		{(uint32_t *)GPIOA_CRL, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 7}, 		//A7
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 8},		//A8
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 9}, 		//A9
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 10},		//A10
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 11},		//A11
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 12},		//A12
+		{(uint32_t *)GPIOA_CRH, (uint32_t *)GPIOA_BSRR, (uint32_t *)GPIOA_IDR, 15},		//A15
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 0},		//B0
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 1}, 		//B1
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 3},		//B3
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 4}, 		//B4
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 5}, 		//B5
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 6}, 		//B6
+		{(uint32_t *)GPIOB_CRL, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 7}, 		//B7
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 8}, 		//B8
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 9}, 		//B9
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 10},		//B10
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 11},		//B11
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 12},		//B12
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 13},		//B13
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 14},		//B14
+		{(uint32_t *)GPIOB_CRH, (uint32_t *)GPIOB_BSRR, (uint32_t *)GPIOB_IDR, 15},		//B15
+		{(uint32_t *)GPIOC_CRH, (uint32_t *)GPIOC_BSRR, (uint32_t *)GPIOC_IDR, 13},		//C13
+		{(uint32_t *)GPIOC_CRH, (uint32_t *)GPIOC_BSRR, (uint32_t *)GPIOC_IDR, 14},		//C14
+		{(uint32_t *)GPIOC_CRH, (uint32_t *)GPIOC_BSRR, (uint32_t *)GPIOC_IDR, 15},		//C15
+};
 
 //default parameters
 volatile struct total_config_ config = {
@@ -75,8 +75,8 @@ volatile struct total_config_ config = {
 			.operation_code1 = 1,
 			.operation_code2 = 2,
 			.operation_code3 = 3,
-			.rotary_press_time = 50,
-			.rotary_debounce_time = 10,
+			.rotary_press_time = 100,
+			.rotary_debounce_time = 50,
 			.button_debounce_time = 50,
 			.rotswitch_press_time = 100,
 			.rotswitch_min_time = 0,
@@ -322,6 +322,7 @@ void gpio_ports_config(void) {
 			RotaryStore[i].pressed = 0;
 			RotaryStore[i].state = 0;
 			RotaryStore[i].time_pressed = 0;
+			RotaryStore[i].previous_state = 0;
 		}
 	Rot_PINA_IDR = 0;
 	Rot_PINB_IDR = 0;

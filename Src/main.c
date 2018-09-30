@@ -156,6 +156,24 @@ int main(void)
 
 				  diff = millis - RotaryStore[i].time_pressed;
 
+				  if (diff > config.rotary_press_time) {
+					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
+					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
+					  RotaryStore[i].pressed = 0;
+					  RotaryStore[i].previous_state = 0;
+				  } else {
+					  if (!RotaryStore[i].previous_state){
+						  if (RotaryStore[i].pressed == DIR_CW) {
+							  USBSendBuffer[(i/4)+encoders_offset] |= ButtonsCodes[(i%4)*2];
+						  }
+						  if (RotaryStore[i].pressed == DIR_CCW) {
+							  USBSendBuffer[(i/4)+encoders_offset] |= ButtonsCodes[(i%4)*2+1];
+						  }
+						  RotaryStore[i].previous_state = RotaryStore[i].pressed;
+					  }
+				  }
+	  }
+/*
 				  if (!RotaryStore[i].pressed) {
 					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2];
 					  USBSendBuffer[(i/4)+encoders_offset] &= ~ButtonsCodes[(i%4)*2+1];
@@ -180,7 +198,7 @@ int main(void)
 				  			  USBSendBuffer[(i/4)+encoders_offset] |= ButtonsCodes[(i%4)*2+1];
 				  		}
 			  }
-
+*/
 
 	  //We should send report only if some action exist
 			/*  for (uint8_t i=1;i<21;i++) {

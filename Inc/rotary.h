@@ -49,6 +49,7 @@ struct rots {
 	volatile uint8_t pressed;
 	volatile uint64_t time_pressed;
 	volatile uint8_t state;
+	volatile uint8_t previous_state;
 };
 
 
