@@ -66,7 +66,6 @@ void OSHStudio::gatherConfig_Slot(){
 
     memcpy(config.usb_ps_uniq,ui->lineEdit_Device_ident->text().toLatin1(),10);
 
-    config.combined_axis_enabled = 0;
     if (ui->checkBox_AxisComb->isChecked()) {
         config.combined_axis_enabled = 1;
         config.combined_axis1_mincalib_value = ui->widget_axisComb1->LeftPinValue();
@@ -80,7 +79,11 @@ void OSHStudio::gatherConfig_Slot(){
         config.combined_axis_percent = ui->horizontalSliderAxisComb->value();
         config.combined_axis_pin1 = convertPinnameToIndex(ui->comboBox_AxisCombBegin->currentText());
         config.combined_axis_pin2 = convertPinnameToIndex(ui->comboBox_AxisCombEnd->currentText());
+    } else {
+        config.combined_axis_enabled = 0;
     }
+
+
 
     config.POV_config = 0;
     if (ui->checkBox_POV1->isChecked()) config.POV_config |= 0x1;
@@ -155,15 +158,23 @@ void OSHStudio::setConfig_Slot(){
 
         ui->lineEdit_Device_ident->setText(QString::fromLocal8Bit((char*)config.usb_ps_uniq));
 
-        ui->widget_axisComb1->setMinCalibValue(config.combined_axis1_mincalib_value);
-        ui->widget_axisComb1->setMaxCalibValue(config.combined_axis1_maxcalib_value);
-        ui->widget_axisComb2->setMinCalibValue(config.combined_axis2_mincalib_value);
-        ui->widget_axisComb2->setMaxCalibValue(config.combined_axis2_maxcalib_value);
+        if (config.combined_axis_enabled){
+            ui->widget_axisComb1->setMinCalibValue(config.combined_axis1_mincalib_value);
+            ui->widget_axisComb1->setMaxCalibValue(config.combined_axis1_maxcalib_value);
+            ui->widget_axisComb2->setMinCalibValue(config.combined_axis2_mincalib_value);
+            ui->widget_axisComb2->setMaxCalibValue(config.combined_axis2_maxcalib_value);
 
-        ui->widget_axisComb1->setAutoCalib(config.combined_axis_pin1_autocalib);
-        ui->widget_axisComb2->setAutoCalib(config.combined_axis_pin2_autocalib);
-        if (config.combined_axis_cooperate) ui->radioButtonCoopwoork->setChecked(true);
-          else ui->radioButtonEachonhisown->setChecked(true);
+            ui->widget_axisComb1->setAutoCalib(config.combined_axis_pin1_autocalib);
+            ui->widget_axisComb2->setAutoCalib(config.combined_axis_pin2_autocalib);
+            if (config.combined_axis_cooperate) ui->radioButtonCoopwoork->setChecked(true);
+                else ui->radioButtonEachonhisown->setChecked(true);
+            ui->horizontalSliderAxisComb->setValue(config.combined_axis_percent);
+            ui->comboBox_AxisCombBegin->setCurrentText(pin_names[config.combined_axis_pin1]);
+            ui->comboBox_AxisCombEnd->setCurrentText(pin_names[config.combined_axis_pin2]);
+            ui->checkBox_AxisComb->setChecked(true);
+        } else {
+            ui->checkBox_AxisComb->setChecked(false);
+        }
 
 
         if (config.POV_config & 0x1) ui->checkBox_POV1->setChecked(true);
@@ -175,12 +186,6 @@ void OSHStudio::setConfig_Slot(){
         if (config.POV_config & 0x8) ui->checkBox_POV4->setChecked(true);
             else ui->checkBox_POV4->setChecked(false);
 
-
-            ui->horizontalSliderAxisComb->setValue(config.combined_axis_percent);
-            ui->comboBox_AxisCombBegin->setCurrentText(pin_names[config.combined_axis_pin1]);
-            ui->comboBox_AxisCombEnd->setCurrentText(pin_names[config.combined_axis_pin2]);
-            if (config.combined_axis_enabled) ui->checkBox_AxisComb->setChecked(true);
-                else ui->checkBox_AxisComb->setChecked(false);
 
         ui->horiSlider_A2B->setValue(config.analog_2_button_threshold);
         ui->spinBox_RotSwitch_min_time->setValue(config.rotswitch_min_time);
@@ -201,8 +206,8 @@ void OSHStudio::resetConfig_Slot(){
         config.pin[i] = Not_Used;
     }
 
-    config.rotary_press_time = 50;
-    config.rotary_debounce_time = 10;
+    config.rotary_press_time = 100;
+    config.rotary_debounce_time = 50;
     config.rotswitch_press_time = 100;
     config.button_debounce_time = 50;
     config.combined_axis1_mincalib_value = 0;
@@ -278,8 +283,8 @@ void OSHStudio::restoreConfig_Slot(){
     config.pin[30] = Button_COLUMN;
     config.pin[31] = Button_COLUMN;
 
-    config.rotary_press_time = 50;
-    config.rotary_debounce_time = 10;
+    config.rotary_press_time = 100;
+    config.rotary_debounce_time = 50;
     config.rotswitch_press_time = 100;
     config.button_debounce_time = 50;
     config.combined_axis1_mincalib_value = 0;
