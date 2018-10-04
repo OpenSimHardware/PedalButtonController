@@ -193,9 +193,25 @@ void OSHStudio::setConfig_Slot(){
         gatherPinsConf();
         showSingleEncodersTab();
         drawHelp();
+
+        // show stored config version
+        QString firmware_correctness="";
+        if (!config.config_version) ui->label_Firmware_Vers->setText("") ;
+                 else ui->label_Firmware_Vers->setText("0."+QString::number(config.config_version));
+         if (config.config_version == OSHSTUDIOVERSION) {
+             firmware_correctness="color : green";
+         } else {
+             firmware_correctness="color : red";
+             }
+         ui->label_Firmware_Vers->setStyleSheet(firmware_correctness);
+         ui->label_58->setStyleSheet(firmware_correctness);
+         ui->label_34->setStyleSheet(firmware_correctness);
+         ui->label_Stud_version->setStyleSheet(firmware_correctness);
+
 }
 
 void OSHStudio::resetConfig_Slot(){
+    config.config_version = OSHSTUDIOVERSION;
     for (uint8_t i=0; i<MAX_AXES; i++){
         config.axes[i].axis_min_calib_value = 0;
         config.axes[i].axis_max_calib_value = 4095;
@@ -244,6 +260,7 @@ void OSHStudio::resetConfig_Slot(){
 }
 
 void OSHStudio::restoreConfig_Slot(){
+    config.config_version = OSHSTUDIOVERSION;
     for (uint8_t i=0;i<MAX_AXES;i++){
         config.axes[i].axis_min_calib_value = 0;
         config.axes[i].axis_max_calib_value = 4095;
@@ -348,12 +365,17 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
         memcpy(&(config.packet_id3), buf, BUFFSIZE);
         next_req[1]=0xFF; // EOT flag
         hid_write(handle_read, next_req, BUFFSIZE);
-        setConfig_Slot();
         if(mutex_for_load.tryLock()) {
-            QMessageBox::information(this, tr("Success!"),
-                                     tr("Board's config loaded successfully."));
+            if (config.config_version != OSHSTUDIOVERSION) {
+                QMessageBox::warning(this, tr("Nope!"),
+                                     tr("Its seems board has wrong FW version"));
+            } else {
+                setConfig_Slot();
+                QMessageBox::information(this, tr("Success!"),
+                                         tr("Board's config loaded successfully."));
+                }
             mutex_for_load.unlock();
-        }
+            }
         break;
         }
     }

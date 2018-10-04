@@ -9,8 +9,6 @@ void Worker::processData(void) {
     uint8_t buf[BUFFSIZE]={0};
     int8_t res=0;
     uint64_t buttonsState=0;
-    hid_device_info * cur_dev;
-
 
 while (1) {
      if (!handle_read) {
@@ -28,9 +26,9 @@ while (1) {
           emit putDisconnectedDeviceInfo();
           QThread::sleep(1);
       } else {
-        res=hid_set_nonblocking(handle_read, 1);
-        cur_dev = hid_enumerate(0x1209, 0x3100);
-        emit putConnectedDeviceInfo(cur_dev->release_number);
+//        res=hid_set_nonblocking(handle_read, 1);
+//        cur_dev = hid_enumerate(0x1209, 0x3100);
+        emit putConnectedDeviceInfo();
         }
      }
 

@@ -70,8 +70,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(drawButtons2Value(uint64_t)));
       connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
                             SLOT(drawPOVSvalue(uint64_t)));
-      connect(worker, SIGNAL(putConnectedDeviceInfo(uint8_t)),
-                            SLOT(showConnectDeviceInfo(uint8_t)));
+      connect(worker, SIGNAL(putConnectedDeviceInfo()),
+                            SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
                             SLOT(hideConnectDeviceInfo()));
       connect(worker, SIGNAL(putConfigPacket(uint8_t *)),
@@ -275,14 +275,14 @@ void OSHStudio::checkBoxPOV4Changed(int state) {
 
 
 
-void OSHStudio::showConnectDeviceInfo(uint8_t firmware_release) {
-    QString firmware_correctness="";
+void OSHStudio::showConnectDeviceInfo() {
+ //   QString firmware_correctness="";
 
     ui->label_DevDescImg->setVisible(true);
     ui->label_DevDesc->setVisible(true);
     ui->getConfig_button->setEnabled(true);
     ui->saveConfig_Button->setEnabled(true);
-    if (!firmware_release) ui->label_Firmware_Vers->setText("") ;
+/*    if (!firmware_release) ui->label_Firmware_Vers->setText("") ;
             else ui->label_Firmware_Vers->setText("0."+QString::number(firmware_release));
     if (firmware_release == OSHSTUDIOVERSION) {
         firmware_correctness="color : green";
@@ -293,6 +293,7 @@ void OSHStudio::showConnectDeviceInfo(uint8_t firmware_release) {
         ui->label_58->setStyleSheet(firmware_correctness);
         ui->label_34->setStyleSheet(firmware_correctness);
         ui->label_Stud_version->setStyleSheet(firmware_correctness);
+        */
 }
 
 void OSHStudio::hideConnectDeviceInfo() {

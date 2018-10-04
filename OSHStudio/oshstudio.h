@@ -88,7 +88,7 @@ private slots:
   void drawButtons1Value(uint64_t buttons_value);
   void drawButtons2Value(uint64_t buttons_value);
   void drawPOVSvalue(uint64_t POVS_value);
-  void showConnectDeviceInfo(uint8_t firmware_release);
+  void showConnectDeviceInfo();
   void hideConnectDeviceInfo();
   QString convertIntToString(int i);
   void showPercentAxisComb(int i);

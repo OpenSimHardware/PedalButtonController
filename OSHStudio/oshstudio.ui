@@ -126,7 +126,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -3792,7 +3792,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>t</string>
+     <string/>
     </property>
    </widget>
   </widget>

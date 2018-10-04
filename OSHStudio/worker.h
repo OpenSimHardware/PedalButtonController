@@ -21,7 +21,7 @@ signals:
     void putButtons2Value(uint64_t buttons_value);
     void putPOVSvalue(uint64_t buttons_value);
     void putDisconnectedDeviceInfo(void);
-    void putConnectedDeviceInfo(uint8_t firmware_release);
+    void putConnectedDeviceInfo(void);
     void putConfigPacket(uint8_t *);
     void putACKpacket(uint8_t);
 

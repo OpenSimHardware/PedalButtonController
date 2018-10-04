@@ -69,6 +69,7 @@ const struct pin_conf pins[USEDPINS] = {
 
 //default parameters
 volatile struct total_config_ config = {
+		    .config_version = FIRMWARERELEASE,
 			.packet_id1 = 4,
 			.packet_id2 = 4,
 			.packet_id3 = 4,
@@ -210,7 +211,11 @@ void gpio_init(void) {
 //	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
 //	AFIO->MAPR = AFIO_MAPR_SWJ_CFG_DISABLE;
 
-	if (*(get_lastpage_addr((uint16_t *)FLASHSIZEREG)) == 0xFFFF) {
+	uint8_t * curradr;
+
+	curradr = (uint8_t *)get_lastpage_addr((uint16_t *)FLASHSIZEREG) ;
+
+	if (*(curradr + offsetof(struct total_config_,config_version)) != FIRMWARERELEASE) {
 		write_flash();
 	} else {
 		get_config();

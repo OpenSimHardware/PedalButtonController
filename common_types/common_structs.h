@@ -63,7 +63,9 @@ struct total_config_ {
     uint16_t analog_2_button_threshold;
     uint16_t rotswitch_min_time;
 
-    uint8_t dummy[58];
+    uint8_t config_version;
+
+    uint8_t dummy[57];
 };
 #pragma pack(pop)
 
