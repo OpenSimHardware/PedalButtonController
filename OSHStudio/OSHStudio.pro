@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     get_put_config.cpp \
     oshpincombobox.cpp \
     worker.cpp \
-    oshsingenc.cpp
+    oshsingenc.cpp \
+    osha2bw.cpp
 
 HEADERS  += oshstudio.h \
     hidapi.h \
@@ -34,12 +35,14 @@ HEADERS  += oshstudio.h \
     ../common_types/common_structs.h \
     worker.h \
     ../common_types/common_defines.h \
-    oshsingenc.h
+    oshsingenc.h \
+    osha2bw.h
 
 FORMS    += oshstudio.ui \
     oshaxiswca.ui \
     oshpincombobox.ui \
-    oshsingenc.ui
+    oshsingenc.ui \
+    osha2bw.ui
 
 RESOURCES += \
     oshstudio.qrc

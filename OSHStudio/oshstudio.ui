@@ -126,7 +126,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1351,7 +1351,7 @@
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Axes Configuration</string>
+      <string>Axes Config</string>
      </attribute>
      <widget class="QLabel" name="label_48">
       <property name="geometry">
@@ -1777,6 +1777,154 @@
         <y>400</y>
         <width>750</width>
         <height>43</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Analog 2 Buttons</string>
+     </attribute>
+     <widget class="QLabel" name="label_ZeroA2B">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>431</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>You don't have configured any of analog to buttons inputs in &quot;Pins Configuration&quot; Tab. </string>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_7" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>310</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_8" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>360</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_9" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>410</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_10" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>460</y>
+        <width>751</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="mouseTracking">
@@ -3165,73 +3313,6 @@
        <string>Enable POV4</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_8">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>480</y>
-        <width>141</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Analog to Button Inputs</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horiSlider_A2B">
-      <property name="geometry">
-       <rect>
-        <x>230</x>
-        <y>480</y>
-        <width>421</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>4095</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="tickInterval">
-       <number>200</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_9">
-      <property name="geometry">
-       <rect>
-        <x>660</x>
-        <y>480</y>
-        <width>47</width>
-        <height>13</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>+3.3V</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_10">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>480</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>0V</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="tab_5">
      <attribute name="title">
@@ -3242,12 +3323,12 @@
        <rect>
         <x>60</x>
         <y>30</y>
-        <width>351</width>
+        <width>391</width>
         <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>You don't have configured single encoders in &quot;Pins Configuration&quot; Tab. </string>
+       <string>You don't have configured any of single encoders in &quot;Pins Configuration&quot; Tab. </string>
       </property>
      </widget>
      <widget class="QLabel" name="label_SEHelp">
@@ -3444,7 +3525,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>320</y>
+        <y>400</y>
         <width>341</width>
         <height>16</height>
        </rect>
@@ -3457,7 +3538,7 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>350</y>
+        <y>430</y>
         <width>281</width>
         <height>16</height>
        </rect>
@@ -3515,7 +3596,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>320</y>
+        <y>400</y>
         <width>61</width>
         <height>21</height>
        </rect>
@@ -3531,7 +3612,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>350</y>
+        <y>430</y>
         <width>61</width>
         <height>21</height>
        </rect>
@@ -3621,7 +3702,7 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>290</y>
+        <y>330</y>
         <width>61</width>
         <height>21</height>
        </rect>
@@ -3637,13 +3718,71 @@
       <property name="geometry">
        <rect>
         <x>140</x>
-        <y>290</y>
+        <y>330</y>
         <width>491</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
        <string>Time since previous Rotary Switch position change, if less then button press is not registered, ms</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_A2B_Press_time">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>290</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="maximum">
+       <number>65535</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_62">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>290</y>
+        <width>491</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Amount of time a button will be pressed when Analog Input position changed, ms</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBox_A2B_min_time">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>360</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="maximum">
+       <number>65535</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_63">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>360</y>
+        <width>491</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Time since previous Analog Input position change, if less then button press is not registered, ms</string>
       </property>
      </widget>
     </widget>
@@ -3827,6 +3966,12 @@
    <class>oshsingenc</class>
    <extends>QWidget</extends>
    <header>oshsingenc.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>osha2bw</class>
+   <extends>QWidget</extends>
+   <header>osha2bw.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -181,13 +181,13 @@ void OSHaxiswca::AutoCalibToggled(bool state) {
         update();
         ui->lineEdit_MaxCalib->setEnabled(false);
         ui->lineEdit_MinCalib->setEnabled(false);
-        ui->label->setEnabled(false);
-        ui->label_2->setEnabled(false);
+        ui->label_MinCalib->setEnabled(false);
+        ui->label_MaxCalib->setEnabled(false);
     } else {
         ui->lineEdit_MaxCalib->setEnabled(true);
         ui->lineEdit_MinCalib->setEnabled(true);
-        ui->label->setEnabled(true);
-        ui->label_2->setEnabled(true);
+        ui->label_MinCalib->setEnabled(true);
+        ui->label_MaxCalib->setEnabled(true);
         AutoCalibEnabled=false;
         LeftpinColor = QColor(1,119,215);
         RightpinColor = QColor(1,119,215);
@@ -265,4 +265,3 @@ void OSHaxiswca::setAutoCalib(uint8_t state) {
     if (state==1) ui->checkBox_AutoCalib->setChecked(true);
      else ui->checkBox_AutoCalib->setChecked(false);
 }
-

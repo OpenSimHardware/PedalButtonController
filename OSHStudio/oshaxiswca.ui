@@ -75,7 +75,7 @@
     <string>9999</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="label_MinCalib">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -97,7 +97,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="label_MaxCalib">
    <property name="geometry">
     <rect>
      <x>570</x>

@@ -91,8 +91,21 @@ void OSHStudio::gatherConfig_Slot(){
     if (ui->checkBox_POV3->isChecked()) config.POV_config |= 0x4;
     if (ui->checkBox_POV4->isChecked()) config.POV_config |= 0x8;
 
-    config.analog_2_button_threshold = ui->horiSlider_A2B->value();
     config.rotswitch_min_time = ui->spinBox_RotSwitch_min_time->value();
+
+    config.analog_2_button_min_time = ui->spinBox_A2B_min_time->value();
+    config.analog_2_button_press_time = ui->spinBox_A2B_Press_time->value();
+
+    config.analog_2_button_inputs = Analog2Buttons_inputs;
+    for (uint8_t i=0; i<Analog2Buttons_inputs; i++){
+        if (i<5){
+            config.a2b_1st5[i].buttons_number = A2Bstore[i].widget_ptr->getButtonsCount();
+            A2Bstore[i].widget_ptr->getButtonsIntervals(config.a2b_1st5[i].buttons_intervals);
+        } else {
+            config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_number = A2Bstore[i].widget_ptr->getButtonsCount();
+            A2Bstore[i].widget_ptr->getButtonsIntervals(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_intervals);
+        }
+    }
 
     QString name_template_SE("widget_SE%1");
     oshsingenc *SEwid;
@@ -187,11 +200,14 @@ void OSHStudio::setConfig_Slot(){
             else ui->checkBox_POV4->setChecked(false);
 
 
-        ui->horiSlider_A2B->setValue(config.analog_2_button_threshold);
         ui->spinBox_RotSwitch_min_time->setValue(config.rotswitch_min_time);
+
+        ui->spinBox_A2B_min_time->setValue(config.analog_2_button_min_time);
+        ui->spinBox_A2B_Press_time->setValue(config.analog_2_button_press_time);
 
         gatherPinsConf();
         showSingleEncodersTab();
+        showA2Btab();
         drawHelp();
 
         // show stored config version
@@ -253,7 +269,11 @@ void OSHStudio::resetConfig_Slot(){
     config.combined_axis_pin1 = 4;
     config.combined_axis_pin2 = 5;
 
-    config.analog_2_button_threshold = 2048;
+    config.analog_2_button_inputs = 0;
+    config.analog_2_button_min_time = 0;
+    config.analog_2_button_press_time = 100;
+    resetAllA2B();
+
     config.rotswitch_min_time = 0;
 
     setConfig_Slot();
@@ -331,7 +351,10 @@ void OSHStudio::restoreConfig_Slot(){
     config.combined_axis_pin1 = 4;
     config.combined_axis_pin2 = 5;
 
-    config.analog_2_button_threshold = 2048;
+    config.analog_2_button_inputs = 0;
+    config.analog_2_button_min_time = 0;
+    config.analog_2_button_press_time = 100;
+    resetAllA2B();
     config.rotswitch_min_time = 0;
 
     setConfig_Slot();
@@ -363,6 +386,12 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
         }
     case 3: {
         memcpy(&(config.packet_id3), buf, BUFFSIZE);
+        next_req[1]=4;
+        hid_write(handle_read, next_req, BUFFSIZE);
+        break;
+        }
+    case 4: {
+        memcpy(&(config.packet_id4), buf, BUFFSIZE);
         next_req[1]=0xFF; // EOT flag
         hid_write(handle_read, next_req, BUFFSIZE);
         if(mutex_for_load.tryLock()) {
@@ -388,9 +417,11 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     config.packet_id1 = 2;
     config.packet_id2 = 2;
     config.packet_id3 = 2;
+    config.packet_id4 = 2;
     config.operation_code1 = 1;
     config.operation_code2 = 2;
     config.operation_code3 = 3;
+    config.operation_code4 = 4;
 
     switch(confirmed_packet){
     case 1: memcpy(buf, &(config.packet_id2), BUFFSIZE);
@@ -399,7 +430,10 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     case 2: memcpy(buf, &(config.packet_id3), BUFFSIZE);
             hid_write(handle_read, buf, BUFFSIZE);
             break;
-    case 3: buf[0] = 2;
+    case 3: memcpy(buf, &(config.packet_id4), BUFFSIZE);
+            hid_write(handle_read, buf, BUFFSIZE);
+            break;
+    case 4: buf[0] = 2;
             buf[1] = 255; //EOT marker
             hid_write(handle_read, buf, BUFFSIZE);
             if(mutex_for_save.tryLock()) {

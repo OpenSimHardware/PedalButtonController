@@ -210,9 +210,9 @@ void OSHStudio::loadFromFile()
             value = line.section('=',1,1);
             ui->horizontalSliderAxisComb->setValue(value.toUInt());
 
-            line = in.readLine();
-            value = line.section('=',1,1);
-            ui->horiSlider_A2B->setValue(value.toUInt());
+          //  line = in.readLine();
+          //  value = line.section('=',1,1);
+          //  ui->horiSlider_A2B->setValue(value.toUInt());
 
 
             line = in.readLine();
@@ -353,8 +353,8 @@ void OSHStudio::saveToFile()
         << "ComboAxisPin2AC=" << ui->widget_axisComb2->isAutoCalibEnabled() << "\n"
         << "ComboAxisCoop=" << ui->radioButtonCoopwoork->isChecked() << "\n"
         << "ComboAxisSep=" << ui->radioButtonEachonhisown->isChecked() << "\n"
-        << "ComboAxisSlid=" << ui->horizontalSliderAxisComb->value() << "\n"
-        << "Analog2ButtonThresh=" << ui->horiSlider_A2B->value() << "\n";
+        << "ComboAxisSlid=" << ui->horizontalSliderAxisComb->value() << "\n";
+   //     << "Analog2ButtonThresh=" << ui->horiSlider_A2B->value() << "\n";
 
     int POVConf=0;
     if (ui->checkBox_POV1->isChecked()) POVConf|=0x1;

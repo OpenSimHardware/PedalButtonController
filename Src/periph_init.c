@@ -73,14 +73,18 @@ volatile struct total_config_ config = {
 			.packet_id1 = 4,
 			.packet_id2 = 4,
 			.packet_id3 = 4,
+			.packet_id4 = 4,
 			.operation_code1 = 1,
 			.operation_code2 = 2,
 			.operation_code3 = 3,
+			.operation_code4 = 4,
 			.rotary_press_time = 100,
 			.rotary_debounce_time = 50,
 			.button_debounce_time = 50,
 			.rotswitch_press_time = 100,
 			.rotswitch_min_time = 0,
+			.analog_2_button_min_time = 0,
+			.analog_2_button_press_time = 100,
 			.usb_exchange_rate = 16,
 			.combined_axis1_mincalib_value = 0,
 			.combined_axis1_maxcalib_value = 4095,
@@ -95,7 +99,8 @@ volatile struct total_config_ config = {
 			.combined_axis_separate = 0,
 			.combined_axis_pin1_autocalib = 0,
 			.combined_axis_pin2_autocalib = 0,
-			.analog_2_button_threshold = 600, //for DimSim
+			//.analog_2_button_threshold = 600, //for DimSim
+			.analog_2_button_inputs = 0,
 			.POV_config = 0,
 			.axes[0].axis_min_calib_value = 0x1E, //for DimSim
 			.axes[0].axis_max_calib_value = 0x3A3, //for DimSim
@@ -153,13 +158,17 @@ uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
 uint8_t USB_Serial_Number_Unique[15] = {0};
 
-volatile uint8_t Number_AnalogButtons=0;
+//volatile uint8_t Number_AnalogButtons=0;
 uint8_t Number_DigiButtons=0;
 volatile uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE]={0};
 volatile uint8_t config_flag=0;
 
 volatile struct rot_conf Single_rotaries[USEDPINS] = {0};
 
+volatile struct a2b {
+    uint8_t buttons_number;
+    uint16_t buttons_intervals[MAX_A2B_BUTTONS];
+} A2Bstore[MAX_A2B_INPUTS] = {0};
 
 //TODO not sure why it needs to be global
 uint8_t USB_Product_String[31] = {
@@ -216,6 +225,7 @@ void gpio_init(void) {
 	curradr = (uint8_t *)get_lastpage_addr((uint16_t *)FLASHSIZEREG) ;
 
 	if (*(curradr + offsetof(struct total_config_,config_version)) != FIRMWARERELEASE) {
+		erase_flash();
 		write_flash();
 	} else {
 		get_config();
@@ -312,7 +322,7 @@ void gpio_ports_config(void) {
 	uint8_t Number_Poles = 0;
 	//TODO make it as struct & pass ptr to it to functions
 	Number_Channels = 0;
-	Number_AnalogButtons = 0;
+//	Number_AnalogButtons = 0;
 	Number_DigiButtons = 0;
 	extern volatile struct rots RotaryStore[USEDPINS];
 	extern struct keypad buttons[MAXBUTTONS];
@@ -386,7 +396,7 @@ void gpio_ports_config(void) {
 							tmpbsrrvalue=0x10;
 							break;
 		case Analog2Button: Number_Channels++;
-							Number_AnalogButtons++;
+							//Number_AnalogButtons++;
 							tmpconfvalue=0x0;
 							tmpbsrrvalue=0x10;
 							break;
@@ -476,7 +486,24 @@ void gpio_ports_config(void) {
 	}
 
 	Number_DigiButtons = Number_Columns*Number_Rows + Number_Simple_Buttons;
-	Number_Buttons = Number_DigiButtons + Number_AnalogButtons;
+	Number_Buttons = Number_DigiButtons;
+	for (uint8_t i = 0; i < config.analog_2_button_inputs; i++){
+		if (i < 5) {
+			Number_Buttons += config.a2b_1st5[i].buttons_number;
+			A2Bstore[i].buttons_number = config.a2b_1st5[i].buttons_number;
+			for (uint8_t j=0; j<MAX_A2B_BUTTONS; j++){
+				A2Bstore[i].buttons_intervals[j] = (config.a2b_1st5[i].buttons_intervals[j]*4095)/255;
+			}
+		}
+		else {
+			Number_Buttons += config.a2b_2nd5[i-5].buttons_number;
+			A2Bstore[i].buttons_number = config.a2b_2nd5[i-(MAX_A2B_BUTTONS/2)].buttons_number;
+			for (uint8_t j=0; j<MAX_A2B_BUTTONS; j++){
+				A2Bstore[i].buttons_intervals[j] = (config.a2b_2nd5[i-(MAX_A2B_BUTTONS/2)].buttons_intervals[j]*4095)/255;
+			}
+		}
+	}
+
 	Number_RotSwitches = Number_Poles * Number_Wires;
 	encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
 	if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
@@ -493,7 +520,7 @@ void gpio_ports_config(void) {
 
 	if (config.combined_axis_enabled) {
 		uint8_t lastaxis=0;
-		if (Number_Channels-Number_AnalogButtons > MAX_AXES) lastaxis=5; else lastaxis=Number_Channels-Number_AnalogButtons;
+		if (Number_Channels-config.analog_2_button_inputs > MAX_AXES) lastaxis=5; else lastaxis=Number_Channels-config.analog_2_button_inputs;
 		config.axes[lastaxis].axis_min_calib_value = config.combined_axis1_mincalib_value;
 		config.axes[lastaxis].axis_max_calib_value = config.combined_axis1_maxcalib_value;
 	}
@@ -572,11 +599,13 @@ void adc_init(void) {
 				(config.pin[i] == AnalogMedSmooth) || (config.pin[i] == AnalogHighSmooth) ||
 				(config.pin[i] == Analog2Button)) {
 			if (channel < 6) {
-				//ADC1->SQR3 |= channel << (5*channel);
-				ADC1->SQR3 |= pins[i].pin_number << (5*channel);
+				ADC1->SQR3 |= pins[i].pin_number << (5*channel); // for A0-A5
 			} else {
-				//ADC1->SQR2 |= channel << (5*(channel-6));
-				ADC1->SQR2 |= pins[i].pin_number << (5*(channel-6));
+				if (channel < 8){
+					ADC1->SQR2 |= pins[i].pin_number << (5*(channel-6)); // for A6-A7
+				} else {
+					ADC1->SQR2 |= (pins[i].pin_number+8) << (5*(channel-6)); // for B0-B1
+				}
 			}
 			channel++;
 		}
@@ -647,7 +676,7 @@ void NVIC_init(void){
 
 void fill_buffer_4_axises(void) {
 	  uint8_t Ainput=0;
-	  uint8_t AnalogButton=0;
+	  uint8_t A2Binput=0;
 
 	  for (uint8_t i=0;i<USEDPINS;i++) {
 		  switch (config.pin[i]) {
@@ -655,7 +684,7 @@ void fill_buffer_4_axises(void) {
 		  	  case AnalogLowSmooth:	  	  processing_axises(Ainput++, 60, i); break;
 		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 30, i); break;
 		  	  case AnalogHighSmooth:	  processing_axises(Ainput++, 1, i); break;
-		  	  case Analog2Button:		  processing_axises(Ainput++, 200+AnalogButton++, i); break;
+		  	  case Analog2Button:		  processing_axises(Ainput++, 200+A2Binput++, i); break;
 		  	  default:					  break;
 		  }
 	  }
@@ -669,24 +698,39 @@ void processing_axises(uint8_t Ainput, uint8_t Kstab, uint8_t i) {
 	uint32_t mapvalue=0;
 	uint8_t endvalue;
 	uint8_t Number_Axes=0;
+	uint8_t button = Number_DigiButtons;
 static	uint32_t AxisComboValue=0;
 static uint8_t pincount=0;
 static uint8_t Axis=0;
 
-	Number_Axes=Number_Channels-Number_AnalogButtons-1; //Number of axes not more than analog inputs
+	Number_Axes=Number_Channels-config.analog_2_button_inputs-1;
 
 	curr = ADC1Values[Ainput];
 
 	if (Kstab > 199) {
 		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 		ADC1Prevs_Values[Ainput] = optvalue;
-		if (curr > config.analog_2_button_threshold) {
-			SetButtonState(Kstab-200 + Number_DigiButtons, 1);
+		for (uint8_t i=0; i<(Kstab-200);i++){
+			button += A2Bstore[i].buttons_number;
+		}
+
+
+		for (uint8_t j=0; j<A2Bstore[Kstab-200].buttons_number-1; j++){
+			if ((optvalue > A2Bstore[Kstab-200].buttons_intervals[j]) && (optvalue < A2Bstore[Kstab-200].buttons_intervals[j+1])){
+				SetButtonState(button,1,a2b_button);
+			} else {
+				SetButtonState(button,0,a2b_button);
+			}
+			button++;
+		}
+		if (optvalue > A2Bstore[Kstab-200].buttons_intervals[A2Bstore[Kstab-200].buttons_number-1]) {
+			SetButtonState(button,1,a2b_button);
 		} else {
-			SetButtonState(Kstab-200 + Number_DigiButtons, 0);
+			SetButtonState(button,0,a2b_button);
 		}
 		return;
 	}
+
 
 	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 

@@ -245,6 +245,7 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		config.packet_id1 = 4;
 		config.packet_id2 = 4;
 		config.packet_id3 = 4;
+		config.packet_id4 = 4;
 		if (code == 1) {
 			config_flag = 1;
 			memcpy(send_buffer, &(config.packet_id1), BUFFSIZE);
@@ -254,6 +255,9 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		}
 		if (code == 3) {
 			memcpy(send_buffer, &(config.packet_id3), BUFFSIZE);
+		}
+		if (code == 4) {
+			memcpy(send_buffer, &(config.packet_id4), BUFFSIZE);
 		}
 		if (code == 0xFF) config_flag=0;
 
@@ -271,10 +275,13 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 			send_buffer[1]=2;
 			memcpy(&(config.packet_id2), hhid->Report_buf, BUFFSIZE);
 		}
-
 		if (hhid->Report_buf[1] == 3) {
 			send_buffer[1]=3;
 			memcpy(&(config.packet_id3), hhid->Report_buf, BUFFSIZE);
+		}
+		if (hhid->Report_buf[1] == 4) {
+			send_buffer[1]=4;
+			memcpy(&(config.packet_id4), hhid->Report_buf, BUFFSIZE);
 			erase_flash();
 			write_flash();
 		}

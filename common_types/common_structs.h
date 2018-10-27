@@ -10,6 +10,11 @@ struct axis {
     uint8_t axis_special;
 };
 
+struct analog_2_button {
+    uint8_t buttons_number;
+    uint8_t buttons_intervals[MAX_A2B_BUTTONS];
+};
+
 struct total_config_ {
     /*===================================*/
     /*===  packet 1 =====================*/
@@ -60,12 +65,23 @@ struct total_config_ {
     uint8_t packet_id3;
     uint8_t operation_code3;
 
-    uint16_t analog_2_button_threshold;
-    uint16_t rotswitch_min_time;
-
     uint8_t config_version;
+    uint16_t rotswitch_min_time;
+    uint16_t analog_2_button_min_time;
+    uint16_t analog_2_button_press_time;
 
-    uint8_t dummy[57];
+    struct analog_2_button a2b_1st5[5];
+
+    /*===================================*/
+    /*===  packet 4 =====================*/
+    uint8_t packet_id4;
+    uint8_t operation_code4;
+
+    uint8_t analog_2_button_inputs;
+
+    struct analog_2_button a2b_2nd5[5];
+    uint8_t dummy4[6];
+
 };
 #pragma pack(pop)
 
@@ -94,5 +110,11 @@ typedef enum {
     RotSwPole = 21,
     RotSwWire = 22,
 } pintype;
+
+typedef enum {
+        axis_mode = 0,
+        A2B_mode = 1,
+} wid_type;
+
 
 #endif // COMMON_STRUCTS_H

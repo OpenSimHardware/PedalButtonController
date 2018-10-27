@@ -35,7 +35,7 @@ void oshpincombobox::on_comboBox_currentIndexChanged(int index)
         case AnalogLowSmooth:   color_scheme="QComboBox { color: white; background-color: #003300; }";break;
         case AnalogMedSmooth:   color_scheme="QComboBox { color: white; background-color: #003300; }";break;
         case AnalogHighSmooth:  color_scheme="QComboBox { color: white; background-color: #003300; }";break;
-        case Analog2Button:     color_scheme="QComboBox { color: white; background-color: #003300; }";break;
+        case Analog2Button:     color_scheme="QComboBox { color: white; background-color: #006600; }";break;
         case Chain_Rotary_PINA: color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case Chain_Rotary_PINB: color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case Chain_Rotary_Enc_1:color_scheme="QComboBox { color: black; background-color: #669900; }";break;
@@ -64,7 +64,10 @@ void oshpincombobox::on_comboBox_currentIndexChanged(int index)
 
 void oshpincombobox::set_pin_number(uint8_t pin_number)
 {
-    if (pin_number > 6) {
+    // disable chained 1/4 enc config
+    ui->comboBox->setItemData(10, 0, Qt::UserRole - 1);
+
+    if ((pin_number > 8) && (pin_number !=14) && (pin_number != 15)){
         ui->comboBox->setItemData(1, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(2, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(3, 0, Qt::UserRole - 1);

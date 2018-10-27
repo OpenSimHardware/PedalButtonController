@@ -6,6 +6,7 @@
 #include <QThread>
 #include<QFileDialog>
 #include<QTextStream>
+#include "osha2bw.h"
 #include "..\common_types\common_structs.h"
 
 namespace Ui {
@@ -16,6 +17,12 @@ class OSHStudio;
 struct single_encoders_pins {
     uint8_t pinA;
     uint8_t pinB;
+};
+
+struct A2B_params {
+    osha2bw * widget_ptr;
+    uint8_t number_buttons;
+    uint8_t pin_number;
 };
 
 struct pin_comp_geometry {
@@ -43,6 +50,7 @@ private:
   struct single_encoders_pins single_encoders_1_store[MAX_SINGLE_ENCODERS];
   struct single_encoders_pins single_encoders_2_store[MAX_SINGLE_ENCODERS];
   struct single_encoders_pins single_encoders_4_store[MAX_SINGLE_ENCODERS];
+  struct A2B_params A2Bstore[MAX_A2B_INPUTS];
   uint8_t single_encoders_1;
   uint8_t single_encoders_2;
   uint8_t single_encoders_4;
@@ -64,6 +72,7 @@ private:
   uint8_t Buttons;
   uint8_t RotSwitchPoles;
   uint8_t RotSwitchWires;
+  uint8_t Analog2Buttons_inputs;
 
 private slots:
   void getConfig_Slot();
@@ -102,6 +111,9 @@ private slots:
   void gatherPinsConf();
   void pinConfChanged();
   void populateDefSE();
+  void populateDefA2B();
+  void showA2Btab();
+  void resetAllA2B();
   void showSingleEncodersTab(void);
   void checkBoxPOV1Changed(int state);
   void checkBoxPOV2Changed(int state);

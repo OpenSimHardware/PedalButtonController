@@ -62,6 +62,8 @@ void get_config(void) {
 	memcpy(&(config.packet_id2), curradr, BUFFSIZE);
 	curradr += 32;
 	memcpy(&(config.packet_id3), curradr, BUFFSIZE);
+	curradr += 32;
+	memcpy(&(config.packet_id4), curradr, BUFFSIZE);
 }
 
 void erase_flash(void) {
@@ -94,7 +96,7 @@ void write_flash(void) {
   FLASH->CR |= FLASH_CR_PG; /* Programm the flash */
 
 
-  for (uint8_t i=0; i<(BUFFSIZE*3)/2; ++i) {
+  for (uint16_t i=0; i<(BUFFSIZE*4)/2; ++i) {
 	  while ((FLASH->SR & FLASH_SR_BSY) != 0 );
 	  *currflashaddr++ = *currstructaddr++;
   }

@@ -91,6 +91,16 @@ OSHStudio::OSHStudio(QWidget *parent) :
        }
        ui->label_ZeroSglEncoders->setVisible(true);
 
+       //hide all A2B widgets
+       QString name_template_A2B("widget_A2B_%1");
+       for(int i =1; i <= MAX_A2B_INPUTS; i++){
+           A2Bstore[i-1].widget_ptr = ui->tabWidget->findChild<osha2bw *>(name_template_A2B.arg(i));
+           A2Bstore[i-1].widget_ptr->setVisible(false);
+           A2Bstore[i-1].number_buttons=1;
+        }
+        ui->label_ZeroA2B->setVisible(true);
+        resetAllA2B();
+
 
        QString name_template("widget_PB%1");
        for(int i = 0; i < 32; i++) {
@@ -113,6 +123,8 @@ OSHStudio::OSHStudio(QWidget *parent) :
       ui->comboBox_BoardType->addItem("BluePill Board");
       ui->comboBox_BoardType->addItem("BlackPill Board");
       ui->comboBox_BoardType->setCurrentIndex(0);
+
+      resetConfig_Slot();
 }
 
 OSHStudio::~OSHStudio()
@@ -273,27 +285,11 @@ void OSHStudio::checkBoxPOV4Changed(int state) {
 }
 
 
-
-
 void OSHStudio::showConnectDeviceInfo() {
- //   QString firmware_correctness="";
-
     ui->label_DevDescImg->setVisible(true);
     ui->label_DevDesc->setVisible(true);
     ui->getConfig_button->setEnabled(true);
     ui->saveConfig_Button->setEnabled(true);
-/*    if (!firmware_release) ui->label_Firmware_Vers->setText("") ;
-            else ui->label_Firmware_Vers->setText("0."+QString::number(firmware_release));
-    if (firmware_release == OSHSTUDIOVERSION) {
-        firmware_correctness="color : green";
-    } else {
-        firmware_correctness="color : red";
-        }
-        ui->label_Firmware_Vers->setStyleSheet(firmware_correctness);
-        ui->label_58->setStyleSheet(firmware_correctness);
-        ui->label_34->setStyleSheet(firmware_correctness);
-        ui->label_Stud_version->setStyleSheet(firmware_correctness);
-        */
 }
 
 void OSHStudio::hideConnectDeviceInfo() {
@@ -360,6 +356,7 @@ void OSHStudio::showPin2AxisComb(QString pinname){
 
 void OSHStudio::gatherPinsConf()
 {
+    //TODO - eliminate these ugly globals
     NumberAnalogInputs=0;
     Chain_PinA=0;
     Chain_PinB=0;
@@ -380,6 +377,7 @@ void OSHStudio::gatherPinsConf()
     PINAlist.clear();
     PINBlist.clear();
     QStringList AxisComb1;
+    Analog2Buttons_inputs = 0;
 
 
     uint8_t pin_number=0;
@@ -397,6 +395,7 @@ void OSHStudio::gatherPinsConf()
                 case (AnalogMedSmooth):
                 case (AnalogHighSmooth):        AxisComb1+='A'+QString::number(i);
                                                 NumberAnalogInputs ++; break;
+                case (Analog2Button):           A2Bstore[Analog2Buttons_inputs++].pin_number=pin_number; break;
                 case (Chain_Rotary_PINA):       Chain_PinA++; break;
                 case (Chain_Rotary_PINB):       Chain_PinB++; break;
                 case (Chain_Rotary_Enc_1):      Chain_Rotaries_1++; break;
@@ -432,6 +431,54 @@ void OSHStudio::gatherPinsConf()
     ui->comboBox_AxisCombEnd->addItems(AxisComb1);
     ui->comboBox_AxisCombBegin->setCurrentIndex((ui->comboBox_AxisCombBegin->count())-2);
     ui->comboBox_AxisCombEnd->setCurrentIndex((ui->comboBox_AxisCombEnd->count())-1);
+}
+
+void OSHStudio::populateDefA2B(){
+  //  resetAllA2B();
+
+    config.analog_2_button_inputs = Analog2Buttons_inputs;
+    ui->label_ZeroA2B->setVisible(config.analog_2_button_inputs ? false : true);
+
+     for(int i=0; i < Analog2Buttons_inputs; i++){
+         A2Bstore[i].widget_ptr->setVisible(true);
+//         A2Bstore[i].widget_ptr->setPinName(pin_names[A2Bstore[i].pin_number]);
+      }
+     showA2Btab();
+}
+
+void OSHStudio::showA2Btab(){
+    ui->label_ZeroA2B->setVisible(config.analog_2_button_inputs ? false : true);
+    QString name_template_A2B("widget_A2B_%1");
+    for(int i=0; i < MAX_A2B_INPUTS; i++){
+        A2Bstore[i].widget_ptr->setVisible(false);
+     }
+
+    for(uint8_t i=0; i<config.analog_2_button_inputs; i++){
+        A2Bstore[i].widget_ptr->setVisible(true);
+        A2Bstore[i].widget_ptr->setPinName(pin_names[A2Bstore[i].pin_number]);
+        if (i<5){
+            A2Bstore[i].widget_ptr->setButtonsCount(config.a2b_1st5[i].buttons_number);
+            A2Bstore[i].widget_ptr->setButtonsIntervals(config.a2b_1st5[i].buttons_intervals);
+        } else {
+            A2Bstore[i].widget_ptr->setButtonsCount(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_number);
+            A2Bstore[i].widget_ptr->setButtonsIntervals(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_intervals);
+        }
+    }
+}
+
+void OSHStudio::resetAllA2B(){
+    QString name_template_A2B("widget_A2B_%1");
+    for(int i=0; i < MAX_A2B_INPUTS; i++){
+        A2Bstore[i].widget_ptr->setVisible(false);
+        A2Bstore[i].number_buttons=1;
+        A2Bstore[i].widget_ptr->setButtonsCount(1);
+     }
+    for (uint8_t i=0; i<MAX_A2B_INPUTS/2;i++){
+        config.a2b_1st5[i].buttons_number = 1;
+        config.a2b_1st5[i].buttons_intervals[0] = 127;
+        config.a2b_2nd5[i].buttons_number = 1;
+        config.a2b_2nd5[i].buttons_intervals[0] = 127;
+    }
 }
 
 void OSHStudio::populateDefSE(){
@@ -471,9 +518,6 @@ void OSHStudio::showSingleEncodersTab(void) {
         }
         SEwid->setPinsPair(i);
      }
-
-
-
 }
 
 
@@ -538,6 +582,7 @@ uint8_t OSHStudio::convertPinnameToIndex (QString pname) {
 void OSHStudio::pinConfChanged(){
     gatherPinsConf();
     populateDefSE();
+    populateDefA2B();
     drawHelp();
 }
 
@@ -545,11 +590,13 @@ void OSHStudio::drawHelp()
 {
     QString HelpText;
 
-    if (NumberAnalogInputs > 0) {
+    if (NumberAnalogInputs) {
         HelpText = "<br />" + QString::number(NumberAnalogInputs) + " analog inputs <br />";
-        if (NumberAnalogInputs > 6)
-            HelpText = HelpText + "<font color='red'>Sorry, no more than 6 analog inputs</font><br />";
+        if (NumberAnalogInputs > 7)
+            HelpText = HelpText + "<font color='red'>Max 7 analog inputs (2 in combined axis)</font><br />";
     }
+
+    if (Analog2Buttons_inputs) HelpText += "<br />" + QString::number(Analog2Buttons_inputs) + " analog to buttons inputs <br />";
 
     if ((Chain_Rotaries_1 > 0) ||(Chain_Rotaries_2 > 0) || (Chain_Rotaries_4 > 0)) {
         HelpText = HelpText + "<br />" +

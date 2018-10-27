@@ -34,10 +34,7 @@
 #include <stdint.h>
 #include "periph_init.h"
 
-//#define DEBOUNCETIME 50
-//#define PRESSTIME 500
 #define MAXBUTTONS 64
-//#define ROTSWITCHTIME 100
 
 
 struct keypad {
@@ -47,10 +44,14 @@ struct keypad {
 	uint64_t time_pressed;
 };
 
+typedef enum {
+	smpl_button,
+	a2b_button,
+	rotswitch,
+} button_type;
 
 void CheckRows(uint8_t column);
 void CheckButtons(void);
-void SetButtonState(uint8_t i, GPIO_PinState rowstate);
-void CheckWires(uint8_t pole);
+void SetButtonState(uint8_t i, GPIO_PinState rowstate, button_type type);
 
 #endif /* KEYPAD_H_ */
