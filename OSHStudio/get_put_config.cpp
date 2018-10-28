@@ -397,7 +397,7 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
         if(mutex_for_load.tryLock()) {
             if (config.config_version != OSHSTUDIOVERSION) {
                 QMessageBox::warning(this, tr("Nope!"),
-                                     tr("Its seems board has wrong FW version"));
+                                     tr("It seems the board has wrong FW version"));
             } else {
                 setConfig_Slot();
                 QMessageBox::information(this, tr("Success!"),

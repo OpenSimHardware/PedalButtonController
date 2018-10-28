@@ -90,7 +90,7 @@ void OSHaxiswca::mouseMoveEvent(QMouseEvent *event)
         }
         if (RightPinDrag) {
             RightpinColor=Qt::lightGray;
-            value=(MaxScaleValue/ui->AxisValue->width())*(RightPinPosX+1);
+            value=(MaxScaleValue*(RightPinPosX-PRbar_offset))/ui->AxisValue->width();
             if (value > 4095) value=4095;
             ui->lineEdit_MaxCalib->setText(QString::number(value));
         }

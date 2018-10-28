@@ -126,7 +126,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1784,154 +1784,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_6">
-     <attribute name="title">
-      <string>Analog 2 Buttons</string>
-     </attribute>
-     <widget class="QLabel" name="label_ZeroA2B">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>20</y>
-        <width>431</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>You don't have configured any of analog to buttons inputs in &quot;Pins Configuration&quot; Tab. </string>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_1" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_2" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>60</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_3" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>110</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_4" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>160</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_5" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>210</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_6" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>260</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_7" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>310</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_8" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>360</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_9" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>410</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="osha2bw" name="widget_A2B_10" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>460</y>
-        <width>751</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
       <string>Buttons</string>
@@ -3311,6 +3163,154 @@
       </property>
       <property name="text">
        <string>Enable POV4</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_6">
+     <attribute name="title">
+      <string>Analog 2 Buttons</string>
+     </attribute>
+     <widget class="QLabel" name="label_ZeroA2B">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>20</y>
+        <width>431</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>You don't have configured any of analog to buttons inputs in &quot;Pins Configuration&quot; Tab. </string>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>60</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_3" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>160</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_7" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>310</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_8" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>360</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_9" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>410</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="osha2bw" name="widget_A2B_10" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>460</y>
+        <width>751</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
