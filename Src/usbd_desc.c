@@ -67,8 +67,9 @@
 #define USBD_INTERFACE_STRING_FS     "OSH PB Controller Interface"
 //#define FIRMWARERELEASE 14
 
-extern uint8_t * USBD_PRODUCT_STRING_FS;
+//extern uint8_t * USBD_PRODUCT_STRING_FS;
 extern uint8_t * USBD_SERIALNUMBER_STRING_FS;
+volatile extern struct total_config_ config;
 
 /* USER CODE BEGIN 0 */
 
@@ -204,14 +205,41 @@ uint8_t *  USBD_FS_LangIDStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *leng
 */
 uint8_t *  USBD_FS_ProductStrDescriptor( USBD_SpeedTypeDef speed , uint16_t *length)
 {
-  if(speed == 0)
-  {   
-    USBD_GetString (USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);
-  }
-  else
-  {
-    USBD_GetString (USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);    
-  }
+	uint8_t USB_Product_String[31] = {
+			79, // O
+			83, // S
+			72, // H
+			32, // Space
+			80, // P
+			66, // B
+			32, // Space
+			67, // C
+			111, // o
+			110, // n
+			116, // t
+			114, // r
+			111, // o
+			108, // l
+			108, // l
+			101, // e
+			114, // r
+			0,	// 0
+	};
+	uint8_t i=0;
+
+	if (config.usb_ps_uniq[0]) {
+		USB_Product_String[17] = 32; // Space
+		USB_Product_String[18] = 40; // (
+		while ((config.usb_ps_uniq[i]) && (i < 10)) {
+			USB_Product_String[19+i] = config.usb_ps_uniq[i];
+			i++;
+		}
+
+		USB_Product_String[19+i] = 41; // )
+		USB_Product_String[19+i+1] = 0;
+	}
+
+    USBD_GetString (USB_Product_String, USBD_StrDesc, length);
   return USBD_StrDesc;
 }
 

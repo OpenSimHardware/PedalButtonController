@@ -154,7 +154,7 @@ volatile struct total_config_ config = {
 			.pin[31] = Button_GND, 		//C15	//Not_Used		//Button_COLUMN
 };
 
-uint8_t * USBD_PRODUCT_STRING_FS;
+//uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
 uint8_t USB_Serial_Number_Unique[15] = {0};
 
@@ -171,7 +171,7 @@ volatile struct a2b {
 } A2Bstore[MAX_A2B_INPUTS] = {0};
 
 //TODO not sure why it needs to be global
-uint8_t USB_Product_String[31] = {
+/*uint8_t USB_Product_String[31] = {
 		79, // O
 		83, // S
 		72, // H
@@ -189,7 +189,7 @@ uint8_t USB_Product_String[31] = {
 		108, // l
 		101, // e
 		114, // r
-};
+};*/
 
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
@@ -245,6 +245,7 @@ void custom_usb_config(void) {
 	uint32_t id1,id2,id3;
 	uint8_t mod;
 
+	/*
 	USB_Product_String[0] = 79; // O
 	USB_Product_String[1] = 83; // S
 	USB_Product_String[2] = 72; // H
@@ -278,6 +279,7 @@ void custom_usb_config(void) {
 	}
 
 	USBD_PRODUCT_STRING_FS = USB_Product_String;
+	*/
 
 	USB_Serial_Number_Unique[14]=0;
 	curradr = (uint32_t *)UNIQUEIDREG;

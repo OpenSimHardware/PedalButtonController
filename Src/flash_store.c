@@ -57,13 +57,10 @@ void get_config(void) {
 
 	curradr = get_lastpage_addr((uint16_t *)FLASHSIZEREG);
 
-	memcpy(&(config.packet_id1), curradr, BUFFSIZE);
-	curradr += 32;
-	memcpy(&(config.packet_id2), curradr, BUFFSIZE);
-	curradr += 32;
-	memcpy(&(config.packet_id3), curradr, BUFFSIZE);
-	curradr += 32;
-	memcpy(&(config.packet_id4), curradr, BUFFSIZE);
+	for (uint8_t i=0; i<sizeof(config)/BUFFSIZE;i++){
+		memcpy((&(config.packet_id1)+(BUFFSIZE*i)), curradr, BUFFSIZE);
+		curradr += 32;
+	}
 }
 
 void erase_flash(void) {
@@ -96,7 +93,7 @@ void write_flash(void) {
   FLASH->CR |= FLASH_CR_PG; /* Programm the flash */
 
 
-  for (uint16_t i=0; i<(BUFFSIZE*4)/2; ++i) {
+  for (uint16_t i=0; i<sizeof(config)/2; ++i) {
 	  while ((FLASH->SR & FLASH_SR_BSY) != 0 );
 	  *currflashaddr++ = *currstructaddr++;
   }
