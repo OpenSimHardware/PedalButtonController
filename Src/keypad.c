@@ -47,8 +47,8 @@ void CheckButtons(void) {
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if ((config.pin[i] == Button_COLUMN) || (config.pin[i] == RotSwPole)) {
 			*(pins[i].bsrr_reg_addr) = 0x1<<pins[i].pin_number;
-			if (config.pin[i] == Button_COLUMN) CheckRows(column++);
-			if (config.pin[i] == RotSwPole) CheckRows(pole++);
+			if (config.pin[i] == Button_COLUMN) CheckRows(column++,smpl_button);
+			if (config.pin[i] == RotSwPole) CheckRows(pole++,rotswitch);
 			*(pins[i].bsrr_reg_addr) = 0x1<<(pins[i].pin_number+16);
 		}
 		if (config.pin[i] == Button) {
@@ -70,8 +70,8 @@ void CheckButtons(void) {
 	}
 }
 
-void CheckRows(uint8_t column) {
-	uint8_t row=0,rowstate=0,button=0,wire=0;
+void CheckRows(uint8_t column, uint8_t type) {
+	volatile uint8_t row=0,rowstate=0,button=0,wire=0;
 	extern uint8_t Number_Columns;
 	extern uint8_t Number_Wires;
 	extern uint8_t Number_Buttons;
@@ -84,12 +84,12 @@ void CheckRows(uint8_t column) {
 			  } else {
 				rowstate = 0;
 			  };
-			if (config.pin[i] == Button_ROW) {
+			if ((config.pin[i] == Button_ROW) && (type == smpl_button)) {
 				button = row*Number_Columns + column;// + Number_Simple_Buttons;
 				SetButtonState(button,rowstate,smpl_button);
 				row++;
 			}
-			if (config.pin[i] == RotSwWire) {
+			if ((config.pin[i] == RotSwWire) && (type == rotswitch)) {
 				button = column*Number_Wires + wire + Number_Buttons; //Number_Simple_Buttons;
 				SetButtonState(button,rowstate,rotswitch);
 				wire++;
