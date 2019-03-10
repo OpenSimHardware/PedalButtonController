@@ -34,7 +34,7 @@
 #include <stdint.h>
 #include "periph_init.h"
 
-#define MAXBUTTONS 64
+//#define MAXBUTTONS 64
 
 
 struct keypad {

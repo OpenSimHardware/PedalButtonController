@@ -39,6 +39,7 @@
 #include "keypad.h"
 #include "usbd_customhid.h"
 #include "..\common_types\common_defines.h"
+#include "..\common_types\common_structs.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -154,15 +155,42 @@ void SysTick_Handler(void)
 	extern volatile uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
 	extern volatile uint8_t config_flag;
     extern USBD_HandleTypeDef  *hUsbDevice_0;
+    extern uint8_t mouse_inputs;
+    extern struct mouse_report_ mouse_report;
+    extern struct keyboard_report_ keyboard_report;
+    extern struct gamepad_report_ gamepad_report;
+    extern struct multimedia_report_ multimedia_report;
+    extern volatile struct total_config_ config;
+    extern volatile uint8_t keyboard_exists;
+    extern volatile uint8_t multimedia_exists;
+
+    static uint8_t usb_cycle=0;
+    static uint8_t keyboard_cycle=0;
 
 
     millis++;
 	CheckButtons();
 
-	if (config_flag) {
-		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-	} else {
-		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
+	if (!(millis%config.usb_exchange_rate)) {
+		usb_cycle++;
+		if (config_flag) {
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			return;
+		}
+
+		if ((mouse_inputs) && (usb_cycle%4 == 1)){
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(mouse_report.packet_id), sizeof(struct mouse_report_));
+			return;
+		}
+		if ((keyboard_exists) && (usb_cycle%4 == 2)){
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(keyboard_report.packet_id), sizeof(struct keyboard_report_));
+			return;
+		}
+		if ((multimedia_exists) && (usb_cycle%4 == 3)){
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(multimedia_report.packet_id), sizeof(struct multimedia_report_));
+			return;
+		}
+		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(gamepad_report.packet_id), sizeof(struct gamepad_report_));
 	}
 
   /* USER CODE END SysTick_IRQn 0 */

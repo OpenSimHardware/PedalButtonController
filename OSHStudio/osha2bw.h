@@ -60,6 +60,8 @@ private:
         QLabel * IntLabel;
     } sliders[MAX_A2B_BUTTONS];
 
+signals:
+    void buttons_number_changed(void);
 };
 
 #endif // OSHA2BW_H

@@ -32,10 +32,10 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->loadFile_Button, SIGNAL(clicked(bool)), SLOT(loadFromFile()));
       connect(ui->saveFile_Button, SIGNAL(clicked(bool)), SLOT(saveToFile()));
 
-      connect(ui->checkBox_POV1, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV1Changed(int)));
-      connect(ui->checkBox_POV2, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV2Changed(int)));
-      connect(ui->checkBox_POV3, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV3Changed(int)));
-      connect(ui->checkBox_POV4, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV4Changed(int)));
+//      connect(ui->checkBox_POV1, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV1Changed(int)));
+//      connect(ui->checkBox_POV2, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV2Changed(int)));
+//      connect(ui->checkBox_POV3, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV3Changed(int)));
+//      connect(ui->checkBox_POV4, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV4Changed(int)));
 
 
 
@@ -52,24 +52,26 @@ OSHStudio::OSHStudio(QWidget *parent) :
       worker->moveToThread(thread);
 
       connect(thread, SIGNAL(started()), worker, SLOT(processData()));
-      connect(worker, SIGNAL(putAxis1Value(uint16_t)),
-                            SLOT(drawAxis1Value(uint16_t)));
-      connect(worker, SIGNAL(putAxis2Value(uint16_t)),
-                            SLOT(drawAxis2Value(uint16_t)));
-      connect(worker, SIGNAL(putAxis3Value(uint16_t)),
-                            SLOT(drawAxis3Value(uint16_t)));
-      connect(worker, SIGNAL(putAxis4Value(uint16_t)),
-                            SLOT(drawAxis4Value(uint16_t)));
-      connect(worker, SIGNAL(putAxis5Value(uint16_t)),
-                            SLOT(drawAxis5Value(uint16_t)));
-      connect(worker, SIGNAL(putAxis6Value(uint16_t)),
-                            SLOT(drawAxis6Value(uint16_t)));
-      connect(worker, SIGNAL(putButtons1Value(uint64_t)),
-                            SLOT(drawButtons1Value(uint64_t)));
-      connect(worker, SIGNAL(putButtons2Value(uint64_t)),
-                            SLOT(drawButtons2Value(uint64_t)));
-      connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
-                            SLOT(drawPOVSvalue(uint64_t)));
+ //     connect(worker, SIGNAL(putAxis1Value(uint16_t)),
+ //                           SLOT(drawAxis1Value(uint16_t)));
+ //     connect(worker, SIGNAL(putAxis2Value(uint16_t)),
+ //                           SLOT(drawAxis2Value(uint16_t)));
+ //     connect(worker, SIGNAL(putAxis3Value(uint16_t)),
+ //                           SLOT(drawAxis3Value(uint16_t)));
+ //     connect(worker, SIGNAL(putAxis4Value(uint16_t)),
+ //                           SLOT(drawAxis4Value(uint16_t)));
+ //     connect(worker, SIGNAL(putAxis5Value(uint16_t)),
+ //                           SLOT(drawAxis5Value(uint16_t)));
+ //     connect(worker, SIGNAL(putAxis6Value(uint16_t)),
+ //                           SLOT(drawAxis6Value(uint16_t)));
+ //     connect(worker, SIGNAL(putButtons1Value(uint64_t)),
+ //                           SLOT(drawButtons1Value(uint64_t)));
+ //     connect(worker, SIGNAL(putButtons2Value(uint64_t)),
+ //                           SLOT(drawButtons2Value(uint64_t)));
+ //     connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
+ //                           SLOT(drawPOVSvalue(uint64_t)));
+      connect(worker, SIGNAL(putGamepadPacket(uint8_t *)),
+                            SLOT(getGamepadPacket(uint8_t *)));
       connect(worker, SIGNAL(putConnectedDeviceInfo()),
                             SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
@@ -84,7 +86,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
       //hide all single encoders config for now
       QString name_template_SE("widget_SE%1");
-      for(int i =1; i <= MAX_SINGLE_ENCODERS; i++){
+      for(uint8_t i =1; i <= MAX_SINGLE_ENCODERS; i++){
           oshsingenc *SEwid = ui->tabWidget->findChild<oshsingenc *>(name_template_SE.arg(i));
           SEwid->setVisible(false);
           connect(SEwid, SIGNAL(item_changed()),  SLOT(drawHelpSE()));
@@ -93,17 +95,27 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
        //hide all A2B widgets
        QString name_template_A2B("widget_A2B_%1");
-       for(int i =1; i <= MAX_A2B_INPUTS; i++){
+       for(uint8_t i =1; i <= MAX_A2B_INPUTS; i++){
            A2Bstore[i-1].widget_ptr = ui->tabWidget->findChild<osha2bw *>(name_template_A2B.arg(i));
            A2Bstore[i-1].widget_ptr->setVisible(false);
            A2Bstore[i-1].number_buttons=1;
+           connect(A2Bstore[i-1].widget_ptr, SIGNAL(buttons_number_changed()), SLOT(get_all_A2B_buttons()));
         }
         ui->label_ZeroA2B->setVisible(true);
         resetAllA2B();
 
+        //hide all buttons
+        QString name_template_SB("widget_SB_%1");
+        for(uint8_t i =1; i <= MAX_BUTTONS; i++){
+            SBstore[i-1].SB_wid_prt = ui->tabWidget->findChild<oshbuttonw *>(name_template_SB.arg(i));
+            SBstore[i-1].SB_wid_prt -> setVisible(false);
+            SBstore[i-1].SB_wid_prt->set_button_type(joystick_button);
+            SBstore[i-1].button_type = joystick_button;
+            connect(SBstore[i-1].SB_wid_prt, SIGNAL(button_type_changed()), SLOT(get_all_SB_buttons()));
+         }
 
        QString name_template("widget_PB%1");
-       for(int i = 0; i < 32; i++) {
+       for(uint8_t i = 0; i < 32; i++) {
           oshpincombobox *pinComboBox = ui->tabWidget->findChild<oshpincombobox *>(name_template.arg(i));
           pinComboBox->set_pin_number(i);
           connect(pinComboBox, SIGNAL(item_changed()),  SLOT(pinConfChanged()));
@@ -144,36 +156,28 @@ void OSHStudio::show_USB_ident_uniq(QString ident) {
 
 void OSHStudio::show_USB_exch_rate(int interval) {
     QString const_desc="USB polling interval, ms. Current value means USB exchange frequency of ";
-    interval=(int)1000/interval;
+    interval=1000/interval;
     ui->label_59->setText(const_desc + QString::number(interval) + " Hz");
 }
 
-void OSHStudio::drawAxis1Value(uint16_t axis_value) {
-    ui->widget_axis1->setAxisValue(axis_value);
-}
+void OSHStudio::getGamepadPacket(uint8_t * buff){
+    struct gamepad_report_ gamepad_report;
+    memcpy(&(gamepad_report.packet_id), buff, sizeof(struct gamepad_report_));
 
-void OSHStudio::drawAxis2Value(uint16_t axis_value) {
-    ui->widget_axis2->setAxisValue(axis_value);
-}
+    ui->widget_axis1->setAxisValue(gamepad_report.axis[0]);
+    ui->widget_axis2->setAxisValue(gamepad_report.axis[1]);
+    ui->widget_axis3->setAxisValue(gamepad_report.axis[2]);
+    ui->widget_axis4->setAxisValue(gamepad_report.axis[3]);
+    ui->widget_axis5->setAxisValue(gamepad_report.axis[4]);
+    ui->widget_axis6->setAxisValue(gamepad_report.axis[5]);
 
-void OSHStudio::drawAxis3Value(uint16_t axis_value) {
-    ui->widget_axis3->setAxisValue(axis_value);
-}
+    for(int i = 0; i < MAX_BUTTONS; i++)
+    {
+        if ((SBstore[i].button_type == joystick_button) && (gamepad_report.buttons & (0x1ULL<<i)))
+                SBstore[i].SB_wid_prt->set_button_state(true);
+        else SBstore[i].SB_wid_prt->set_button_state(false);
+    }
 
-void OSHStudio::drawAxis4Value(uint16_t axis_value) {
-    ui->widget_axis4->setAxisValue(axis_value);
-}
-
-void OSHStudio::drawAxis5Value(uint16_t axis_value) {
-    ui->widget_axis5->setAxisValue(axis_value);
-}
-
-void OSHStudio::drawAxis6Value(uint16_t axis_value) {
-    ui->widget_axis6->setAxisValue(axis_value);
-}
-
-void OSHStudio::drawPOVSvalue(uint64_t POVS_value) {
-    uint8_t value;
     QString name_template("label_POV%1");
     QPixmap povTop (":/Images/dpad_ct.png");
     QPixmap povRight (":/Images/dpad_cr.png");
@@ -184,12 +188,9 @@ void OSHStudio::drawPOVSvalue(uint64_t POVS_value) {
     QPixmap povBottomLeft (":/Images/dpad_cbl.png");
     QPixmap povLeftTop (":/Images/dpad_clt.png");
     QPixmap povNull (":/Images/dpad.png");
-
-
-    for (int i=0; i<4; i++) {
+    for (int i=0; i<MAX_POVS; i++) {
         QLabel *povLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i+1));
-        value=0xFF & (POVS_value >> (i*8));
-        switch (value) {
+        switch (gamepad_report.pov[i]) {
             case 0: povLabel->setPixmap(povTop); break;
             case 1: povLabel->setPixmap(povTopRight); break;
             case 2: povLabel->setPixmap(povRight); break;
@@ -201,89 +202,8 @@ void OSHStudio::drawPOVSvalue(uint64_t POVS_value) {
             default: povLabel->setPixmap(povNull);
         }
     }
+
 }
-
-void OSHStudio::drawButtons2Value(uint64_t buttons_value) {
-    QPixmap buttOn (":/Images/ON_2.png");
-    QPixmap buttOff (":/Images/OFF.png");
-
-    QString name_template("labelButt_%1");
-
-
-    for(int i =32; i < 64; i++)
-    {
-        QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
-        if (buttons_value & (0x1<<(i-32))) {
-            buttLabel->setPixmap(buttOn);
-        } else buttLabel->setPixmap(buttOff);
-
-    }
-}
-
-void OSHStudio::drawButtons1Value(uint64_t buttons_value) {
-    QPixmap buttOn (":/Images/ON_2.png");
-    QPixmap buttOff (":/Images/OFF.png");
-
-    QString name_template("labelButt_%1");
-
-
-    for(int i = 0; i < 32; i++)
-    {
-        QLabel *buttLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i));
-        if (buttons_value & (0x1<<i)) {
-            buttLabel->setPixmap(buttOn);
-        } else buttLabel->setPixmap(buttOff);
-    }
-}
-
-void OSHStudio::checkBoxPOV1Changed(int state) {
-    bool chk;
-
-    if (state) chk=true; else chk=false;
-
-    ui->label_POV1->setEnabled(chk);
-    ui->labelButt_0->setEnabled(!chk);
-    ui->labelButt_1->setEnabled(!chk);
-    ui->labelButt_2->setEnabled(!chk);
-    ui->labelButt_3->setEnabled(!chk);
-}
-
-void OSHStudio::checkBoxPOV2Changed(int state) {
-    bool chk;
-
-    if (state) chk=true; else chk=false;
-
-    ui->label_POV2->setEnabled(chk);
-    ui->labelButt_4->setEnabled(!chk);
-    ui->labelButt_5->setEnabled(!chk);
-    ui->labelButt_6->setEnabled(!chk);
-    ui->labelButt_7->setEnabled(!chk);
-}
-
-void OSHStudio::checkBoxPOV3Changed(int state) {
-    bool chk;
-
-    if (state) chk=true; else chk=false;
-
-    ui->label_POV3->setEnabled(chk);
-    ui->labelButt_8->setEnabled(!chk);
-    ui->labelButt_9->setEnabled(!chk);
-    ui->labelButt_10->setEnabled(!chk);
-    ui->labelButt_11->setEnabled(!chk);
-}
-
-void OSHStudio::checkBoxPOV4Changed(int state) {
-    bool chk;
-
-    if (state) chk=true; else chk=false;
-
-    ui->label_POV4->setEnabled(chk);
-    ui->labelButt_12->setEnabled(!chk);
-    ui->labelButt_13->setEnabled(!chk);
-    ui->labelButt_14->setEnabled(!chk);
-    ui->labelButt_15->setEnabled(!chk);
-}
-
 
 void OSHStudio::showConnectDeviceInfo() {
     ui->label_DevDescImg->setVisible(true);
@@ -302,10 +222,6 @@ void OSHStudio::hideConnectDeviceInfo() {
     ui->label_58->setStyleSheet("color : black");
     ui->label_34->setStyleSheet("color : black");
     ui->label_Stud_version->setStyleSheet("color : black");
-}
-
-QString OSHStudio::convertIntToString(int i) {
-    return QString::number(i);
 }
 
 void OSHStudio::showPercentAxisComb(int i) {
@@ -400,7 +316,6 @@ void OSHStudio::gatherPinsConf()
                 case (Chain_Rotary_PINB):       Chain_PinB++; break;
                 case (Chain_Rotary_Enc_1):      Chain_Rotaries_1++; break;
                 case (Chain_Rotary_Enc_2):      Chain_Rotaries_2++; break;
-                case (Chain_Rotary_Enc_4):      Chain_Rotaries_4++; break;
                 case (Single_Rotary_PINA_1):    single_encoders_1_store[Single_Rotaries_PINA_1++].pinA=pin_number;
                                                 break;
                 case (Single_Rotary_PINB_1):    single_encoders_1_store[Single_Rotaries_PINB_1++].pinB=pin_number;
@@ -431,6 +346,8 @@ void OSHStudio::gatherPinsConf()
     ui->comboBox_AxisCombEnd->addItems(AxisComb1);
     ui->comboBox_AxisCombBegin->setCurrentIndex((ui->comboBox_AxisCombBegin->count())-2);
     ui->comboBox_AxisCombEnd->setCurrentIndex((ui->comboBox_AxisCombEnd->count())-1);
+
+    get_all_A2B_buttons();
 }
 
 void OSHStudio::populateDefA2B(){
@@ -446,9 +363,78 @@ void OSHStudio::populateDefA2B(){
      showA2Btab();
 }
 
+void OSHStudio::get_all_SB_buttons(){
+    pov1=0;
+    pov2=0;
+    pov3=0;
+    pov4=0;
+    ui->label_POV1->setVisible(false);
+    ui->label_POV2->setVisible(false);
+    ui->label_POV3->setVisible(false);
+    ui->label_POV4->setVisible(false);
+    ui->label_POV1name->setVisible(false);
+    ui->label_POV2name->setVisible(false);
+    ui->label_POV3name->setVisible(false);
+    ui->label_POV4name->setVisible(false);
+    for(int i=0; i < TotalButtons; i++){
+        SBstore[i].button_type = SBstore[i].SB_wid_prt->get_button_type();
+        if ((SBstore[i].button_type == pov1up_button) ||
+                (SBstore[i].button_type == pov1down_button) ||
+                (SBstore[i].button_type == pov1left_button) ||
+                (SBstore[i].button_type == pov1right_button)) pov1++;
+        if ((SBstore[i].button_type == pov2up_button) ||
+                (SBstore[i].button_type == pov2down_button) ||
+                (SBstore[i].button_type == pov2left_button) ||
+                (SBstore[i].button_type == pov2right_button)) pov2++;
+        if ((SBstore[i].button_type == pov3up_button) ||
+                (SBstore[i].button_type == pov3down_button) ||
+                (SBstore[i].button_type == pov3left_button) ||
+                (SBstore[i].button_type == pov3right_button)) pov3++;
+        if ((SBstore[i].button_type == pov4up_button) ||
+                (SBstore[i].button_type == pov4down_button) ||
+                (SBstore[i].button_type == pov4left_button) ||
+                (SBstore[i].button_type == pov4right_button)) pov4++;
+        if (i<MAX_BUTTONS/2) {
+            config.buttons_types1st[i] = SBstore[i].button_type;
+        } else {
+            config.buttons_types2nd[i-MAX_BUTTONS/2] = SBstore[i].button_type;
+        }
+     }
+    if (pov1) {
+        ui->label_POV1->setVisible(true);
+        ui->label_POV1name->setVisible(true);
+    }
+    if (pov2) {
+        ui->label_POV2->setVisible(true);
+        ui->label_POV2name->setVisible(true);
+    }
+    if (pov3) {
+        ui->label_POV3->setVisible(true);
+        ui->label_POV3name->setVisible(true);
+    }
+    if (pov4) {
+        ui->label_POV4->setVisible(true);
+        ui->label_POV4name->setVisible(true);
+    }
+    drawHelpSB();
+}
+
+void OSHStudio::populateDefSB(){
+    for(int i=0; i < MAX_BUTTONS; i++){
+       // SBstore[i] -> setVisible(true);
+        SBstore[i].SB_wid_prt->setVisible(false);
+     }
+
+    for(int i=0; i < TotalButtons; i++){
+       // SBstore[i] -> setVisible(true);
+        SBstore[i].SB_wid_prt->setVisible(true);
+     }
+    get_all_SB_buttons();
+}
+
 void OSHStudio::showA2Btab(){
     ui->label_ZeroA2B->setVisible(config.analog_2_button_inputs ? false : true);
-    QString name_template_A2B("widget_A2B_%1");
+   // QString name_template_A2B("widget_A2B_%1");
     for(int i=0; i < MAX_A2B_INPUTS; i++){
         A2Bstore[i].widget_ptr->setVisible(false);
      }
@@ -456,13 +442,6 @@ void OSHStudio::showA2Btab(){
     for(uint8_t i=0; i<config.analog_2_button_inputs; i++){
         A2Bstore[i].widget_ptr->setVisible(true);
         A2Bstore[i].widget_ptr->setPinName(pin_names[A2Bstore[i].pin_number]);
-        if (i<5){
-            A2Bstore[i].widget_ptr->setButtonsCount(config.a2b_1st5[i].buttons_number);
-            A2Bstore[i].widget_ptr->setButtonsIntervals(config.a2b_1st5[i].buttons_intervals);
-        } else {
-            A2Bstore[i].widget_ptr->setButtonsCount(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_number);
-            A2Bstore[i].widget_ptr->setButtonsIntervals(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_intervals);
-        }
     }
 }
 
@@ -504,12 +483,12 @@ void OSHStudio::populateDefSE(){
 void OSHStudio::showSingleEncodersTab(void) {
     ui->label_ZeroSglEncoders->setVisible(config.total_single_encoders ? false : true);
     QString name_template_SE("widget_SE%1");
-    for(int i =0; i < MAX_SINGLE_ENCODERS; i++){
+    for(uint8_t i =0; i < MAX_SINGLE_ENCODERS; i++){
         oshsingenc *SEwid = ui->tabWidget->findChild<oshsingenc *>(name_template_SE.arg(i+1));
         SEwid->setVisible(false);
         SEwid->clearPinsLists();
      }
-    for(int i =0; i < config.total_single_encoders; i++){
+    for(uint8_t i =0; i < config.total_single_encoders; i++){
         oshsingenc *SEwid = ui->tabWidget->findChild<oshsingenc *>(name_template_SE.arg(i+1));
         SEwid->setVisible(true);
         for (uint8_t i=0; i<config.total_single_encoders; i++){
@@ -520,57 +499,32 @@ void OSHStudio::showSingleEncodersTab(void) {
      }
 }
 
+void OSHStudio::get_all_A2B_buttons(void){
+        A2BButtons = 0;
 
-void OSHStudio::drawHelpSE() {
-    struct se_store {
-        uint8_t pina;
-        uint8_t pinb;
-        oshsingenc *SEwid;
-    };
-    se_store temp_store[MAX_SINGLE_ENCODERS];
-
-    QString name_template_SE("widget_SE%1");
-    QString SEHelp_text;
-
-    // populate temp array
-    for(int i =0; i < config.total_single_encoders; i++){
-        temp_store[i].SEwid = ui->tabWidget->findChild<oshsingenc *>(name_template_SE.arg(i+1));
-        temp_store[i].pina = temp_store[i].SEwid->getPinA();
-        temp_store[i].pinb = temp_store[i].SEwid->getPinB();
-        temp_store[i].SEwid->setAlarmPinA(false);
-        temp_store[i].SEwid->setAlarmPinB(false);
- //       SEHelp_text = SEHelp_text + "Pin A - " + QString::number(temp_store[i].pina) + "type - " + QString::number(config.pin[temp_store[i].pina]) +
- //               ", Pin B - " + QString::number(temp_store[i].pinb) + "type - " + QString::number(config.pin[temp_store[i].pinb]) + "<br />";
-        // check for type equality
-        if (((config.pin[temp_store[i].pina] == Single_Rotary_PINA_1) &&
-                (config.pin[temp_store[i].pinb] != Single_Rotary_PINB_1)) ||
-            ((config.pin[temp_store[i].pina] == Single_Rotary_PINA_2) &&
-                (config.pin[temp_store[i].pinb] != Single_Rotary_PINB_2)) ||
-            ((config.pin[temp_store[i].pina] == Single_Rotary_PINA_4) &&
-                (config.pin[temp_store[i].pinb] != Single_Rotary_PINB_4)))
-        {
-            temp_store[i].SEwid->setAlarmPinA(true);
-            temp_store[i].SEwid->setAlarmPinB(true);
-        }
-
-    }
-
-    // check for pins differentiality
-    for(int i =0; i < config.total_single_encoders - 1; i++){
-        for(int j =i +1; j < config.total_single_encoders; j++){
-            if (temp_store[i].pina == temp_store[j].pina){
-                temp_store[i].SEwid->setAlarmPinA(true);
-                temp_store[j].SEwid->setAlarmPinA(true);
-            }
-            if (temp_store[i].pinb == temp_store[j].pinb){
-                temp_store[i].SEwid->setAlarmPinB(true);
-                temp_store[j].SEwid->setAlarmPinB(true);
-            }
+    config.analog_2_button_inputs = Analog2Buttons_inputs;
+    for (uint8_t i=0; i<Analog2Buttons_inputs; i++){
+        A2BButtons += A2Bstore[i].widget_ptr->getButtonsCount();
+        if (i<5){
+            config.a2b_1st5[i].buttons_number = A2Bstore[i].widget_ptr->getButtonsCount();
+            A2Bstore[i].widget_ptr->getButtonsIntervals(config.a2b_1st5[i].buttons_intervals);
+        } else {
+            config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_number = A2Bstore[i].widget_ptr->getButtonsCount();
+            A2Bstore[i].widget_ptr->getButtonsIntervals(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_intervals);
         }
     }
 
- //   ui->label_SEHelp->setText(SEHelp_text);
+    TotalButtons =  (ButtonsRows * ButtonsColumns) +
+                    (RotSwitchPoles * RotSwitchWires) +
+                    (Single_Rotaries_PINA_1*2 + Single_Rotaries_PINB_2*2 + Single_Rotaries_PINA_4*2) +
+                    Chain_Rotaries_1*2 + Chain_Rotaries_2*2 +
+                    A2BButtons +
+                    Buttons;
+    TotalButtons = (TotalButtons > MAX_BUTTONS) ? MAX_BUTTONS : TotalButtons;
+    populateDefSB();
+    drawHelp();
 }
+
 
 uint8_t OSHStudio::convertPinnameToIndex (QString pname) {
     for(uint8_t i =0; i < USEDPINS; i++) {
@@ -583,58 +537,6 @@ void OSHStudio::pinConfChanged(){
     gatherPinsConf();
     populateDefSE();
     populateDefA2B();
+    populateDefSB();
     drawHelp();
 }
-
-void OSHStudio::drawHelp()
-{
-    QString HelpText;
-
-    if (NumberAnalogInputs) {
-        HelpText = "<br />" + QString::number(NumberAnalogInputs) + " analog inputs <br />";
-        if (NumberAnalogInputs > 7)
-            HelpText = HelpText + "<font color='red'>Max 7 analog inputs (2 in combined axis)</font><br />";
-    }
-
-    if (Analog2Buttons_inputs) HelpText += "<br />" + QString::number(Analog2Buttons_inputs) + " analog to buttons inputs <br />";
-
-    if ((Chain_Rotaries_1 > 0) ||(Chain_Rotaries_2 > 0) || (Chain_Rotaries_4 > 0)) {
-        HelpText = HelpText + "<br />" +
-                QString::number(Chain_Rotaries_1 + Chain_Rotaries_2 + Chain_Rotaries_4) + " chained rotary encoders <br />";
-        if ((Chain_PinA != 1) || (Chain_PinB != 1))
-            HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of chained encoders</font><br /><br />";
-    }
-
-    if (config.total_single_encoders > 0) {
-        HelpText = HelpText + "<br />" + QString::number(config.total_single_encoders) + " single rotary encoders <br />";
-        if ((Single_Rotaries_PINA_1 != Single_Rotaries_PINB_1) || (Single_Rotaries_PINA_2 != Single_Rotaries_PINB_2) ||
-                (Single_Rotaries_PINA_4 != Single_Rotaries_PINB_4))
-            HelpText = HelpText + "<font color='red'>You have to properly configure PINA and PINB pins of single encoders</font><br /><br />";
-    }
-
-    if ((ButtonsRows>0) && (ButtonsColumns>0))
-        HelpText = HelpText + "<br />" + QString::number(ButtonsRows * ButtonsColumns) + " buttons in matrix <br />";
-
-    if ((ButtonsRows>0) && (!ButtonsColumns))
-        HelpText = HelpText + "<font color='red'>You have to add at least 1 column to matrix</font><br />";
-
-    if ((!ButtonsRows) && (ButtonsColumns>0))
-        HelpText = HelpText + "<font color='red'>You have to add at least 1 row to matrix</font><br />";
-
-    if (Buttons>0)
-        HelpText = HelpText + "<br />" + QString::number(Buttons) + " single buttons <br />";
-
-
-    if ((RotSwitchWires>0) && (RotSwitchPoles>0))
-        HelpText = HelpText + "<br />" + QString::number(RotSwitchWires*RotSwitchPoles) + " buttons in Rotary Switch Config <br />";
-
-    if ((RotSwitchWires>0) && (RotSwitchPoles<1))
-        HelpText = HelpText + "<font color='red'>You have to add at least 1 Pole to Rotary Switch Config</font><br />";
-
-    if ((RotSwitchWires<1) && (RotSwitchPoles>0))
-        HelpText = HelpText + "<font color='red'>You have to add at least 1 Wire to Rotary Switch Config</font><br />";
-
-
-    ui->labelHelp->setText(HelpText);
-}
-

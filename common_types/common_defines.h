@@ -11,6 +11,8 @@
 #define MAX_SINGLE_ENCODERS 14
 #define MAX_A2B_INPUTS 10
 #define MAX_A2B_BUTTONS 10
+#define MAX_BUTTONS 64
+#define MAX_POVS 4
 
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >>8))

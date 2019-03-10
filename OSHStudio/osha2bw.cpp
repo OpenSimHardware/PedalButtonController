@@ -144,6 +144,7 @@ uint16_t osha2bw::checkPinValue(uint16_t pinvalue, uint8_t slider_number) {
 void osha2bw::on_spinBox_valueChanged(int arg1){
     buttonsCount = arg1;
     draw_default_sliders(buttonsCount);
+    emit buttons_number_changed();
 }
 
 void osha2bw::draw_default_sliders(uint8_t sliders_number){

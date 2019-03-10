@@ -166,8 +166,8 @@ __ALIGN_BEGIN  uint8_t USBD_CUSTOM_HID_CfgDesc[USB_CUSTOM_HID_CONFIG_DESC_SIZ] _
   0x00,         /*bCountryCode: Hardware target country*/
   0x01,         /*bNumDescriptors: Number of CUSTOM_HID class descriptors to follow*/
   0x22,         /*bDescriptorType*/
-  USBD_CUSTOM_HID_REPORT_DESC_SIZE,/*wItemLength: Total length of Report descriptor*/
-  0x00,
+  LOBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE),/*wItemLength: Total length of Report descriptor*/
+  HIBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE),
   /******************** Descriptor of Custom HID endpoints ********************/
   /* 27 */
   0x07,          /*bLength: Endpoint Descriptor size*/
@@ -201,8 +201,8 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_Desc[USB_CUSTOM_HID_DESC_SIZ] __ALI
   0x00,         /*bCountryCode: Hardware target country*/
   0x01,         /*bNumDescriptors: Number of CUSTOM_HID class descriptors to follow*/
   0x22,         /*bDescriptorType*/
-  USBD_CUSTOM_HID_REPORT_DESC_SIZE,/*wItemLength: Total length of Report descriptor*/
-  0x00,
+  LOBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE),/*wItemLength: Total length of Report descriptor*/
+  HIBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE),
 };
 
 /* USB Standard Device Descriptor */

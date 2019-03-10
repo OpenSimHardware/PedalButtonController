@@ -16,5 +16,8 @@
         <file>Images/dpad_ctr.png</file>
         <file>Images/1053081_zps20151924.jpg</file>
         <file>Images/boardTypeII.jpg</file>
+        <file>Images/OFF_small.png</file>
+        <file>Images/OFF_small_t.png</file>
+        <file>Images/ON_small_t.png</file>
     </qresource>
 </RCC>

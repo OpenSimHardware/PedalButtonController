@@ -9,8 +9,9 @@ oshpincombobox::oshpincombobox(QWidget *parent) :
 
     QStringList list=(QStringList()<<"Not Used"<<"Analog No Smoothing"<<"Analog Low Smoothing"
                       <<"Analog Medium Smooth"<<"Analog High Smooting"<<"Analog to Button"
+                      <<"Analog to Mouse X" << "Analog to Mouse Y" << "Analog to Mouse Wheel"
                       <<"Chd Rot Enc PINA"<<"Chd Rot Enc PINB"
-                      <<"Chd Rot Enc 1/1"<<"Chd Rot Enc 1/2"<<"Chd Rot Enc 1/4"
+                      <<"Chd Rot Enc 1/1"<<"Chd Rot Enc 1/2"
                       <<"Sng Rot Enc PINA 1/1"<<"Sng Rot Enc PINB 1/1"
                       <<"Sng Rot Enc PINA 1/2"<<"Sng Rot Enc PINB 1/2"
                       <<"Sng Rot Enc PINA 1/4"<<"Sng Rot Enc PINB 1/4"
@@ -36,11 +37,13 @@ void oshpincombobox::on_comboBox_currentIndexChanged(int index)
         case AnalogMedSmooth:   color_scheme="QComboBox { color: white; background-color: #003300; }";break;
         case AnalogHighSmooth:  color_scheme="QComboBox { color: white; background-color: #003300; }";break;
         case Analog2Button:     color_scheme="QComboBox { color: white; background-color: #006600; }";break;
+        case Analog2MouseX:     color_scheme="QComboBox { color: white; background-color: #666600; }";break;
+        case Analog2MouseY:     color_scheme="QComboBox { color: white; background-color: #666600; }";break;
+        case Analog2MouseWheel:     color_scheme="QComboBox { color: white; background-color: #666600; }";break;
         case Chain_Rotary_PINA: color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case Chain_Rotary_PINB: color_scheme="QComboBox { color: white; background-color: #669900; }";break;
         case Chain_Rotary_Enc_1:color_scheme="QComboBox { color: black; background-color: #669900; }";break;
         case Chain_Rotary_Enc_2:color_scheme="QComboBox { color: black; background-color: #669900; }";break;
-        case Chain_Rotary_Enc_4:color_scheme="QComboBox { color: black; background-color: #669900; }";break;
         case Single_Rotary_PINA_1:color_scheme="QComboBox { color: black; background-color: #66cc00; }";break;
         case Single_Rotary_PINB_1:color_scheme="QComboBox { color: black; background-color: #66cc00; }";break;
         case Single_Rotary_PINA_2:color_scheme="QComboBox { color: black; background-color: #66cc33; }";break;
@@ -65,7 +68,7 @@ void oshpincombobox::on_comboBox_currentIndexChanged(int index)
 void oshpincombobox::set_pin_number(uint8_t pin_number)
 {
     // disable chained 1/4 enc config
-    ui->comboBox->setItemData(10, 0, Qt::UserRole - 1);
+    //ui->comboBox->setItemData(10, 0, Qt::UserRole - 1);
 
     if ((pin_number > 8) && (pin_number !=14) && (pin_number != 15)){
         ui->comboBox->setItemData(1, 0, Qt::UserRole - 1);
@@ -73,20 +76,23 @@ void oshpincombobox::set_pin_number(uint8_t pin_number)
         ui->comboBox->setItemData(3, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(4, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(5, 0, Qt::UserRole - 1);
-    }
-    if (pin_number == 29) {
         ui->comboBox->setItemData(6, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(7, 0, Qt::UserRole - 1);
-        ui->comboBox->setItemData(11, 0, Qt::UserRole - 1);
-        ui->comboBox->setItemData(12, 0, Qt::UserRole - 1);
+        ui->comboBox->setItemData(8, 0, Qt::UserRole - 1);
+    }
+    if (pin_number == 29) {
+        ui->comboBox->setItemData(9, 0, Qt::UserRole - 1);
+        ui->comboBox->setItemData(10, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(13, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(14, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(15, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(16, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(17, 0, Qt::UserRole - 1);
+        ui->comboBox->setItemData(18, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(19, 0, Qt::UserRole - 1);
-        ui->comboBox->setItemData(20, 0, Qt::UserRole - 1);
+        ui->comboBox->setItemData(21, 0, Qt::UserRole - 1);
         ui->comboBox->setItemData(22, 0, Qt::UserRole - 1);
+        ui->comboBox->setItemData(24, 0, Qt::UserRole - 1);
     }
 }
 

@@ -86,10 +86,10 @@ void OSHStudio::gatherConfig_Slot(){
 
 
     config.POV_config = 0;
-    if (ui->checkBox_POV1->isChecked()) config.POV_config |= 0x1;
-    if (ui->checkBox_POV2->isChecked()) config.POV_config |= 0x2;
-    if (ui->checkBox_POV3->isChecked()) config.POV_config |= 0x4;
-    if (ui->checkBox_POV4->isChecked()) config.POV_config |= 0x8;
+//    if (ui->checkBox_POV1->isChecked()) config.POV_config |= 0x1;
+//    if (ui->checkBox_POV2->isChecked()) config.POV_config |= 0x2;
+//    if (ui->checkBox_POV3->isChecked()) config.POV_config |= 0x4;
+//    if (ui->checkBox_POV4->isChecked()) config.POV_config |= 0x8;
 
     config.rotswitch_min_time = ui->spinBox_RotSwitch_min_time->value();
 
@@ -106,6 +106,9 @@ void OSHStudio::gatherConfig_Slot(){
             A2Bstore[i].widget_ptr->getButtonsIntervals(config.a2b_2nd5[i-(MAX_A2B_INPUTS/2)].buttons_intervals);
         }
     }
+
+    get_all_A2B_buttons();
+    get_all_SB_buttons();
 
     QString name_template_SE("widget_SE%1");
     oshsingenc *SEwid;
@@ -190,20 +193,31 @@ void OSHStudio::setConfig_Slot(){
         }
 
 
-        if (config.POV_config & 0x1) ui->checkBox_POV1->setChecked(true);
-            else ui->checkBox_POV1->setChecked(false);
-        if (config.POV_config & 0x2) ui->checkBox_POV2->setChecked(true);
-            else ui->checkBox_POV2->setChecked(false);
-        if (config.POV_config & 0x4) ui->checkBox_POV3->setChecked(true);
-            else ui->checkBox_POV3->setChecked(false);
-        if (config.POV_config & 0x8) ui->checkBox_POV4->setChecked(true);
-            else ui->checkBox_POV4->setChecked(false);
+//        if (config.POV_config & 0x1) ui->checkBox_POV1->setChecked(true);
+//            else ui->checkBox_POV1->setChecked(false);
+//        if (config.POV_config & 0x2) ui->checkBox_POV2->setChecked(true);
+//            else ui->checkBox_POV2->setChecked(false);
+//        if (config.POV_config & 0x4) ui->checkBox_POV3->setChecked(true);
+//            else ui->checkBox_POV3->setChecked(false);
+//        if (config.POV_config & 0x8) ui->checkBox_POV4->setChecked(true);
+//            else ui->checkBox_POV4->setChecked(false);
 
 
         ui->spinBox_RotSwitch_min_time->setValue(config.rotswitch_min_time);
 
         ui->spinBox_A2B_min_time->setValue(config.analog_2_button_min_time);
         ui->spinBox_A2B_Press_time->setValue(config.analog_2_button_press_time);
+
+        for (uint8_t i=0;i<MAX_BUTTONS/2;i++){
+            SBstore[i].button_type=(button_mode)config.buttons_types1st[i];
+        }
+        for (uint8_t i=MAX_BUTTONS/2;i<MAX_BUTTONS;i++){
+            SBstore[i].button_type=(button_mode)config.buttons_types2nd[i-MAX_BUTTONS/2];
+        }
+        for (uint8_t i=0; i<MAX_BUTTONS; i++){
+            SBstore[i].SB_wid_prt->set_button_type(SBstore[i].button_type);
+        }
+
 
         gatherPinsConf();
         showSingleEncodersTab();
@@ -275,6 +289,14 @@ void OSHStudio::resetConfig_Slot(){
     resetAllA2B();
 
     config.rotswitch_min_time = 0;
+
+    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
+        config.buttons_types1st[i] = joystick_button;
+    }
+    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
+        config.buttons_types2nd[i] = joystick_button;
+    }
+
 
     setConfig_Slot();
 }
@@ -357,6 +379,13 @@ void OSHStudio::restoreConfig_Slot(){
     resetAllA2B();
     config.rotswitch_min_time = 0;
 
+    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
+        config.buttons_types1st[i] = joystick_button;
+    }
+    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
+        config.buttons_types2nd[i] = joystick_button;
+    }
+
     setConfig_Slot();
 }
 
@@ -411,10 +440,14 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     config.packet_id2 = 2;
     config.packet_id3 = 2;
     config.packet_id4 = 2;
+    config.packet_id5 = 2;
+    config.packet_id6 = 2;
     config.operation_code1 = 1;
     config.operation_code2 = 2;
     config.operation_code3 = 3;
     config.operation_code4 = 4;
+    config.operation_code5 = 5;
+    config.operation_code6 = 6;
 
     switch(confirmed_packet){
     case (sizeof(total_config_)/BUFFSIZE): {

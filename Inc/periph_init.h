@@ -40,6 +40,9 @@
 //#define AXISES 6
 #define ADC_BUFF_SIZE 12
 #define UNIQUEIDREG 0x1FFFF7E8
+#define MOUSEMIN -10
+#define MOUSEMAX 10
+#define MOUSE_THRESHOLD 1
 
 #define _GPIOA_BASE  0x40010800
 #define _GPIOB_BASE  0x40010C00

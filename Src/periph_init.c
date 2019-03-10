@@ -154,6 +154,63 @@ volatile struct total_config_ config = {
 			.pin[31] = Button_GND, 		//C15	//Not_Used		//Button_COLUMN
 };
 
+volatile struct mouse_report_ mouse_report = {
+		.packet_id = 6,
+		.left_button = 0,
+		.right_button = 0,
+		.middle_button = 0,
+		.additional_buttons = 0,
+		.X_pos = 0,
+		.Y_pos = 0,
+		.mouse_wheel_pos = 0,
+};
+
+volatile struct gamepad_report_ gamepad_report = {
+		.packet_id = 1,
+		.buttons = 0,
+		.axis[0] = 0,
+		.axis[1] = 0,
+		.axis[2] = 0,
+		.axis[3] = 0,
+		.axis[4] = 0,
+		.axis[5] = 0,
+		.pov[0] = 8,
+		.pov[1] = 8,
+		.pov[2] = 8,
+		.pov[3] = 8,
+};
+
+volatile struct keyboard_report_ keyboard_report = {
+		.packet_id = 7,
+		.left_ctrl = 0,
+		.left_shft = 0,
+		.left_alt = 0,
+		.left_gui = 0,
+		.right_ctrl = 0,
+		.right_shft = 0,
+		.right_alt = 0,
+		.right_gui = 0,
+		.key1 = 0,
+		.key2 = 0,
+		.key3 = 0,
+		.key4 = 0,
+		.key5 = 0,
+		.key6 = 0,
+};
+
+volatile struct multimedia_report_ multimedia_report = {
+		.packet_id = 9,
+		.scan_next = 0,
+		.scan_prev = 0,
+		.stop = 0,
+		.play = 0,
+		.volume_mute = 0,
+		.volume_down = 0,
+		.volume_up = 0,
+//		.browser = 0,
+};
+
+
 //uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
 uint8_t USB_Serial_Number_Unique[15] = {0};
@@ -169,6 +226,12 @@ volatile struct a2b {
     uint8_t buttons_number;
     uint16_t buttons_intervals[MAX_A2B_BUTTONS];
 } A2Bstore[MAX_A2B_INPUTS] = {0};
+
+volatile uint8_t SBstore[MAX_BUTTONS]={0};
+volatile uint8_t keyboard_exists = 0;
+volatile uint8_t multimedia_exists = 0;
+
+uint8_t total_buttons = 0;
 
 //TODO not sure why it needs to be global
 /*uint8_t USB_Product_String[31] = {
@@ -211,6 +274,8 @@ extern volatile uint8_t USBSendBuffer[USEDPINS+1];
 
 extern uint8_t USBD_CUSTOM_HID_CfgDesc[41];
 
+uint8_t mouse_inputs=0;
+
 
 void gpio_init(void) {
 
@@ -240,7 +305,7 @@ void gpio_init(void) {
 
 
 void custom_usb_config(void) {
-	uint8_t i=0;
+	//uint8_t i=0;
 	uint32_t * curradr;
 	uint32_t id1,id2,id3;
 	uint8_t mod;
@@ -327,7 +392,7 @@ void gpio_ports_config(void) {
 //	Number_AnalogButtons = 0;
 	Number_DigiButtons = 0;
 	extern volatile struct rots RotaryStore[USEDPINS];
-	extern struct keypad buttons[MAXBUTTONS];
+	extern struct keypad buttons[MAX_BUTTONS];
 
 	for (uint8_t i=0; i<USEDPINS; i++) {
 			Single_rotaries[i].PINA_IDR = 0;
@@ -359,7 +424,7 @@ void gpio_ports_config(void) {
 		ADC1Prevs_Values[i] = 0;
 	}
 
-	for (uint8_t i=0; i<MAXBUTTONS; i++){
+	for (uint8_t i=0; i<MAX_BUTTONS; i++){
 		buttons[i].current_state = 0;
 		buttons[i].pressed = 0;
 		buttons[i].prev_state = 0;
@@ -393,14 +458,17 @@ void gpio_ports_config(void) {
 		case AnalogLowSmooth:
 		case AnalogMedSmooth:
 		case AnalogHighSmooth:
-		case AnalogNoSmooth:Number_Channels++;
+		case AnalogNoSmooth:
+		case Analog2Button: Number_Channels++;
 							tmpconfvalue=0x0;
 							tmpbsrrvalue=0x10;
 							break;
-		case Analog2Button: Number_Channels++;
-							//Number_AnalogButtons++;
+		case Analog2MouseX:
+		case Analog2MouseY:
+		case Analog2MouseWheel: Number_Channels++;
 							tmpconfvalue=0x0;
 							tmpbsrrvalue=0x10;
+							mouse_inputs++;
 							break;
 		case Chain_Rotary_PINA:
 							tmpconfvalue=0x8;
@@ -428,7 +496,6 @@ void gpio_ports_config(void) {
 							break;
 		case Chain_Rotary_Enc_1:
 		case Chain_Rotary_Enc_2:
-		case Chain_Rotary_Enc_4:
 							Number_Rotaries++;
 							tmpconfvalue=0x02;
 							tmpbsrrvalue=0x10;
@@ -506,9 +573,23 @@ void gpio_ports_config(void) {
 		}
 	}
 
+	for (uint8_t i=0; i<MAX_BUTTONS;i++){
+		if (i<MAX_BUTTONS/2) SBstore[i] = config.buttons_types1st[i];
+		else SBstore[i] = config.buttons_types2nd[i-MAX_BUTTONS/2];
+		if (((SBstore[i] >= a_button) && (SBstore[i] <= space_button)) ||
+			((SBstore[i] >= f1_button) && (SBstore[i] <= f12_button)) ||
+			((SBstore[i] >= insert_button) && (SBstore[i] <= uparrow_button))) {
+			keyboard_exists = 1;
+		}
+		if ((SBstore[i] >= volumemute_button) && (SBstore[i] <= volumedown_button)) {
+			multimedia_exists = 1;
+		}
+ 	}
+
 	Number_RotSwitches = Number_Poles * Number_Wires;
-	encoders_offset = (Number_Buttons + Number_RotSwitches)/8;// + 2;
-	if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
+	encoders_offset = (Number_Buttons + Number_RotSwitches);///8;// + 2;
+	total_buttons = (MAX_BUTTONS > (encoders_offset + config.total_single_encoders + Number_Rotaries)) ? MAX_BUTTONS : (encoders_offset + config.total_single_encoders + Number_Rotaries);
+	//if (((Number_Buttons + Number_RotSwitches)%8) == 0) encoders_offset++; else encoders_offset=encoders_offset+2;
 
 
 	adc_init();
@@ -599,7 +680,8 @@ void adc_init(void) {
 	for (uint8_t i=0;i<USEDPINS;i++){
 		if ((config.pin[i] == AnalogNoSmooth) || (config.pin[i] == AnalogLowSmooth) ||
 				(config.pin[i] == AnalogMedSmooth) || (config.pin[i] == AnalogHighSmooth) ||
-				(config.pin[i] == Analog2Button)) {
+				(config.pin[i] == Analog2Button) ||
+				(config.pin[i] == Analog2MouseX) || (config.pin[i] == Analog2MouseY) || (config.pin[i] == Analog2MouseWheel)) {
 			if (channel < 6) {
 				ADC1->SQR3 |= pins[i].pin_number << (5*channel); // for A0-A5
 			} else {
@@ -687,6 +769,9 @@ void fill_buffer_4_axises(void) {
 		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 30, i); break;
 		  	  case AnalogHighSmooth:	  processing_axises(Ainput++, 1, i); break;
 		  	  case Analog2Button:		  processing_axises(Ainput++, 200+A2Binput++, i); break;
+		  	  case Analog2MouseX:		  processing_axises(Ainput++, 101, i); break;
+		  	  case Analog2MouseY:		  processing_axises(Ainput++, 102, i); break;
+		  	  case Analog2MouseWheel:	  processing_axises(Ainput++, 103, i); break;
 		  	  default:					  break;
 		  }
 	  }
@@ -705,9 +790,30 @@ static	uint32_t AxisComboValue=0;
 static uint8_t pincount=0;
 static uint8_t Axis=0;
 
-	Number_Axes=Number_Channels-config.analog_2_button_inputs-1;
+	Number_Axes=Number_Channels-config.analog_2_button_inputs-mouse_inputs-1;
 
 	curr = ADC1Values[Ainput];
+
+	if (Kstab == 101) {
+		int8_t mouse_x = (int8_t)map(curr, 0, 4095, MOUSEMIN, MOUSEMAX);
+		if (abs(mouse_x) > MOUSE_THRESHOLD)		mouse_report.X_pos =  mouse_x;
+			else mouse_report.X_pos = 0;
+		return;
+	}
+	if (Kstab == 102) {
+		int8_t mouse_y = (int8_t)map(curr, 0, 4095, MOUSEMIN, MOUSEMAX);
+		if (abs(mouse_y) > MOUSE_THRESHOLD)		mouse_report.Y_pos = mouse_y;
+			else mouse_report.Y_pos = 0;
+		return;
+	}
+	if (Kstab == 103) {
+		int8_t mouse_wheel = (int8_t)map(curr, 0, 4095, MOUSEMIN, MOUSEMAX);
+		if (abs(mouse_wheel) > MOUSE_THRESHOLD)		mouse_report.mouse_wheel_pos = mouse_wheel;
+			else mouse_report.mouse_wheel_pos = 0;
+		return;
+	}
+
+
 
 	if (Kstab > 199) {
 		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
@@ -777,18 +883,19 @@ static uint8_t Axis=0;
 		if (pincount==2) pincount=0;
 		//Combined axis will be always on AXIS6
 		mapvalue = map(optvalue, config.axes[5].axis_min_calib_value, config.axes[5].axis_max_calib_value, 0, 4095);
+		gamepad_report.axis[5] = mapvalue;
 //		ADC1Prevs_Values[Ainput] = optvalue;
-		USBSendBuffer[9+(10)] = LOBYTE(mapvalue);
-		USBSendBuffer[10+(10)] = HIBYTE(mapvalue);
+//		USBSendBuffer[9+(10)] = LOBYTE(mapvalue);
+//		USBSendBuffer[10+(10)] = HIBYTE(mapvalue);
 		return;
 	}
 	}
 
 
 	mapvalue = map(optvalue, config.axes[Axis].axis_min_calib_value, config.axes[Axis].axis_max_calib_value, 0, 4095);
-
-	USBSendBuffer[9+(2*Axis)] = LOBYTE(mapvalue);
-	USBSendBuffer[10+(2*Axis)] = HIBYTE(mapvalue);
+	gamepad_report.axis[Axis] = mapvalue;
+//	USBSendBuffer[9+(2*Axis)] = LOBYTE(mapvalue);
+//	USBSendBuffer[10+(2*Axis)] = HIBYTE(mapvalue);
 	Axis++;
 
 	if ((Axis > MAX_AXES-1) || (Axis > Number_Axes)) Axis=0;

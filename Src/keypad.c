@@ -32,7 +32,7 @@
 extern struct pin_conf pins[USEDPINS];
 extern uint8_t Number_Rows, Number_Columns;
 uint64_t millis;
-struct keypad buttons[MAXBUTTONS];
+struct keypad buttons[MAX_BUTTONS];
 volatile extern struct total_config_ config;
 //volatile extern uint16_t Button_Debounce_Time;
 //volatile extern uint16_t RotSwitch_Press_Time;

@@ -10,6 +10,12 @@
     <height>590</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>1026</width>
+    <height>590</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>OSHStudio</string>
   </property>
@@ -126,7 +132,7 @@
      <enum>QTabWidget::North</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -1788,1253 +1794,16 @@
      <attribute name="title">
       <string>Buttons</string>
      </attribute>
-     <widget class="QLabel" name="labelButt_16">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_1">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_2">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_3">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_4">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_5">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_6">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_7">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_24">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_9">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_10">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_11">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_12">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_13">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_14">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_15">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_32">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_17">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_18">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_19">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_20">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_21">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_22">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_23">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>150</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_40">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_25">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_26">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_27">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_28">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_29">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_30">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_31">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>200</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_48">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_33">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_34">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_35">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_36">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_37">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_38">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_39">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>250</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_56">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_41">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_42">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_43">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_44">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_45">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_46">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_47">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>300</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_8">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>100</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_0">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_49">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_57">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_50">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_58">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_51">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_59">
-      <property name="geometry">
-       <rect>
-        <x>270</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_52">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_60">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_53">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_61">
-      <property name="geometry">
-       <rect>
-        <x>430</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_54">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_62">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_55">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>350</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelButt_63">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>400</y>
-        <width>51</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="oshstudio.qrc">:/Images/OFF.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_117">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>131</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <italic>false</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Test your buttons</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_POV1">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>50</y>
-        <width>81</width>
-        <height>81</height>
+        <x>670</x>
+        <y>20</y>
+        <width>71</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -3049,14 +1818,14 @@
      </widget>
      <widget class="QLabel" name="label_POV2">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>150</y>
-        <width>81</width>
-        <height>81</height>
+        <x>760</x>
+        <y>20</y>
+        <width>71</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -3071,14 +1840,14 @@
      </widget>
      <widget class="QLabel" name="label_POV3">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>250</y>
-        <width>81</width>
-        <height>81</height>
+        <x>670</x>
+        <y>110</y>
+        <width>71</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -3093,14 +1862,14 @@
      </widget>
      <widget class="QLabel" name="label_POV4">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>710</x>
-        <y>350</y>
-        <width>81</width>
-        <height>81</height>
+        <x>760</x>
+        <y>110</y>
+        <width>71</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="text">
@@ -3113,56 +1882,746 @@
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_POV1">
+     <widget class="oshbuttonw" name="widget_SB_1" native="true">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>30</y>
-        <width>81</width>
-        <height>17</height>
+        <x>20</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
        </rect>
-      </property>
-      <property name="text">
-       <string>Enable POV1</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_POV2">
+     <widget class="oshbuttonw" name="widget_SB_2" native="true">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>130</y>
-        <width>81</width>
-        <height>17</height>
+        <x>100</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
        </rect>
-      </property>
-      <property name="text">
-       <string>Enable POV2</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_POV3">
+     <widget class="oshbuttonw" name="widget_SB_3" native="true">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>230</y>
-        <width>81</width>
-        <height>17</height>
+        <x>180</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
        </rect>
-      </property>
-      <property name="text">
-       <string>Enable POV3</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_POV4">
+     <widget class="oshbuttonw" name="widget_SB_4" native="true">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>330</y>
-        <width>81</width>
-        <height>17</height>
+        <x>260</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_5" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_6" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_7" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_8" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>20</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_9" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_10" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_11" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_12" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_13" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_14" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_15" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_16" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>80</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_17" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_18" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_19" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_20" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_21" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_22" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_23" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_24" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>140</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_25" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_26" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_27" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_28" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_29" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_30" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_31" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_32" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>200</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_33" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_34" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_35" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_36" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_37" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_38" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_39" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_40" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>260</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_41" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_42" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_43" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_44" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_45" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_46" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_47" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_48" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>320</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_49" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_50" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_51" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_52" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_53" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_54" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_55" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_56" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>380</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_57" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_58" native="true">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_59" native="true">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_60" native="true">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_61" native="true">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_62" native="true">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_63" native="true">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="oshbuttonw" name="widget_SB_64" native="true">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>440</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>210</y>
+        <width>181</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>Buttons Configuration</string>
+      </property>
+      <widget class="QLabel" name="labelHelp_SB">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>151</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+         <weight>50</weight>
+         <italic>true</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="label_POV1name">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>0</y>
+        <width>31</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Enable POV4</string>
+       <string>POV1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_POV2name">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>0</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>POV2</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_POV3name">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>90</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>POV3</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_POV4name">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>90</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>POV4</string>
       </property>
      </widget>
     </widget>
@@ -3972,6 +3431,12 @@
    <class>osha2bw</class>
    <extends>QWidget</extends>
    <header>osha2bw.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>oshbuttonw</class>
+   <extends>QWidget</extends>
+   <header>oshbuttonw.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
