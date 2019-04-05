@@ -246,7 +246,8 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   volatile extern uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
   volatile extern uint8_t config_flag;
   volatile extern struct total_config_ config;
-  extern volatile uint8_t USBSendBuffer[USEDPINS+1];
+  extern struct gamepad_report_ gamepad_report;
+//  extern volatile uint8_t USBSendBuffer[USEDPINS+1];
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -332,6 +333,9 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		config.packet_id4 = 4;
 		config.packet_id5 = 4;
 		config.packet_id6 = 4;
+		config.packet_id7 = 4;
+		config.packet_id8 = 4;
+		config.packet_id9 = 4;
 		if (code == 1) {
 			config_flag = 1;
 			memcpy(send_buffer, &(config.packet_id1), BUFFSIZE);
@@ -351,12 +355,19 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		if (code == 6) {
 			memcpy(send_buffer, &(config.packet_id6), BUFFSIZE);
 		}
-
+		if (code == 7) {
+			memcpy(send_buffer, &(config.packet_id7), BUFFSIZE);
+		}
+		if (code == 8) {
+			memcpy(send_buffer, &(config.packet_id8), BUFFSIZE);
+		}
+		if (code == 9) {
+			memcpy(send_buffer, &(config.packet_id9), BUFFSIZE);
+		}
 
 		if (code == 0xFF) config_flag=0;
-
-
 	}
+
 
 	if (report_id == 2) {
 		send_buffer[0]=5;
@@ -384,23 +395,36 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		if (hhid->Report_buf[1] == 6) {
 			send_buffer[1]=6;
 			memcpy(&(config.packet_id6), hhid->Report_buf, BUFFSIZE);
+		}
+		if (hhid->Report_buf[1] == 7) {
+			send_buffer[1]=7;
+			memcpy(&(config.packet_id7), hhid->Report_buf, BUFFSIZE);
+		}
+		if (hhid->Report_buf[1] == 8) {
+			send_buffer[1]=8;
+			memcpy(&(config.packet_id8), hhid->Report_buf, BUFFSIZE);
+		}
+		if (hhid->Report_buf[1] == 9) {
+			send_buffer[1]=9;
+			memcpy(&(config.packet_id9), hhid->Report_buf, BUFFSIZE);
 			erase_flash();
 			write_flash();
 		}
 		if (hhid->Report_buf[1] == 255) {
 			config_flag = 0;
 
-			USBSendBuffer[0] = 1;
-			for (uint8_t i=1; i<USEDPINS+1; i++){
-				USBSendBuffer[i]=0;
-			}
-			// Null point for Hat Switches
-			USBSendBuffer[21] = 8;
-			USBSendBuffer[22] = 8;
-			USBSendBuffer[23] = 8;
-			USBSendBuffer[24] = 8;
-			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, USBSendBuffer, USEDPINS+1);
-
+			gamepad_report.buttons = 0;
+			gamepad_report.axis[0] = 0;
+			gamepad_report.axis[1] = 0;
+			gamepad_report.axis[2] = 0;
+			gamepad_report.axis[3] = 0;
+			gamepad_report.axis[4] = 0;
+			gamepad_report.axis[5] = 0;
+			gamepad_report.pov[0] = 8;
+			gamepad_report.pov[1] = 8;
+			gamepad_report.pov[2] = 8;
+			gamepad_report.pov[3] = 8;
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(gamepad_report.packet_id), sizeof(struct gamepad_report_));
 			//periph_deinit();
 			//sysclock_init();
 			//gpio_init();

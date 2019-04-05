@@ -41,22 +41,22 @@ void OSHStudio::gatherConfig_Slot(){
 
     config.axes[0].axis_min_calib_value = ui->widget_axis1->LeftPinValue();
     config.axes[0].axis_max_calib_value = ui->widget_axis1->RightPinValue();
-    config.axes[0].axis_special = (uint8_t)ui->widget_axis1->isAutoCalibEnabled();
+    config.axes[0].axis_autocalibrate = (uint8_t)ui->widget_axis1->isAutoCalibEnabled();
     config.axes[1].axis_min_calib_value = ui->widget_axis2->LeftPinValue();
     config.axes[1].axis_max_calib_value = ui->widget_axis2->RightPinValue();
-    config.axes[1].axis_special = (uint8_t)ui->widget_axis2->isAutoCalibEnabled();
+    config.axes[1].axis_autocalibrate = (uint8_t)ui->widget_axis2->isAutoCalibEnabled();
     config.axes[2].axis_min_calib_value = ui->widget_axis3->LeftPinValue();
     config.axes[2].axis_max_calib_value = ui->widget_axis3->RightPinValue();
-    config.axes[2].axis_special = (uint8_t)ui->widget_axis3->isAutoCalibEnabled();
+    config.axes[2].axis_autocalibrate = (uint8_t)ui->widget_axis3->isAutoCalibEnabled();
     config.axes[3].axis_min_calib_value = ui->widget_axis4->LeftPinValue();
     config.axes[3].axis_max_calib_value = ui->widget_axis4->RightPinValue();
-    config.axes[3].axis_special = (uint8_t)ui->widget_axis4->isAutoCalibEnabled();
+    config.axes[3].axis_autocalibrate = (uint8_t)ui->widget_axis4->isAutoCalibEnabled();
     config.axes[4].axis_min_calib_value = ui->widget_axis5->LeftPinValue();
     config.axes[4].axis_max_calib_value = ui->widget_axis5->RightPinValue();
-    config.axes[4].axis_special = (uint8_t)ui->widget_axis5->isAutoCalibEnabled();
+    config.axes[4].axis_autocalibrate = (uint8_t)ui->widget_axis5->isAutoCalibEnabled();
     config.axes[5].axis_min_calib_value = ui->widget_axis6->LeftPinValue();
     config.axes[5].axis_max_calib_value = ui->widget_axis6->RightPinValue();
-    config.axes[5].axis_special = (uint8_t)ui->widget_axis6->isAutoCalibEnabled();
+    config.axes[5].axis_autocalibrate = (uint8_t)ui->widget_axis6->isAutoCalibEnabled();
 
     config.rotary_press_time = ui->spinBox__Rot_Press_time->value();
     config.rotary_debounce_time = ui->spinBox_Rot_Debounce_time->value();
@@ -64,7 +64,7 @@ void OSHStudio::gatherConfig_Slot(){
     config.usb_exchange_rate = ui->spinBox_USB_exchange->value();
     config.rotswitch_press_time = ui->spinBox_RotSwitch_Press_time->value();
 
-    memcpy(config.usb_ps_uniq,ui->lineEdit_Device_ident->text().toLatin1(),10);
+    memcpy(config.usb_ps_uniq,ui->lineEdit_Device_ident->text().toLatin1(),ui->lineEdit_Device_ident->text().toLatin1().size());
 
     if (ui->checkBox_AxisComb->isChecked()) {
         config.combined_axis_enabled = 1;
@@ -117,6 +117,32 @@ void OSHStudio::gatherConfig_Slot(){
         config.single_encoder_pinA[i] = SEwid->getPinA();
         config.single_encoder_pinB[i] = SEwid->getPinB();
     }
+
+    QString name_template_SH("comboBox_shape_axis_%1");
+    QString name_template_SW("widget_AS_%1");
+    QComboBox *SHwid = nullptr;
+    oshshapesw *SWwid = nullptr;
+    uint8_t tmp[10] = {0};
+    for(uint8_t i =0; i < MAX_AXES; i++){
+        SHwid = ui->tabWidget->findChild<QComboBox *>(name_template_SH.arg(i+1));
+        memcpy(config.profile_names[i],tmp,10);
+        memcpy(config.profile_names[i],SHwid->itemText(i).toLatin1().data(),SHwid->itemText(i).toLatin1().size());
+        SWwid = ui->tabWidget->findChild<oshshapesw *>(name_template_SW.arg(i+1));
+        SWwid->getAllPoints(axes_shapes[i],SHAPEVALUES);
+     }
+     config.axes[0].axis_profile = ui->comboBox_shape_axis_1->currentIndex();
+     config.axes[1].axis_profile = ui->comboBox_shape_axis_2->currentIndex();
+     config.axes[2].axis_profile = ui->comboBox_shape_axis_3->currentIndex();
+     config.axes[3].axis_profile = ui->comboBox_shape_axis_4->currentIndex();
+     config.axes[4].axis_profile = ui->comboBox_shape_axis_5->currentIndex();
+     config.axes[5].axis_profile = ui->comboBox_shape_axis_6->currentIndex();
+
+    for (uint8_t i=0; i<MAX_AXES; i++) {
+        for (uint8_t j=0; j<10; j++) {
+            if (i<MAX_AXES/2) config.axes_shapes1[i][j] = axes_shapes[i][j];
+            else config.axes_shapes2[i-MAX_AXES/2][j] = axes_shapes[i][j];
+        }
+    }
 }
 
 void OSHStudio::writeConfig_Slot()
@@ -144,27 +170,27 @@ void OSHStudio::setConfig_Slot(){
 
         ui->widget_axis1->setMinCalibValue(config.axes[0].axis_min_calib_value);
         ui->widget_axis1->setMaxCalibValue(config.axes[0].axis_max_calib_value);
-        ui->widget_axis1->setAutoCalib(config.axes[0].axis_special);
+        ui->widget_axis1->setAutoCalib(config.axes[0].axis_autocalibrate);
 
         ui->widget_axis2->setMinCalibValue(config.axes[1].axis_min_calib_value);
         ui->widget_axis2->setMaxCalibValue(config.axes[1].axis_max_calib_value);
-        ui->widget_axis2->setAutoCalib(config.axes[1].axis_special);
+        ui->widget_axis2->setAutoCalib(config.axes[1].axis_autocalibrate);
 
         ui->widget_axis3->setMinCalibValue(config.axes[2].axis_min_calib_value);
         ui->widget_axis3->setMaxCalibValue(config.axes[2].axis_max_calib_value);
-        ui->widget_axis3->setAutoCalib(config.axes[2].axis_special);
+        ui->widget_axis3->setAutoCalib(config.axes[2].axis_autocalibrate);
 
         ui->widget_axis4->setMinCalibValue(config.axes[3].axis_min_calib_value);
         ui->widget_axis4->setMaxCalibValue(config.axes[3].axis_max_calib_value);
-        ui->widget_axis4->setAutoCalib(config.axes[3].axis_special);
+        ui->widget_axis4->setAutoCalib(config.axes[3].axis_autocalibrate);
 
         ui->widget_axis5->setMinCalibValue(config.axes[4].axis_min_calib_value);
         ui->widget_axis5->setMaxCalibValue(config.axes[4].axis_max_calib_value);
-        ui->widget_axis5->setAutoCalib(config.axes[4].axis_special);
+        ui->widget_axis5->setAutoCalib(config.axes[4].axis_autocalibrate);
 
         ui->widget_axis6->setMinCalibValue(config.axes[5].axis_min_calib_value);
         ui->widget_axis6->setMaxCalibValue(config.axes[5].axis_max_calib_value);
-        ui->widget_axis6->setAutoCalib(config.axes[5].axis_special);
+        ui->widget_axis6->setAutoCalib(config.axes[5].axis_autocalibrate);
 
         ui->spinBox__Rot_Press_time->setValue(config.rotary_press_time);
         ui->spinBox_Rot_Debounce_time->setValue(config.rotary_debounce_time);
@@ -172,7 +198,7 @@ void OSHStudio::setConfig_Slot(){
         ui->spinBox_USB_exchange->setValue(config.usb_exchange_rate);
         ui->spinBox_RotSwitch_Press_time->setValue(config.rotswitch_press_time);
 
-        ui->lineEdit_Device_ident->setText(QString::fromLocal8Bit((char*)config.usb_ps_uniq));
+        ui->lineEdit_Device_ident->setText(QString::fromLocal8Bit((char*)config.usb_ps_uniq,10));
 
         if (config.combined_axis_enabled){
             ui->widget_axisComb1->setMinCalibValue(config.combined_axis1_mincalib_value);
@@ -218,6 +244,20 @@ void OSHStudio::setConfig_Slot(){
             SBstore[i].SB_wid_prt->set_button_type(SBstore[i].button_type);
         }
 
+        for (uint8_t i=0; i<MAX_AXES; i++) {
+            for (uint8_t j=0; j<10; j++) {
+                if (i<MAX_AXES/2) axes_shapes[i][j] = config.axes_shapes1[i][j];
+                        else axes_shapes[i][j] = config.axes_shapes2[i-MAX_AXES/2][j];
+            }
+        }
+
+        setShapesW();
+        ui->comboBox_shape_axis_1->setCurrentIndex(config.axes[0].axis_profile);
+        ui->comboBox_shape_axis_2->setCurrentIndex(config.axes[1].axis_profile);
+        ui->comboBox_shape_axis_3->setCurrentIndex(config.axes[2].axis_profile);
+        ui->comboBox_shape_axis_4->setCurrentIndex(config.axes[3].axis_profile);
+        ui->comboBox_shape_axis_5->setCurrentIndex(config.axes[4].axis_profile);
+        ui->comboBox_shape_axis_6->setCurrentIndex(config.axes[5].axis_profile);
 
         gatherPinsConf();
         showSingleEncodersTab();
@@ -241,73 +281,16 @@ void OSHStudio::setConfig_Slot(){
 }
 
 void OSHStudio::resetConfig_Slot(){
-    config.config_version = OSHSTUDIOVERSION;
-    for (uint8_t i=0; i<MAX_AXES; i++){
-        config.axes[i].axis_min_calib_value = 0;
-        config.axes[i].axis_max_calib_value = 4095;
-        config.axes[i].axis_special = 0;
-    }
 
     for (uint8_t i=0; i<USEDPINS; i++){
         config.pin[i] = Not_Used;
     }
 
-    config.rotary_press_time = 100;
-    config.rotary_debounce_time = 50;
-    config.rotswitch_press_time = 100;
-    config.button_debounce_time = 50;
-    config.combined_axis1_mincalib_value = 0;
-    config.combined_axis1_maxcalib_value = 4095;
-    config.combined_axis2_mincalib_value = 0;
-    config.combined_axis2_maxcalib_value = 4095;
-
-    for (uint8_t i=0;i<10;++i){
-        config.usb_ps_uniq[i] = 0;
-    }
-
-    config.usb_exchange_rate = 16;
-    config.combined_axis_enabled = 0;
-    config.combined_axis_cooperate = 1;
-    config.combined_axis_separate = 0;
-    config.combined_axis_pin1_autocalib = 0;
-    config.combined_axis_pin2_autocalib = 0;
-
-    config.total_single_encoders = 0;
-    for (uint8_t i=0;i<MAX_SINGLE_ENCODERS;++i){
-        config.single_encoder_pinA[i] = 0;
-        config.single_encoder_pinB[i] = 0;
-    }
-
-    config.POV_config = 0;
-    config.combined_axis_percent = 50;
-    config.combined_axis_pin1 = 4;
-    config.combined_axis_pin2 = 5;
-
-    config.analog_2_button_inputs = 0;
-    config.analog_2_button_min_time = 0;
-    config.analog_2_button_press_time = 100;
-    resetAllA2B();
-
-    config.rotswitch_min_time = 0;
-
-    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
-        config.buttons_types1st[i] = joystick_button;
-    }
-    for (uint8_t i=0; i<MAX_BUTTONS/2; i++){
-        config.buttons_types2nd[i] = joystick_button;
-    }
-
-
+    resetConfigValues();
     setConfig_Slot();
 }
 
 void OSHStudio::restoreConfig_Slot(){
-    config.config_version = OSHSTUDIOVERSION;
-    for (uint8_t i=0;i<MAX_AXES;i++){
-        config.axes[i].axis_min_calib_value = 0;
-        config.axes[i].axis_max_calib_value = 4095;
-        config.axes[i].axis_special = 0;
-    }
 
     config.pin[0] = AnalogMedSmooth;
     config.pin[1] = AnalogMedSmooth;
@@ -342,6 +325,19 @@ void OSHStudio::restoreConfig_Slot(){
     config.pin[30] = Button_COLUMN;
     config.pin[31] = Button_COLUMN;
 
+    resetConfigValues();
+    setConfig_Slot();
+}
+
+void OSHStudio::resetConfigValues(void){
+    config.config_version = OSHSTUDIOVERSION;
+    for (uint8_t i=0; i<MAX_AXES; i++){
+        config.axes[i].axis_min_calib_value = 0;
+        config.axes[i].axis_max_calib_value = 4095;
+        config.axes[i].axis_autocalibrate = 0;
+        config.axes[i].axis_profile = 0;
+    }
+
     config.rotary_press_time = 100;
     config.rotary_debounce_time = 50;
     config.rotswitch_press_time = 100;
@@ -368,6 +364,7 @@ void OSHStudio::restoreConfig_Slot(){
         config.single_encoder_pinB[i] = 0;
     }
 
+
     config.POV_config = 0;
     config.combined_axis_percent = 50;
     config.combined_axis_pin1 = 4;
@@ -386,7 +383,31 @@ void OSHStudio::restoreConfig_Slot(){
         config.buttons_types2nd[i] = joystick_button;
     }
 
-    setConfig_Slot();
+    uint8_t tmp_profile_names[MAX_AXES][10] = {
+        {'L','i','n','e','a','r',0},
+        {'E','x','p','o','n','e','n','t','1',0},
+        {'E','x','p','o','n','e','n','t','2',0},
+        {'S','h','a','p','e','1',0},
+        {'S','h','a','p','e','2',0},
+        {'I','n','v','e','r','t','e','d',0},
+    };
+    uint16_t tmp_axes_shapes[MAX_AXES][SHAPEVALUES] = {
+        {0x000, 0x1D0, 0x3A0, 0x550, 0x720, 0x8C0, 0xAA0, 0xC40, 0xE40, 0xFFF}, //linear
+        {0x000, 0x580, 0x9C0, 0xC40, 0xE10, 0xF10, 0xF80, 0xFFF, 0xFFF, 0xFFF}, //exp1
+        {0x000, 0x000, 0x000, 0x000, 0x060, 0x130, 0x270, 0x440, 0x860, 0xFFF}, //exp2
+        {0x000, 0x000, 0x060, 0x1A0, 0x4B0, 0xB70, 0xE40, 0xFB0, 0xFFF, 0xFFF}, //shape1
+        {0x000, 0x440, 0x650, 0x780, 0x7C0, 0x7F0, 0x860, 0x960, 0xBD0, 0xFFF}, //shape2
+        {0xFFF, 0xE40, 0xC40, 0xAA0, 0x8C0, 0x720, 0x550, 0x3A0, 0x1D0, 0x000}, //inverted
+    };
+
+    for (uint8_t i=0; i<MAX_AXES; i++) {
+        for (uint8_t j=0; j<10; j++) {
+            config.profile_names[i][j] = tmp_profile_names[i][j];
+            axes_shapes[i][j] = tmp_axes_shapes[i][j];
+            if (i<MAX_AXES/2) config.axes_shapes1[i][j] = tmp_axes_shapes[i][j];
+            else config.axes_shapes2[i-MAX_AXES/2][j] = tmp_axes_shapes[i][j];
+        }
+    }
 }
 
 void OSHStudio::getConfig_Slot()
@@ -442,12 +463,18 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     config.packet_id4 = 2;
     config.packet_id5 = 2;
     config.packet_id6 = 2;
+    config.packet_id7 = 2;
+    config.packet_id8 = 2;
+    config.packet_id9 = 2;
     config.operation_code1 = 1;
     config.operation_code2 = 2;
     config.operation_code3 = 3;
     config.operation_code4 = 4;
     config.operation_code5 = 5;
     config.operation_code6 = 6;
+    config.operation_code7 = 7;
+    config.operation_code8 = 8;
+    config.operation_code9 = 9;
 
     switch(confirmed_packet){
     case (sizeof(total_config_)/BUFFSIZE): {
@@ -470,3 +497,4 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
         }
     }
 }
+

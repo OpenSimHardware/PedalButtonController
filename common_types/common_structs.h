@@ -58,7 +58,8 @@ struct gamepad_report_ {
 struct axis {
     uint16_t axis_min_calib_value;
     uint16_t axis_max_calib_value;
-    uint8_t axis_special;
+    uint8_t axis_autocalibrate:4;
+    uint8_t axis_profile:4;
 };
 
 struct analog_2_button {
@@ -148,6 +149,30 @@ struct total_config_ {
 
     uint8_t buttons_types2nd[32];
     uint8_t dummy6[30];
+
+    /*===================================*/
+    /*===  packet 7 =====================*/
+    uint8_t packet_id7;
+    uint8_t operation_code7;
+
+    uint16_t axes_shapes1[MAX_AXES/2][SHAPEVALUES];
+    uint8_t dummy7[2];
+
+    /*===================================*/
+    /*===  packet 8 =====================*/
+    uint8_t packet_id8;
+    uint8_t operation_code8;
+
+    uint16_t axes_shapes2[MAX_AXES/2][SHAPEVALUES];
+    uint8_t dummy8[2];
+
+    /*===================================*/
+    /*===  packet 9 =====================*/
+    uint8_t packet_id9;
+    uint8_t operation_code9;
+
+    uint8_t profile_names[MAX_AXES][10];
+    uint8_t dummy9[2];
 };
 
 #pragma pack(pop)

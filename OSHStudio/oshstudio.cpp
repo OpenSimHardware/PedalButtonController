@@ -32,13 +32,6 @@ OSHStudio::OSHStudio(QWidget *parent) :
       connect(ui->loadFile_Button, SIGNAL(clicked(bool)), SLOT(loadFromFile()));
       connect(ui->saveFile_Button, SIGNAL(clicked(bool)), SLOT(saveToFile()));
 
-//      connect(ui->checkBox_POV1, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV1Changed(int)));
-//      connect(ui->checkBox_POV2, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV2Changed(int)));
-//      connect(ui->checkBox_POV3, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV3Changed(int)));
-//      connect(ui->checkBox_POV4, SIGNAL(stateChanged(int)), SLOT(checkBoxPOV4Changed(int)));
-
-
-
 
       qRegisterMetaType<uint16_t>("uint16_t");
       qRegisterMetaType<uint64_t>("uint64_t");
@@ -52,24 +45,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
       worker->moveToThread(thread);
 
       connect(thread, SIGNAL(started()), worker, SLOT(processData()));
- //     connect(worker, SIGNAL(putAxis1Value(uint16_t)),
- //                           SLOT(drawAxis1Value(uint16_t)));
- //     connect(worker, SIGNAL(putAxis2Value(uint16_t)),
- //                           SLOT(drawAxis2Value(uint16_t)));
- //     connect(worker, SIGNAL(putAxis3Value(uint16_t)),
- //                           SLOT(drawAxis3Value(uint16_t)));
- //     connect(worker, SIGNAL(putAxis4Value(uint16_t)),
- //                           SLOT(drawAxis4Value(uint16_t)));
- //     connect(worker, SIGNAL(putAxis5Value(uint16_t)),
- //                           SLOT(drawAxis5Value(uint16_t)));
- //     connect(worker, SIGNAL(putAxis6Value(uint16_t)),
- //                           SLOT(drawAxis6Value(uint16_t)));
- //     connect(worker, SIGNAL(putButtons1Value(uint64_t)),
- //                           SLOT(drawButtons1Value(uint64_t)));
- //     connect(worker, SIGNAL(putButtons2Value(uint64_t)),
- //                           SLOT(drawButtons2Value(uint64_t)));
- //     connect(worker, SIGNAL(putPOVSvalue(uint64_t)),
- //                           SLOT(drawPOVSvalue(uint64_t)));
+
       connect(worker, SIGNAL(putGamepadPacket(uint8_t *)),
                             SLOT(getGamepadPacket(uint8_t *)));
       connect(worker, SIGNAL(putConnectedDeviceInfo()),
@@ -123,6 +99,16 @@ OSHStudio::OSHStudio(QWidget *parent) :
        ui->widget_PB11->setEnabled(false);
        ui->widget_PB12->setEnabled(false);
 
+       ui->widget_AS_1->setReadOnlyMode(true);
+       ui->widget_AS_2->setReadOnlyMode(true);
+       ui->widget_AS_3->setReadOnlyMode(true);
+       ui->widget_AS_4->setReadOnlyMode(true);
+       ui->widget_AS_5->setReadOnlyMode(true);
+       ui->widget_AS_6->setReadOnlyMode(true);
+//       current_shape_profile = 0;
+       connect(ui->comboBox_curr_shape_prof,SIGNAL(editTextChanged(QString)), SLOT(profile_name_changed(QString)));
+       connect(ui->comboBox_curr_shape_prof,SIGNAL(currentIndexChanged(int)),SLOT(current_profile_changed(int)));
+       connect(ui->widget_AS_big,SIGNAL(knob_moved()), SLOT(update_ro_shapes()));
 
       // fake assignment for making slots active;
       ui->spinBox_USB_exchange->setValue(2);
@@ -134,7 +120,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
       ui->comboBox_BoardType->addItem("BluePill Board");
       ui->comboBox_BoardType->addItem("BlackPill Board");
-      ui->comboBox_BoardType->setCurrentIndex(0);
+      ui->comboBox_BoardType->setCurrentIndex(1);
 
       resetConfig_Slot();
 }
@@ -539,4 +525,82 @@ void OSHStudio::pinConfChanged(){
     populateDefA2B();
     populateDefSB();
     drawHelp();
+}
+
+void OSHStudio::setShapesW(void){
+    ui->label_Prof_CustName_1->setText(QString::fromLatin1((char*)config.profile_names[0],10));
+    ui->label_Prof_CustName_2->setText(QString::fromLatin1((char*)config.profile_names[1],10));
+    ui->label_Prof_CustName_3->setText(QString::fromLatin1((char*)config.profile_names[2],10));
+    ui->label_Prof_CustName_4->setText(QString::fromLatin1((char*)config.profile_names[3],10));
+    ui->label_Prof_CustName_5->setText(QString::fromLatin1((char*)config.profile_names[4],10));
+    ui->label_Prof_CustName_6->setText(QString::fromLatin1((char*)config.profile_names[5],10));
+
+    ui->comboBox_curr_shape_prof->clear();
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[0],10));
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[1],10));
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[2],10));
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[3],10));
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[4],10));
+    ui->comboBox_curr_shape_prof->addItem(QString::fromLatin1((char*)config.profile_names[5],10));
+
+    QString name_template_SE("comboBox_shape_axis_%1");
+    QString name_template_SW("widget_AS_%1");
+    QComboBox *SHwid = nullptr;
+    oshshapesw *SWwid = nullptr;
+    for(uint8_t i =0; i < MAX_AXES; i++){
+        SHwid = ui->tabWidget->findChild<QComboBox *>(name_template_SE.arg(i+1));
+        SHwid->clear();
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[0],10));
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[1],10));
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[2],10));
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[3],10));
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[4],10));
+        SHwid->addItem(QString::fromLatin1((char*)config.profile_names[5],10));
+        SWwid = ui->tabWidget->findChild<oshshapesw *>(name_template_SW.arg(i+1));
+        SWwid->setAllPoints(axes_shapes[i]);
+     }
+}
+
+void OSHStudio::profile_name_changed(QString text){
+    if (text.size() > 10) text.truncate(10);
+    ui->comboBox_curr_shape_prof->setEditText(text);
+    ui->comboBox_curr_shape_prof->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_1->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_2->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_3->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_4->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_5->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    ui->comboBox_shape_axis_6->setItemText(ui->comboBox_curr_shape_prof->currentIndex(), text);
+    switch (ui->comboBox_curr_shape_prof->currentIndex()){
+        case (0): ui->label_Prof_CustName_1->setText(text); break;
+        case (1): ui->label_Prof_CustName_2->setText(text); break;
+        case (2): ui->label_Prof_CustName_3->setText(text); break;
+        case (3): ui->label_Prof_CustName_4->setText(text); break;
+        case (4): ui->label_Prof_CustName_5->setText(text); break;
+        case (5): ui->label_Prof_CustName_6->setText(text); break;
+    }
+}
+
+void OSHStudio::current_profile_changed(int current_profile){
+   // current_shape_profile = current_profile;
+    ui->widget_AS_big->setAllPoints(axes_shapes[current_profile]);
+}
+
+void OSHStudio::update_ro_shapes(void){
+    oshshapesw * wdgt_ptr = nullptr;
+
+    uint8_t profile = ui->comboBox_curr_shape_prof->currentIndex();
+
+    switch (profile){
+    case 0: wdgt_ptr = ui->widget_AS_1; break;
+    case 1: wdgt_ptr = ui->widget_AS_2; break;
+    case 2: wdgt_ptr = ui->widget_AS_3; break;
+    case 3: wdgt_ptr = ui->widget_AS_4; break;
+    case 4: wdgt_ptr = ui->widget_AS_5; break;
+    case 5: wdgt_ptr = ui->widget_AS_6; break;
+    default: return;
+    }
+
+    ui->widget_AS_big->getAllPoints(axes_shapes[profile]);
+    wdgt_ptr->setAllPoints(axes_shapes[profile]);
 }

@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     oshsingenc.cpp \
     osha2bw.cpp \
     oshbuttonw.cpp \
-    draw_helps.cpp
+    draw_helps.cpp \
+    oshshapesw.cpp
 
 HEADERS  += oshstudio.h \
     hidapi.h \
@@ -39,14 +40,17 @@ HEADERS  += oshstudio.h \
     ../common_types/common_defines.h \
     oshsingenc.h \
     osha2bw.h \
-    oshbuttonw.h
+    oshbuttonw.h \
+    oshshapesw.h \
+    ../common_types/common_functions.h
 
 FORMS    += oshstudio.ui \
     oshaxiswca.ui \
     oshpincombobox.ui \
     oshsingenc.ui \
     osha2bw.ui \
-    oshbuttonw.ui
+    oshbuttonw.ui \
+    oshshapesw.ui
 
 RESOURCES += \
     oshstudio.qrc

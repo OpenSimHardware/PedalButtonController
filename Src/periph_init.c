@@ -74,10 +74,18 @@ volatile struct total_config_ config = {
 			.packet_id2 = 4,
 			.packet_id3 = 4,
 			.packet_id4 = 4,
+			.packet_id5 = 4,
+			.packet_id6 = 4,
+			.packet_id7 = 4,
+			.packet_id8 = 4,
 			.operation_code1 = 1,
 			.operation_code2 = 2,
 			.operation_code3 = 3,
 			.operation_code4 = 4,
+			.operation_code5 = 4,
+			.operation_code6 = 4,
+			.operation_code7 = 4,
+			.operation_code8 = 4,
 			.rotary_press_time = 100,
 			.rotary_debounce_time = 50,
 			.button_debounce_time = 50,
@@ -104,22 +112,28 @@ volatile struct total_config_ config = {
 			.POV_config = 0,
 			.axes[0].axis_min_calib_value = 0x1E, //for DimSim
 			.axes[0].axis_max_calib_value = 0x3A3, //for DimSim
-			.axes[0].axis_special = 0,
+			.axes[0].axis_profile = 0,
+			.axes[0].axis_autocalibrate = 0,
 			.axes[1].axis_min_calib_value = 0,
 			.axes[1].axis_max_calib_value = 4095,
-			.axes[1].axis_special = 0,
+			.axes[1].axis_profile = 0,
+			.axes[1].axis_autocalibrate = 0,
 			.axes[2].axis_min_calib_value = 0,
 			.axes[2].axis_max_calib_value = 4095,
-			.axes[2].axis_special = 0,
+			.axes[2].axis_profile = 0,
+			.axes[2].axis_autocalibrate = 0,
 			.axes[3].axis_min_calib_value = 0,
 			.axes[3].axis_max_calib_value = 4095,
-			.axes[3].axis_special = 0,
+			.axes[3].axis_profile = 0,
+			.axes[3].axis_autocalibrate = 0,
 			.axes[4].axis_min_calib_value = 0,
 			.axes[4].axis_max_calib_value = 4095,
-			.axes[4].axis_special = 0,
+			.axes[4].axis_profile = 0,
+			.axes[4].axis_autocalibrate = 0,
 			.axes[5].axis_min_calib_value = 0,
 			.axes[5].axis_max_calib_value = 4095,
-			.axes[5].axis_special = 0,
+			.axes[5].axis_profile = 0,
+			.axes[5].axis_autocalibrate = 0,
 			.pin[0] = Button_GND,		//A0	//AnalogMedSmooth	//AnalogMedSmooth
 			.pin[1] = Button_GND,		//A1	//Analog2Button	//AnalogMedSmooth
 			.pin[2] = Button_GND, 		//A2	//Not_Used		//AnalogMedSmooth
@@ -152,6 +166,116 @@ volatile struct total_config_ config = {
 			.pin[29] = Button_GND, 		//C13	//Not_Used		//Button_COLUMN
 			.pin[30] = Button_GND, 		//C14	//Not_Used		//Button_COLUMN
 			.pin[31] = Button_GND, 		//C15	//Not_Used		//Button_COLUMN
+			.profile_names[0][0] = 'L',
+			.profile_names[0][1] = 'i',
+			.profile_names[0][2] = 'n',
+			.profile_names[0][3] = 'e',
+			.profile_names[0][4] = 'a',
+			.profile_names[0][5] = 'r',
+			.profile_names[0][6] = 0,
+			.profile_names[1][0] = 'E',
+			.profile_names[1][1] = 'x',
+			.profile_names[1][2] = 'p',
+			.profile_names[1][3] = 'o',
+			.profile_names[1][4] = 'n',
+			.profile_names[1][5] = 'e',
+			.profile_names[1][6] = 'n',
+			.profile_names[1][7] = 't',
+			.profile_names[1][8] = '1',
+			.profile_names[1][9] = 0,
+			.profile_names[2][0] = 'E',
+			.profile_names[2][1] = 'x',
+			.profile_names[2][2] = 'p',
+			.profile_names[2][3] = 'o',
+			.profile_names[2][4] = 'n',
+			.profile_names[2][5] = 'e',
+			.profile_names[2][6] = 'n',
+			.profile_names[2][7] = 't',
+			.profile_names[2][8] = '2',
+			.profile_names[2][9] = 0,
+			.profile_names[3][0] = 'S',
+			.profile_names[3][1] = 'h',
+			.profile_names[3][2] = 'a',
+			.profile_names[3][3] = 'p',
+			.profile_names[3][4] = 'e',
+			.profile_names[3][5] = '1',
+			.profile_names[3][6] = 0,
+			.profile_names[4][0] = 'S',
+			.profile_names[4][1] = 'h',
+			.profile_names[4][2] = 'a',
+			.profile_names[4][3] = 'p',
+			.profile_names[4][4] = 'e',
+			.profile_names[4][5] = '2',
+			.profile_names[4][6] = 0,
+			.profile_names[5][0] = 'I',
+			.profile_names[5][1] = 'n',
+			.profile_names[5][2] = 'v',
+			.profile_names[5][3] = 'e',
+			.profile_names[5][4] = 'r',
+			.profile_names[5][5] = 't',
+			.profile_names[5][6] = 'e',
+			.profile_names[5][7] = 'd',
+			.profile_names[5][8] = 0,
+			.axes_shapes1[0][0] = 0x000,
+			.axes_shapes1[0][1] = 0x1D0,
+			.axes_shapes1[0][2] = 0x3A0,
+			.axes_shapes1[0][3] = 0x550,
+			.axes_shapes1[0][4] = 0x720,
+			.axes_shapes1[0][5] = 0x8C0,
+			.axes_shapes1[0][6] = 0xAA0,
+			.axes_shapes1[0][7] = 0xC40,
+			.axes_shapes1[0][8] = 0xE40,
+			.axes_shapes1[0][9] = 0xFFF, //linear
+			.axes_shapes1[1][0] = 0x000,
+			.axes_shapes1[1][1] = 0x580,
+			.axes_shapes1[1][2] = 0x9C0,
+			.axes_shapes1[1][3] = 0xC40,
+			.axes_shapes1[1][4] = 0xE10,
+			.axes_shapes1[1][5] = 0xF10,
+			.axes_shapes1[1][6] = 0xF80,
+			.axes_shapes1[1][7] = 0xFFF,
+			.axes_shapes1[1][8] = 0xFFF,
+			.axes_shapes1[1][9] = 0xFFF, //exp1
+			.axes_shapes1[2][0] = 0x000,
+			.axes_shapes1[2][1] = 0x000,
+			.axes_shapes1[2][2] = 0x000,
+			.axes_shapes1[2][3] = 0x000,
+			.axes_shapes1[2][4] = 0x060,
+			.axes_shapes1[2][5] = 0x130,
+			.axes_shapes1[2][6] = 0x270,
+			.axes_shapes1[2][7] = 0x440,
+			.axes_shapes1[2][8] = 0x860,
+			.axes_shapes1[2][9] = 0xFFF, //exp2
+			.axes_shapes2[0][0] = 0x000,
+			.axes_shapes2[0][1] = 0x000,
+			.axes_shapes2[0][2] = 0x060,
+			.axes_shapes2[0][3] = 0x1A0,
+			.axes_shapes2[0][4] = 0x4B0,
+			.axes_shapes2[0][5] = 0xB70,
+			.axes_shapes2[0][6] = 0xE40,
+			.axes_shapes2[0][7] = 0xFB0,
+			.axes_shapes2[0][8] = 0xFF0,
+			.axes_shapes2[0][9] = 0xFFF, //shape1
+			.axes_shapes2[1][0] = 0x000,
+			.axes_shapes2[1][1] = 0x440,
+			.axes_shapes2[1][2] = 0x650,
+			.axes_shapes2[1][3] = 0x780,
+			.axes_shapes2[1][4] = 0x7C0,
+			.axes_shapes2[1][5] = 0x7F0,
+			.axes_shapes2[1][6] = 0x860,
+			.axes_shapes2[1][7] = 0x960,
+			.axes_shapes2[1][8] = 0xBD0,
+			.axes_shapes2[1][9] = 0xFFF, //shape2
+			.axes_shapes2[1][0] = 0xFFF,
+			.axes_shapes2[2][1] = 0xE40,
+			.axes_shapes2[2][2] = 0xC40,
+			.axes_shapes2[2][3] = 0xAA0,
+			.axes_shapes2[2][4] = 0x8C0,
+			.axes_shapes2[2][5] = 0x720,
+			.axes_shapes2[2][6] = 0x550,
+			.axes_shapes2[2][7] = 0x3A0,
+			.axes_shapes2[2][8] = 0x1D0,
+			.axes_shapes2[2][9] = 0x000, //inverted
 };
 
 volatile struct mouse_report_ mouse_report = {
@@ -226,6 +350,7 @@ volatile struct a2b {
     uint8_t buttons_number;
     uint16_t buttons_intervals[MAX_A2B_BUTTONS];
 } A2Bstore[MAX_A2B_INPUTS] = {0};
+volatile uint16_t axes_shapes[MAX_AXES][SHAPEVALUES];
 
 volatile uint8_t SBstore[MAX_BUTTONS]={0};
 volatile uint8_t keyboard_exists = 0;
@@ -595,11 +720,15 @@ void gpio_ports_config(void) {
 	adc_init();
 
 	for (uint8_t i=0;i<MAX_AXES;i++) {
-			  if (config.axes[i].axis_special == 1) {
-				  config.axes[i].axis_min_calib_value = 4095;
-				  config.axes[i].axis_max_calib_value = 1;
-			  }
-		  }
+		if (config.axes[i].axis_autocalibrate == 1) {
+			config.axes[i].axis_min_calib_value = 4095;
+			config.axes[i].axis_max_calib_value = 1;
+		}
+        for (uint8_t j=0; j<10; j++) {
+            if (i<MAX_AXES/2) axes_shapes[i][j] = config.axes_shapes1[i][j];
+            else axes_shapes[i][j] = config.axes_shapes2[i-MAX_AXES/2][j];
+        }
+	}
 
 	if (config.combined_axis_enabled) {
 		uint8_t lastaxis=0;
@@ -781,8 +910,8 @@ void fill_buffer_4_axises(void) {
 void processing_axises(uint8_t Ainput, uint8_t Kstab, uint8_t i) {
 
 	uint32_t curr = 0;
-	uint32_t optvalue =0;
-	uint32_t mapvalue=0;
+	uint32_t volatile optvalue =0;
+	uint32_t volatile mapvalue=0;
 	uint8_t endvalue;
 	uint8_t Number_Axes=0;
 	uint8_t button = Number_DigiButtons;
@@ -843,7 +972,7 @@ static uint8_t Axis=0;
 	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 
 
-	if (config.axes[Axis].axis_special == 1) {
+	if (config.axes[Axis].axis_autocalibrate == 1) {
 		if (curr < config.axes[Axis].axis_min_calib_value) config.axes[Axis].axis_min_calib_value = curr;
 		if (curr > config.axes[Axis].axis_max_calib_value) config.axes[Axis].axis_max_calib_value = curr;
 	} else {
@@ -893,9 +1022,16 @@ static uint8_t Axis=0;
 
 
 	mapvalue = map(optvalue, config.axes[Axis].axis_min_calib_value, config.axes[Axis].axis_max_calib_value, 0, 4095);
-	gamepad_report.axis[Axis] = mapvalue;
-//	USBSendBuffer[9+(2*Axis)] = LOBYTE(mapvalue);
-//	USBSendBuffer[10+(2*Axis)] = HIBYTE(mapvalue);
+
+	uint8_t  current_part = mapvalue/(MAX_ADC_RES/(SHAPEVALUES-1));
+
+    int16_t  shpvalue = getSplinePoint(axes_shapes[config.axes[Axis].axis_profile][current_part],
+    							axes_shapes[config.axes[Axis].axis_profile][current_part+1], mapvalue%(MAX_ADC_RES/(SHAPEVALUES-1)));
+    if (shpvalue > MAX_ADC_RES) shpvalue = MAX_ADC_RES;
+    if (shpvalue < 0) shpvalue = 0;
+
+
+	gamepad_report.axis[Axis] = shpvalue;
 	Axis++;
 
 	if ((Axis > MAX_AXES-1) || (Axis > Number_Axes)) Axis=0;
@@ -907,3 +1043,12 @@ uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uin
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+uint16_t getSplinePoint(uint16_t p1, uint16_t p2, uint16_t distance){
+//	uint16_t volatile p1v = p1;
+//	uint16_t volatile p2v = p2;
+//	uint16_t volatile distance2 = distance;
+//	int32_t volatile uint8_res = p1v + (p2v - p1v) * distance2 ;
+//	uint16_t volatile final_res =  uint8_res / ((MAX_ADC_RES-1) / (SHAPEVALUES-1));
+ //   return final_res;
+	return (p1 + ((p2 - p1)*distance)/(MAX_ADC_RES/(SHAPEVALUES)));
+}

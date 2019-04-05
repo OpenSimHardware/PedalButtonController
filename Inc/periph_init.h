@@ -111,5 +111,6 @@ uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uin
 void custom_usb_config(void);
 uint8_t uint8_to_32(uint8_t value);
 void periph_deinit(void);
+uint16_t getSplinePoint(uint16_t p1, uint16_t p2, uint16_t distance);
 
 #endif /* PERIPH_INIT_H_ */

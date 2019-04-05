@@ -86,9 +86,11 @@ private:
   uint8_t pov2;
   uint8_t pov3;
   uint8_t pov4;
+  uint16_t axes_shapes[MAX_AXES][SHAPEVALUES];
 
 private slots:
   void drawHelpSB(void);
+  void setShapesW(void);
   void get_all_A2B_buttons(void);
   void get_all_SB_buttons(void);
   void populateDefSB(void);
@@ -100,20 +102,13 @@ private slots:
   void resetConfig_Slot();
   void setConfig_Slot();
   void restoreConfig_Slot();
+  void resetConfigValues(void);
   void show_USB_ident_uniq(QString ident);
   void show_USB_exch_rate(int interval);
   void showBoardType(int boardtype);
   uint8_t convertPinnameToIndex (QString pname);
   void drawHelpSE();
-//  void drawAxis1Value(uint16_t axis_value);
-//  void drawAxis2Value(uint16_t axis_value);
-//  void drawAxis3Value(uint16_t axis_value);
-//  void drawAxis4Value(uint16_t axis_value);
-//  void drawAxis5Value(uint16_t axis_value);
-//  void drawAxis6Value(uint16_t axis_value);
-//  void drawButtons1Value(uint64_t buttons_value);
-//  void drawButtons2Value(uint64_t buttons_value);
-//  void drawPOVSvalue(uint64_t POVS_value);
+  void profile_name_changed(QString);
   void getGamepadPacket(uint8_t *);
   void showConnectDeviceInfo();
   void hideConnectDeviceInfo();
@@ -132,10 +127,8 @@ private slots:
   void showA2Btab();
   void resetAllA2B();
   void showSingleEncodersTab(void);
-//  void checkBoxPOV1Changed(int state);
-//  void checkBoxPOV2Changed(int state);
-//  void checkBoxPOV3Changed(int state);
-//  void checkBoxPOV4Changed(int state);
+  void current_profile_changed(int current_profile);
+  void update_ro_shapes(void);
 };
 
 #endif // OSHSTUDIO_H

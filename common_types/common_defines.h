@@ -13,6 +13,8 @@
 #define MAX_A2B_BUTTONS 10
 #define MAX_BUTTONS 64
 #define MAX_POVS 4
+#define MAX_ADC_RES 4096
+#define SHAPEVALUES 10
 
 #define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
 #define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >>8))
