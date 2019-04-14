@@ -3,6 +3,17 @@
 
 #include <QWidget>
 
+#define BARXSTART 60
+#define SENSORBARYSTART 19
+#define BARXEND 491
+#define SENSORBARHEIGHT 4
+#define AXISBARYSTART 23
+#define AXISBARHEIGHT 10
+#define SENSORACTIVECOLOR Qt::red
+#define AXISACTIVECOLOR QColor(0,133,00)
+#define SENSORCALIBOUTCOLOR Qt::lightGray
+//#define SENSORCALIBOUTCOLOR QColor(1,119,215)
+
 namespace Ui {
 class OSHaxiswca;
 }
@@ -21,6 +32,7 @@ public:
     void setMaxCalibValue(uint16_t value);
     void setPinsEnabled(bool);
     void setAxisValue(uint16_t value);
+    void setSensorValue(uint16_t sensor_value, uint16_t min_calib, uint16_t max_calib);
     void setAutoCalib(uint8_t state);
 
 
@@ -28,6 +40,7 @@ private slots:
     void MaxCalibCanged(QString text);
     void MinCalibCanged(QString text);
     void AutoCalibToggled(bool state);
+    int32_t map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -39,6 +52,10 @@ private:
     void drawPin(QPoint pinpos);
     void fillPolygonArray(uint16_t value, char WhichPin);
     uint16_t checkPinValue(uint16_t pinvalue, char WhichPin);
+    uint16_t min_calib_value = 0;
+    uint16_t max_calib_value = 4095;
+    uint16_t axis_value = 0;
+    uint16_t sensor_value = 0;
 
     Ui::OSHaxiswca *ui;
     QPoint Lpoints[4]={

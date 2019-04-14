@@ -51,7 +51,7 @@ public:
 
 private:
   Ui::OSHStudio *ui;
-  hid_device *handle_device;
+//  hid_device *handle_device;
   struct total_config_ config;
   struct single_encoders_pins single_encoders_1_store[MAX_SINGLE_ENCODERS];
   struct single_encoders_pins single_encoders_2_store[MAX_SINGLE_ENCODERS];
@@ -87,6 +87,7 @@ private:
   uint8_t pov3;
   uint8_t pov4;
   uint16_t axes_shapes[MAX_AXES][SHAPEVALUES];
+  bool config_mode;
 
 private slots:
   void drawHelpSB(void);
@@ -96,8 +97,8 @@ private slots:
   void populateDefSB(void);
   void getConfig_Slot();
   void gatherConfig_Slot();
-  void getACKpacket(uint8_t);
-  void getConfigPacket(uint8_t * buf);
+  void getACKpacket(uint8_t *);
+  void getConfigPacket(uint8_t *);
   void writeConfig_Slot();
   void resetConfig_Slot();
   void setConfig_Slot();
@@ -129,6 +130,8 @@ private slots:
   void showSingleEncodersTab(void);
   void current_profile_changed(int current_profile);
   void update_ro_shapes(void);
+  void setSensorsValue(uint8_t *buffer);
+  void write_config_packet(void);
 };
 
 #endif // OSHSTUDIO_H

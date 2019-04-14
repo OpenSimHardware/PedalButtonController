@@ -151,7 +151,7 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	extern volatile uint64_t millis; //TODO make it via timers
-	extern volatile uint8_t USBSendBuffer[USEDPINS+1];
+
 	extern volatile uint8_t send_buffer[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
 	extern volatile uint8_t config_flag;
     extern USBD_HandleTypeDef  *hUsbDevice_0;
@@ -161,15 +161,20 @@ void SysTick_Handler(void)
     extern struct gamepad_report_ gamepad_report;
     extern struct multimedia_report_ multimedia_report;
     extern volatile struct total_config_ config;
+    extern volatile struct sensor_report_ sensor_report;
     extern volatile uint8_t keyboard_exists;
     extern volatile uint8_t multimedia_exists;
+    extern volatile uint8_t connected_mode;
 
     static uint8_t usb_cycle=0;
-    static uint8_t keyboard_cycle=0;
 
 
     millis++;
+
+    if (!(millis % (HBTIME*1000))) connected_mode = 0;
+
 	CheckButtons();
+
 
 	if (!(millis%config.usb_exchange_rate)) {
 		usb_cycle++;
@@ -190,7 +195,16 @@ void SysTick_Handler(void)
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(multimedia_report.packet_id), sizeof(struct multimedia_report_));
 			return;
 		}
-		USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(gamepad_report.packet_id), sizeof(struct gamepad_report_));
+
+		if ((connected_mode) && usb_cycle%2) {
+			for (uint8_t i=0; i<MAX_AXES; ++i){
+				sensor_report.min_calib[i] = config.axes[i].axis_min_calib_value;
+				sensor_report.max_calib[i] = config.axes[i].axis_max_calib_value;
+			}
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(sensor_report.packet_id), BUFFSIZE);
+		} else {
+			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(gamepad_report.packet_id), sizeof(struct gamepad_report_));
+		}
 	}
 
   /* USER CODE END SysTick_IRQn 0 */

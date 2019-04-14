@@ -3,7 +3,7 @@
 #include "hidapi.h"
 #include "../common_types/common_structs.h"
 
-extern hid_device *handle_read, *handle_write;
+extern hid_device *handle_read;
 //TODO make it non-global
 
 void Worker::processData(void) {
@@ -27,31 +27,82 @@ while (1) {
         handle_read = hid_open(0x1209, 0x3100,nullptr);
         if (!handle_read) {
             emit putGamepadPacket(empty_buf);
+            emit putSensorPacket(empty_buf);
             emit putDisconnectedDeviceInfo();
             QThread::sleep(1);
         } else {
-            emit putConnectedDeviceInfo();
+              emit putConnectedDeviceInfo();
         }
      }
 
+
      if (handle_read) {
-          //  res=hid_read_timeout(handle_read, buf, BUFFSIZE,500);
-        res=hid_read_timeout(handle_read, buf, BUFFSIZE,50);
+    //    current_time = QTime::currentTime();
+    //    if (!(current_time.msec()%HBTIME)) {
+            //hid_write(handle_read, hb_packet, BUFFSIZE);
+            emit putHBPacket();
+    //    }
+        QThread::msleep(30);
+         //  res=hid_read(handle_read, buf, BUFFSIZE);
+        res=hid_read_timeout(handle_read, buf, BUFFSIZE,20);
             if (res < 0) {
                 hid_close(handle_read);
                 handle_read=nullptr;
              } else {
                 if (buf[0] == 1) {
                     emit putGamepadPacket(buf);
-                    QThread::msleep(10);
+                    //QThread::msleep(30);
                 }
-                if (buf[0] == 4) {
-                    emit putConfigPacket(buf);
-                }
-                if (buf[0] == 5) {
-                    emit putACKpacket(buf[1]);
-                }
-            }
+             }
+        }
       }
    }
+
+
+void Worker::processCHIDData(void){
+    uint8_t buf[BUFFSIZE]={0};
+    int res=0;
+    while (1){
+        if (handle_read) {
+            QThread::msleep(30);
+        res=hid_read_timeout(handle_read, buf, BUFFSIZE,20);
+            if (res < 0) {
+               hid_close(handle_read);
+               handle_read=nullptr;
+            } else {
+               if (buf[0] == 4) {
+                    emit putConfigPacket(buf);
+               }
+               if ((buf[0] == 5) && (buf[1] != 254)){
+                    emit putACKpacket(buf);
+               }
+                //QThread::msleep(30);
+           }
+        } else {
+           QThread::sleep(1);
+        }
+    }
 }
+
+void Worker::processSensorData(void){
+    uint8_t buf[BUFFSIZE]={0};
+    int res=0;
+    while (1){
+        if (handle_read) {
+        res=hid_read_timeout(handle_read, buf, BUFFSIZE,20);
+            if (res < 0) {
+               hid_close(handle_read);
+               handle_read=nullptr;
+            } else {
+                if ((buf[0] == 5) and (buf[1] == 254)) {
+                        emit putSensorPacket(buf);
+                        QThread::msleep(30);
+                }
+                //QThread::msleep(30);
+           }
+        } else {
+           QThread::sleep(1);
+        }
+    }
+}
+

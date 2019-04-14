@@ -247,7 +247,8 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   volatile extern uint8_t config_flag;
   volatile extern struct total_config_ config;
   extern struct gamepad_report_ gamepad_report;
-//  extern volatile uint8_t USBSendBuffer[USEDPINS+1];
+  extern volatile uint8_t connected_mode;
+
 /* USER CODE END PRIVATE_VARIABLES */
 /**
   * @}
@@ -433,6 +434,9 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 			//__disable_irq();
 			//NVIC_SystemReset();
 			//__enable_irq();
+		}
+		if (hhid->Report_buf[1] == 254) {
+			connected_mode = 1;
 		}
 	}
 

@@ -55,6 +55,14 @@ struct gamepad_report_ {
 	uint8_t pov[4];
 };
 
+struct sensor_report_ {
+	uint8_t packet_id;
+	uint8_t operation_code;
+	uint16_t sensor_value[MAX_A2B_INPUTS];
+    uint16_t min_calib[MAX_A2B_INPUTS];
+    uint16_t max_calib[MAX_A2B_INPUTS];
+};
+
 struct axis {
     uint16_t axis_min_calib_value;
     uint16_t axis_max_calib_value;

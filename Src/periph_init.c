@@ -334,6 +334,17 @@ volatile struct multimedia_report_ multimedia_report = {
 //		.browser = 0,
 };
 
+volatile struct sensor_report_ sensor_report = {
+		.packet_id = 5,
+		.operation_code = 254,
+		.sensor_value[0] = 0,
+		.sensor_value[1] = 0,
+		.sensor_value[2] = 0,
+		.sensor_value[3] = 0,
+		.sensor_value[4] = 0,
+		.sensor_value[5] = 0,
+};
+
 
 //uint8_t * USBD_PRODUCT_STRING_FS;
 uint8_t * USBD_SERIALNUMBER_STRING_FS;
@@ -358,27 +369,6 @@ volatile uint8_t multimedia_exists = 0;
 
 uint8_t total_buttons = 0;
 
-//TODO not sure why it needs to be global
-/*uint8_t USB_Product_String[31] = {
-		79, // O
-		83, // S
-		72, // H
-		32, // Space
-		80, // P
-		66, // B
-		32, // Space
-		67, // C
-		111, // o
-		110, // n
-		116, // t
-		114, // r
-		111, // o
-		108, // l
-		108, // l
-		101, // e
-		114, // r
-};*/
-
 uint32_t * Rot_PINA_IDR, * Rot_PINB_IDR;
 uint16_t Rot_PINA_pin, Rot_PINB_pin;
 uint8_t Number_Rotaries=0,
@@ -392,14 +382,19 @@ uint8_t Number_Rotaries=0,
 //uint8_t buttons_offset=0;
 uint8_t encoders_offset=0;
 volatile uint32_t ADC1Values[ADC_BUFF_SIZE];
-uint32_t ADC1Prevs_Values[ADC_BUFF_SIZE]={0};
+//uint32_t ADC1Prevs_Values[ADC_BUFF_SIZE]={0};
 volatile uint64_t millis;
 uint8_t Number_Channels=0;
 extern volatile uint8_t USBSendBuffer[USEDPINS+1];
+volatile uint8_t connected_mode;
 
 extern uint8_t USBD_CUSTOM_HID_CfgDesc[41];
 
 uint8_t mouse_inputs=0;
+
+const uint8_t FIR7_coeff[] = {1,1,1,4,1,1,1};
+const uint8_t FIR5_coeff[] = {1,2,4,2,1};
+const uint8_t FIR3_coeff[] = {2,6,2};
 
 
 void gpio_init(void) {
@@ -546,7 +541,7 @@ void gpio_ports_config(void) {
 
 	for (uint8_t i=0; i<ADC_BUFF_SIZE; i++) {
 		ADC1Values[i] = 0;
-		ADC1Prevs_Values[i] = 0;
+//		ADC1Prevs_Values[i] = 0;
 	}
 
 	for (uint8_t i=0; i<MAX_BUTTONS; i++){
@@ -894,9 +889,9 @@ void fill_buffer_4_axises(void) {
 	  for (uint8_t i=0;i<USEDPINS;i++) {
 		  switch (config.pin[i]) {
 		  	  case AnalogNoSmooth:		  processing_axises(Ainput++, 100, i); break;
-		  	  case AnalogLowSmooth:	  	  processing_axises(Ainput++, 60, i); break;
-		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 30, i); break;
-		  	  case AnalogHighSmooth:	  processing_axises(Ainput++, 1, i); break;
+		  	  case AnalogLowSmooth:	  	  processing_axises(Ainput++, 3, i); break;
+		  	  case AnalogMedSmooth:		  processing_axises(Ainput++, 5, i); break;
+		  	  case AnalogHighSmooth:	  processing_axises(Ainput++, 7, i); break;
 		  	  case Analog2Button:		  processing_axises(Ainput++, 200+A2Binput++, i); break;
 		  	  case Analog2MouseX:		  processing_axises(Ainput++, 101, i); break;
 		  	  case Analog2MouseY:		  processing_axises(Ainput++, 102, i); break;
@@ -922,6 +917,11 @@ static uint8_t Axis=0;
 	Number_Axes=Number_Channels-config.analog_2_button_inputs-mouse_inputs-1;
 
 	curr = ADC1Values[Ainput];
+	sensor_report.sensor_value[Ainput] = ADC1Values[Ainput];
+
+	if (Kstab == 100) optvalue = curr;
+		else optvalue = fir_smoothing(curr,Ainput,Kstab);
+
 
 	if (Kstab == 101) {
 		int8_t mouse_x = (int8_t)map(curr, 0, 4095, MOUSEMIN, MOUSEMAX);
@@ -945,8 +945,8 @@ static uint8_t Axis=0;
 
 
 	if (Kstab > 199) {
-		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
-		ADC1Prevs_Values[Ainput] = optvalue;
+//		optvalue = (80 *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
+//		ADC1Prevs_Values[Ainput] = optvalue;
 		for (uint8_t i=0; i<(Kstab-200);i++){
 			button += A2Bstore[i].buttons_number;
 		}
@@ -969,8 +969,7 @@ static uint8_t Axis=0;
 	}
 
 
-	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
-
+//	optvalue = (Kstab *(int32_t)(curr - ADC1Prevs_Values[Ainput]))/100 + ADC1Prevs_Values[Ainput];
 
 	if (config.axes[Axis].axis_autocalibrate == 1) {
 		if (curr < config.axes[Axis].axis_min_calib_value) config.axes[Axis].axis_min_calib_value = curr;
@@ -980,7 +979,7 @@ static uint8_t Axis=0;
 		if (optvalue > config.axes[Axis].axis_max_calib_value) optvalue = config.axes[Axis].axis_max_calib_value;
 	}
 
-	ADC1Prevs_Values[Ainput] = optvalue;
+//	ADC1Prevs_Values[Ainput] = optvalue;
 
 	if (config.combined_axis_enabled) {
 		Number_Axes-=2;
@@ -1013,9 +1012,6 @@ static uint8_t Axis=0;
 		//Combined axis will be always on AXIS6
 		mapvalue = map(optvalue, config.axes[5].axis_min_calib_value, config.axes[5].axis_max_calib_value, 0, 4095);
 		gamepad_report.axis[5] = mapvalue;
-//		ADC1Prevs_Values[Ainput] = optvalue;
-//		USBSendBuffer[9+(10)] = LOBYTE(mapvalue);
-//		USBSendBuffer[10+(10)] = HIBYTE(mapvalue);
 		return;
 	}
 	}
@@ -1044,11 +1040,36 @@ uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uin
 }
 
 uint16_t getSplinePoint(uint16_t p1, uint16_t p2, uint16_t distance){
-//	uint16_t volatile p1v = p1;
-//	uint16_t volatile p2v = p2;
-//	uint16_t volatile distance2 = distance;
-//	int32_t volatile uint8_res = p1v + (p2v - p1v) * distance2 ;
-//	uint16_t volatile final_res =  uint8_res / ((MAX_ADC_RES-1) / (SHAPEVALUES-1));
- //   return final_res;
 	return (p1 + ((p2 - p1)*distance)/(MAX_ADC_RES/(SHAPEVALUES)));
+}
+
+uint16_t fir_smoothing(uint16_t orig_value, uint16_t input, uint8_t window_size){
+	uint16_t smooth_value = 0;
+	static uint16_t adc_store[ADC_BUFF_SIZE][FIRMAXWINDOWSSIZE] = {0};
+
+	for (uint8_t i=0;i<window_size-1;i++) {
+		adc_store[input][i] = adc_store[input][i+1];
+		if (window_size == 3)
+			smooth_value += FIR3_coeff[i] * adc_store[input][i] / 10;
+		if (window_size == 5)
+			smooth_value += FIR5_coeff[i] * adc_store[input][i] / 10;
+		if (window_size == 7)
+			smooth_value += FIR7_coeff[i] * adc_store[input][i] / 10;
+
+	  }
+	adc_store[input][window_size-1] = orig_value;
+
+	if (window_size == 3)
+		smooth_value += FIR3_coeff[window_size-1] * adc_store[input][window_size-1] / 10;
+	if (window_size == 5)
+		smooth_value += FIR5_coeff[window_size-1] * adc_store[input][window_size-1] / 10;
+	if (window_size == 7)
+		smooth_value += FIR7_coeff[window_size-1] * adc_store[input][window_size-1] / 10;
+
+
+
+	adc_store[input][window_size-1] = smooth_value;
+	smooth_value = adc_store[input][window_size/2];
+
+	return smooth_value;
 }

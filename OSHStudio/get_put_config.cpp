@@ -153,6 +153,7 @@ void OSHStudio::writeConfig_Slot()
 
     config.packet_id1 = 2;
     config.operation_code1 = 1;
+    config_mode = true;
 
     memcpy(buf, &(config.packet_id1), BUFFSIZE);
     hid_write(handle_read, buf, BUFFSIZE);
@@ -413,6 +414,7 @@ void OSHStudio::resetConfigValues(void){
 void OSHStudio::getConfig_Slot()
 {
     uint8_t bufrep2[2]={3,1};
+    config_mode = true;
 
     hid_write(handle_read, bufrep2, 2);
 }
@@ -428,6 +430,7 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
             memcpy((&(config.packet_id1)+(BUFFSIZE*(buf[1]-1))), buf, BUFFSIZE);
             next_req[1]=0xFF; // EOT flag
             hid_write(handle_read, next_req, BUFFSIZE);
+            config_mode = false;
             if(mutex_for_load.tryLock()) {
                 if (config.config_version != OSHSTUDIOVERSION) {
                     QMessageBox::warning(this, tr("Nope!"),
@@ -453,7 +456,7 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
     }
 }
 
-void OSHStudio::getACKpacket(uint8_t confirmed_packet){
+void OSHStudio::getACKpacket(uint8_t * buf_recieved){
     uint8_t buf[BUFFSIZE] = {0};
     static QMutex mutex_for_save;
 
@@ -476,11 +479,13 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     config.operation_code8 = 8;
     config.operation_code9 = 9;
 
+    uint8_t confirmed_packet = buf_recieved[1];
     switch(confirmed_packet){
     case (sizeof(total_config_)/BUFFSIZE): {
             buf[0] = 2;
             buf[1] = 255; //EOT marker
             hid_write(handle_read, buf, BUFFSIZE);
+            config_mode = false;
             if(mutex_for_save.tryLock()) {
                 QMessageBox::information(this, tr("Success!"),
                                          tr("Config saved successfully to the board"));
@@ -498,3 +503,12 @@ void OSHStudio::getACKpacket(uint8_t confirmed_packet){
     }
 }
 
+void OSHStudio::write_config_packet(void){
+    static uint8_t i=0;
+    if (!config_mode){
+        if (!(i++%10)){
+            const uint8_t hb_packet[BUFFSIZE] = {2,254,0};
+            hid_write(handle_read, hb_packet, BUFFSIZE);
+        }
+    }
+}

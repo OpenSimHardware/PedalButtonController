@@ -19,13 +19,19 @@
      <x>60</x>
      <y>20</y>
      <width>491</width>
-     <height>8</height>
+     <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <pointsize>6</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="minimum">
+    <number>0</number>
    </property>
    <property name="maximum">
     <number>4095</number>
@@ -132,6 +138,135 @@
     <string>AutoCalibration</string>
    </property>
   </widget>
+  <widget class="QProgressBar" name="sensorValue">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>21</y>
+     <width>491</width>
+     <height>2</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QProgressBar::chunk:horizontal {background: qlineargradient(x1: 0, y1: 0.5, x2: 1, y2: 0.5, stop: 0 red, stop: 1 red);}</string>
+   </property>
+   <property name="maximum">
+    <number>4095</number>
+   </property>
+   <property name="value">
+    <number>0</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="textVisible">
+    <bool>false</bool>
+   </property>
+   <property name="format">
+    <string>%v</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_axis">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>20</y>
+     <width>51</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Axis Value:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_axisValue">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>20</y>
+     <width>41</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+    </font>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;</string>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_sensor">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Sensor Value:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_sensorValue">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>20</y>
+     <width>41</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>7</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;</string>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
+  <zorder>AxisValue</zorder>
+  <zorder>sensorValue</zorder>
+  <zorder>lineEdit_MinCalib</zorder>
+  <zorder>lineEdit_MaxCalib</zorder>
+  <zorder>label_MinCalib</zorder>
+  <zorder>label_MaxCalib</zorder>
+  <zorder>checkBox_AutoCalib</zorder>
+  <zorder>label_axis</zorder>
+  <zorder>label_axisValue</zorder>
+  <zorder>label_sensor</zorder>
+  <zorder>label_sensorValue</zorder>
  </widget>
  <resources/>
  <connections/>

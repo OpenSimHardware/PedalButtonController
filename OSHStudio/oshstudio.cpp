@@ -4,7 +4,7 @@
 #include<QTextEdit>
 #include<QMessageBox>
 
-hid_device *handle_read, *handle_write;
+hid_device *handle_read;
 
 OSHStudio::OSHStudio(QWidget *parent) :
     QMainWindow(parent),
@@ -12,6 +12,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->label_Stud_version->setText("0." + QString::number(OSHSTUDIOVERSION));
+    config_mode = false;
 
     connect (ui->comboBox_BoardType, SIGNAL(currentIndexChanged(int)), SLOT(showBoardType(int)));
 
@@ -34,6 +35,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
 
       qRegisterMetaType<uint16_t>("uint16_t");
+      qRegisterMetaType<uint16_t>("uint16_t *");
       qRegisterMetaType<uint64_t>("uint64_t");
       qRegisterMetaType<uint16_t>("uint8_t");
       qRegisterMetaType<uint16_t>("uint8_t *");
@@ -43,8 +45,18 @@ OSHStudio::OSHStudio(QWidget *parent) :
       QThread* thread = new QThread;
       Worker* worker = new Worker();
       worker->moveToThread(thread);
+      QThread* thread2 = new QThread;
+      Worker* worker2 = new Worker();
+      worker2->moveToThread(thread2);
+      QThread* thread3 = new QThread;
+      Worker* worker3 = new Worker();
+      worker3->moveToThread(thread3);
+
+
 
       connect(thread, SIGNAL(started()), worker, SLOT(processData()));
+      connect(thread2, SIGNAL(started()), worker2, SLOT(processCHIDData()));
+      connect(thread3, SIGNAL(started()), worker3, SLOT(processSensorData()));
 
       connect(worker, SIGNAL(putGamepadPacket(uint8_t *)),
                             SLOT(getGamepadPacket(uint8_t *)));
@@ -52,13 +64,18 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
                             SLOT(hideConnectDeviceInfo()));
-      connect(worker, SIGNAL(putConfigPacket(uint8_t *)),
+      connect(worker2, SIGNAL(putConfigPacket(uint8_t *)),
                             SLOT(getConfigPacket(uint8_t *)));
-      connect(worker, SIGNAL(putACKpacket(uint8_t)),
-                            SLOT(getACKpacket(uint8_t)));
-
+      connect(worker2, SIGNAL(putACKpacket(uint8_t *)),
+                            SLOT(getACKpacket(uint8_t *)));
+      connect(worker3, SIGNAL(putSensorPacket(uint8_t *)),
+                            SLOT(setSensorsValue(uint8_t *)));
+      connect(worker, SIGNAL(putHBPacket()),
+                            SLOT(write_config_packet()));
 
       thread->start();
+      thread2->start();
+      thread3->start();
 
       //hide all single encoders config for now
       QString name_template_SE("widget_SE%1");
@@ -120,7 +137,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
 
       ui->comboBox_BoardType->addItem("BluePill Board");
       ui->comboBox_BoardType->addItem("BlackPill Board");
-      ui->comboBox_BoardType->setCurrentIndex(1);
+      ui->comboBox_BoardType->setCurrentIndex(0);
 
       resetConfig_Slot();
 }
@@ -603,4 +620,15 @@ void OSHStudio::update_ro_shapes(void){
 
     ui->widget_AS_big->getAllPoints(axes_shapes[profile]);
     wdgt_ptr->setAllPoints(axes_shapes[profile]);
+}
+
+void OSHStudio::setSensorsValue(uint8_t *buffer){
+    struct sensor_report_ report;
+    memcpy(&(report),buffer,sizeof(struct sensor_report_));
+    ui->widget_axis1->setSensorValue(report.sensor_value[0],report.min_calib[0],report.max_calib[0]);
+    ui->widget_axis2->setSensorValue(report.sensor_value[1],report.min_calib[1],report.max_calib[1]);
+    ui->widget_axis3->setSensorValue(report.sensor_value[2],report.min_calib[2],report.max_calib[2]);
+    ui->widget_axis4->setSensorValue(report.sensor_value[3],report.min_calib[3],report.max_calib[3]);
+    ui->widget_axis5->setSensorValue(report.sensor_value[4],report.min_calib[4],report.max_calib[4]);
+    ui->widget_axis6->setSensorValue(report.sensor_value[5],report.min_calib[5],report.max_calib[5]);
 }

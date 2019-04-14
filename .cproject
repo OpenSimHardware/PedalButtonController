@@ -116,7 +116,7 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="build-OSHStudio-Desktop_Qt_5_10_1_MinGW_32bit-Debug|OSHStudio" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="build-OSHStudio-Desktop_Qt_5_10_1_MinGW_32bit-Release|build-OSHStudio-Desktop_Qt_5_10_1_MinGW_32bit-Profile|build-OSHStudio-Desktop_Qt_5_10_1_MinGW_32bit-Debug|OSHStudio" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

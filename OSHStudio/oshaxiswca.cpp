@@ -3,12 +3,14 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QPolygon>
+#include "../common_types/common_defines.h"
 
 OSHaxiswca::OSHaxiswca(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::OSHaxiswca)
 {
     ui->setupUi(this);
+
     PRbar_offset = 60; //ui->AxisValue->rect().x();
     LeftPinPosX = PRbar_offset;
     RightPinPosX = ui->AxisValue->width() + PRbar_offset;
@@ -27,14 +29,17 @@ OSHaxiswca::OSHaxiswca(QWidget *parent) :
     RightpinColor = QColor(1,119,215);
     LeftPinDrag=false;
     RightPinDrag=false;
-    ui->lineEdit_MinCalib->setText(QString::number(0));
-    ui->lineEdit_MaxCalib->setText(QString::number(4095));
-    AutoCalibEnabled=false;
 
     connect(ui->lineEdit_MaxCalib, SIGNAL(textEdited(QString)), SLOT(MaxCalibCanged(QString)));
     connect(ui->lineEdit_MinCalib, SIGNAL(textEdited(QString)), SLOT(MinCalibCanged(QString)));
     connect(ui->checkBox_AutoCalib, SIGNAL(toggled(bool)), SLOT(AutoCalibToggled(bool)));
 
+    ui->lineEdit_MinCalib->setText(QString::number(0));
+    ui->lineEdit_MaxCalib->setText(QString::number(MAX_ADC_RES-1));
+    AutoCalibEnabled=false;
+
+    ui->AxisValue->setVisible(false);
+    ui->sensorValue->setVisible(false);
 }
 
 OSHaxiswca::~OSHaxiswca()
@@ -54,6 +59,8 @@ void OSHaxiswca::paintEvent(QPaintEvent *event)
     painter.begin(this);
     painter.setPen(Qt::lightGray);
     painter.drawRect(QRect(PRbar_offset,7,width,2));
+    painter.drawRect(BARXSTART,SENSORBARYSTART,BARXEND,SENSORBARHEIGHT+AXISBARHEIGHT);
+    painter.drawLine(BARXSTART,SENSORBARYSTART+SENSORBARHEIGHT,BARXSTART+BARXEND,SENSORBARYSTART+SENSORBARHEIGHT);
     for (uint8_t i=0; i<21; i++){
         painter.drawLine((i*tmp)+PRbar_offset,15,(i*tmp)+PRbar_offset,18);
     }
@@ -63,6 +70,42 @@ void OSHaxiswca::paintEvent(QPaintEvent *event)
     painter.setBrush(RightpinColor);
     painter.setPen(RightpinColor);
     painter.drawPolygon(Rpoints, 4, Qt::WindingFill);
+
+    painter.setPen(SENSORCALIBOUTCOLOR);
+
+
+    if (sensor_value < min_calib_value) {
+        painter.setBrush(SENSORCALIBOUTCOLOR);
+        painter.drawRect(BARXSTART,SENSORBARYSTART,
+                         map(sensor_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
+    }
+
+    if ((sensor_value > min_calib_value) && (sensor_value < max_calib_value)) {
+        painter.setBrush(SENSORCALIBOUTCOLOR);
+        painter.drawRect(BARXSTART,SENSORBARYSTART,
+                         map(min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
+        painter.setBrush(SENSORACTIVECOLOR);
+        painter.drawRect(BARXSTART+map(min_calib_value,0,4095,0,BARXEND)+1,SENSORBARYSTART,
+                         map(sensor_value-min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
+    }
+    if (sensor_value > max_calib_value){
+        painter.setBrush(SENSORCALIBOUTCOLOR);
+        painter.drawRect(BARXSTART,SENSORBARYSTART,
+                         map(min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
+        painter.drawRect(BARXSTART+map(max_calib_value,0,4095,0,BARXEND)+1,
+                SENSORBARYSTART,map(sensor_value-max_calib_value,0,4095,0,BARXEND)+1,SENSORBARHEIGHT);
+
+        painter.setBrush(SENSORACTIVECOLOR);
+        painter.drawRect(BARXSTART+map(min_calib_value,0,4095,0,BARXEND)+1,SENSORBARYSTART,
+                         map(max_calib_value-min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
+    }
+
+    //painter.setBrush(SENSORACTIVECOLOR);
+    //painter.drawRect(BARXSTART,SENSORBARYSTART,BARXEND,SENSORBARHEIGHT);
+    painter.setBrush(AXISACTIVECOLOR);
+    painter.drawRect(BARXSTART,AXISBARYSTART,
+                     map(axis_value,0,4095,0,BARXEND),AXISBARHEIGHT);
+
     painter.end();
 }
 
@@ -258,10 +301,27 @@ void OSHaxiswca::setPinsEnabled(bool state) {
 }
 
 void OSHaxiswca::setAxisValue(uint16_t value) {
-    ui->AxisValue->setValue(value);
+    //ui->AxisValue->setValue(value);
+    //ui->AxisValue->setValue(3000);
+    ui->label_axisValue->setText(QString::number(value));
+    axis_value = value;
+    update();
+}
+
+void OSHaxiswca::setSensorValue(uint16_t sensor, uint16_t min_calib, uint16_t max_calib) {
+    ui->label_sensorValue->setText(QString::number(sensor));
+    min_calib_value = min_calib;
+    max_calib_value = max_calib;
+    sensor_value = (sensor > 4095) ? 4095 : sensor;
+    update();
 }
 
 void OSHaxiswca::setAutoCalib(uint8_t state) {
     if (state==1) ui->checkBox_AutoCalib->setChecked(true);
      else ui->checkBox_AutoCalib->setChecked(false);
+}
+
+int32_t OSHaxiswca::map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
