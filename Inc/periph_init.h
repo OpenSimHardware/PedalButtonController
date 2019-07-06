@@ -107,7 +107,7 @@ void adc_init(void);
 void sysclock_init(void);
 void NVIC_init(void);
 void processing_axises(uint8_t axis, uint8_t Kstab, uint8_t i);
-void fill_buffer_4_axises(void);
+void fill_packets_4_axises(void);
 uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
 void custom_usb_config(void);
 uint8_t uint8_to_32(uint8_t value);

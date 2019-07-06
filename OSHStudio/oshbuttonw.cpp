@@ -14,6 +14,7 @@ oshbuttonw::oshbuttonw(QWidget *parent) :
         QMenu* submenuP = xmenu->addMenu( "POV" );
         QMenu* submenuM = xmenu->addMenu( "Mouse" );
         QMenu* submenuV = xmenu->addMenu( "Volume" );
+        QMenu* submenuMM = xmenu->addMenu( "Multimedia" );
         QMenu* submenuK = xmenu->addMenu( "Keyboard" );
         QMenu* submenuKM = submenuK->addMenu( "Modifiers" );
         QMenu* submenuKF = submenuK->addMenu( "F's" );
@@ -25,6 +26,7 @@ oshbuttonw::oshbuttonw(QWidget *parent) :
             if (button_namings[i].parent_menu == "POV") submenuP->addAction(button_namings[i].element_menu);
             if (button_namings[i].parent_menu == "Mouse") submenuM->addAction(button_namings[i].element_menu);
             if (button_namings[i].parent_menu == "Volume") submenuV->addAction(button_namings[i].element_menu);
+            if (button_namings[i].parent_menu == "Multimedia") submenuMM->addAction(button_namings[i].element_menu);
             if (button_namings[i].parent_menu == "Modifiers") submenuKM->addAction(button_namings[i].element_menu);
             if (button_namings[i].parent_menu == "F's") submenuKF->addAction(button_namings[i].element_menu);
             if (button_namings[i].parent_menu == "Specials") submenuKS->addAction(button_namings[i].element_menu);

@@ -46,6 +46,14 @@ struct multimedia_report_ {
 	uint8_t volume_mute:1;
 	uint8_t volume_down:1;
 	uint8_t volume_up:1;
+	uint8_t calculator:1;
+	uint8_t browser:1;
+	uint8_t control_panel:1;
+	uint8_t task_manager:1;
+	uint8_t audio_player:1;
+	uint8_t home:1;
+	uint8_t back:1;
+	uint8_t forward:1;
 };
 
 struct gamepad_report_ {
@@ -279,6 +287,20 @@ typedef enum {
         leftarrow_button = 80,
         downarrow_button = 81,
         uparrow_button = 82,
+        player_button = 83,
+        play_button = 84,
+        stop_button = 85,
+        eject_button = 86,
+        next_button = 87,
+        prev_button = 88,
+        calc_button = 89,
+        cpanel_button = 90,
+        taskman_button = 91,
+        explorer_button = 92,
+		browser_button = 96,
+        browserhome_button = 93,
+        browserback_button = 94,
+        browserforward_button = 95,
         d0_button = 39,
         d1_button = 30,
         d2_button = 31,

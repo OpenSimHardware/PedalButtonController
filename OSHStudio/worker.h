@@ -10,8 +10,7 @@ class Worker : public QObject {
 
 public slots:
     void processData(void);
-    void processCHIDData(void);
-    void processSensorData(void);
+
 
 signals:
     void putDisconnectedDeviceInfo(void);

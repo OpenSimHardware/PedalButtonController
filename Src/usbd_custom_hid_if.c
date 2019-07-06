@@ -213,7 +213,8 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 			0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 			0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
 			0x75, 0x01,                    //   REPORT_SIZE (1)
-			0x95, 0x08,                    //   REPORT_COUNT (8)
+//			0x95, 0x08,                    //   REPORT_COUNT (8)
+			0x95, 0x10, // REPORT_COUNT (16)
 			0x09, 0xb5,					   //   USAGE (Next Track)
 			0x09, 0xb6,					   //   USAGE (Previous Track)
 			0x09, 0xb7,					   //   USAGE (Stop)
@@ -222,16 +223,18 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 			0x09, 0xe2,                    //   USAGE (Mute)
 			0x09, 0xea,                    //   USAGE (Volume Down)
 			0x09, 0xe9,                    //   USAGE (Volume Up)
-			0x81, 0x02,                    //   INPUT (Data,Var,Abs)
-//			0x0a, 0x92, 0x01,              //   USAGE (AL Calculator)
-//			0x0a, 0x94, 0x01,              //   USAGE (AL Local Machine Browser)
-//			0x0a, 0x9F, 0x01,              //   USAGE (AL Control Panel)
-//			0x0a, 0xA1, 0x01,              //   USAGE (AL Task Manager)
-//			0x0a, 0xC7, 0x01,              //   USAGE (AL Audio Player)
-//			0x0a, 0x23, 0x02,              //   USAGE (AC Home)
-//			0x0a, 0x24, 0x02,              //   USAGE (AC Back)
-//			0x0a, 0x25, 0x02,              //   USAGE (AC Forward)
 //			0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+			0x0a, 0x92, 0x01,              //   USAGE (AL Calculator)
+			0x0a, 0x94, 0x01,              //   USAGE (AL Local Machine Browser)
+			0x0a, 0x9F, 0x01,              //   USAGE (AL Control Panel)
+			0x0a, 0xA1, 0x01,              //   USAGE (AL Task Manager)
+			0x0a, 0xC7, 0x01,              //   USAGE (AL Audio Player)
+			0x0a, 0x23, 0x02,              //   USAGE (AC Home)
+			0x0a, 0x24, 0x02,              //   USAGE (AC Back)
+			0x0a, 0x25, 0x02,              //   USAGE (AC Forward)
+//			0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+//			0x81, 0x62, // INPUT (Data,Var,Abs,NPrf,Null)
+			0x81, 0x06, // INPUT (Data,Var,Rel)
 			0xc0,                          //     END_COLLECTION
 
 };
@@ -408,7 +411,7 @@ static int8_t CUSTOM_HID_OutEvent_FS  (uint8_t event_idx, uint8_t state)
 		if (hhid->Report_buf[1] == 9) {
 			send_buffer[1]=9;
 			memcpy(&(config.packet_id9), hhid->Report_buf, BUFFSIZE);
-			erase_flash();
+			//erase_flash();
 			write_flash();
 		}
 		if (hhid->Report_buf[1] == 255) {

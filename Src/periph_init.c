@@ -78,14 +78,16 @@ volatile struct total_config_ config = {
 			.packet_id6 = 4,
 			.packet_id7 = 4,
 			.packet_id8 = 4,
+			.packet_id9 = 4,
 			.operation_code1 = 1,
 			.operation_code2 = 2,
 			.operation_code3 = 3,
 			.operation_code4 = 4,
-			.operation_code5 = 4,
-			.operation_code6 = 4,
-			.operation_code7 = 4,
-			.operation_code8 = 4,
+			.operation_code5 = 5,
+			.operation_code6 = 6,
+			.operation_code7 = 7,
+			.operation_code8 = 8,
+			.operation_code9 = 9,
 			.rotary_press_time = 100,
 			.rotary_debounce_time = 50,
 			.button_debounce_time = 50,
@@ -276,6 +278,80 @@ volatile struct total_config_ config = {
 			.axes_shapes2[2][7] = 0x3A0,
 			.axes_shapes2[2][8] = 0x1D0,
 			.axes_shapes2[2][9] = 0x000, //inverted
+			.buttons_types1st[0] = 0,
+			.buttons_types1st[1] = 0,
+			.buttons_types1st[2] = 0,
+			.buttons_types1st[3] = 0,
+			.buttons_types1st[4] = 0,
+			.buttons_types1st[5] = 0,
+			.buttons_types1st[6] = 0,
+			.buttons_types1st[7] = 0,
+			.buttons_types1st[8] = 0,
+			.buttons_types1st[9] = 0,
+			.buttons_types1st[10] = 0,
+			.buttons_types1st[11] = 0,
+			.buttons_types1st[12] = 0,
+			.buttons_types1st[13] = 0,
+			.buttons_types1st[14] = 0,
+			.buttons_types1st[15] = 0,
+			.buttons_types1st[16] = 0,
+			.buttons_types1st[17] = 0,
+			.buttons_types1st[18] = 0,
+			.buttons_types1st[19] = 0,
+			.buttons_types1st[20] = 0,
+			.buttons_types1st[21] = 0,
+			.buttons_types1st[22] = 0,
+			.buttons_types1st[23] = 0,
+			.buttons_types1st[24] = 0,
+			.buttons_types1st[25] = 0,
+			.buttons_types1st[26] = 0,
+			.buttons_types1st[27] = 0,
+			.buttons_types1st[28] = 0,
+			.buttons_types1st[29] = 0,
+			.buttons_types1st[30] = 0,
+			.buttons_types1st[31] = 0,
+			.buttons_types2nd[0] = 0,
+			.buttons_types2nd[1] = 0,
+			.buttons_types2nd[2] = 0,
+			.buttons_types2nd[3] = 0,
+			.buttons_types2nd[4] = 0,
+			.buttons_types2nd[5] = 0,
+			.buttons_types2nd[6] = 0,
+			.buttons_types2nd[7] = 0,
+			.buttons_types2nd[8] = 0,
+			.buttons_types2nd[9] = 0,
+			.buttons_types2nd[10] = 0,
+			.buttons_types2nd[11] = 0,
+			.buttons_types2nd[12] = 0,
+			.buttons_types2nd[13] = 0,
+			.buttons_types2nd[14] = 0,
+			.buttons_types2nd[15] = 0,
+			.buttons_types2nd[16] = 0,
+			.buttons_types2nd[17] = 0,
+			.buttons_types2nd[18] = 0,
+			.buttons_types2nd[19] = 0,
+			.buttons_types2nd[20] = 0,
+			.buttons_types2nd[21] = 0,
+			.buttons_types2nd[22] = 0,
+			.buttons_types2nd[23] = 0,
+			.buttons_types2nd[24] = 0,
+			.buttons_types2nd[25] = 0,
+			.buttons_types2nd[26] = 0,
+			.buttons_types2nd[27] = 0,
+			.buttons_types2nd[28] = 0,
+			.buttons_types2nd[29] = 0,
+			.buttons_types2nd[30] = 0,
+			.buttons_types2nd[31] = 0,
+			.a2b_1st5[0].buttons_number = 0,
+			.a2b_1st5[1].buttons_number = 0,
+			.a2b_1st5[2].buttons_number = 0,
+			.a2b_1st5[3].buttons_number = 0,
+			.a2b_1st5[4].buttons_number = 0,
+			.a2b_2nd5[0].buttons_number = 0,
+			.a2b_2nd5[1].buttons_number = 0,
+			.a2b_2nd5[2].buttons_number = 0,
+			.a2b_2nd5[3].buttons_number = 0,
+			.a2b_2nd5[4].buttons_number = 0,
 };
 
 volatile struct mouse_report_ mouse_report = {
@@ -409,12 +485,13 @@ void gpio_init(void) {
 
 	curradr = (uint8_t *)get_lastpage_addr((uint16_t *)FLASHSIZEREG) ;
 
-	if (*(curradr + offsetof(struct total_config_,config_version)) != FIRMWARERELEASE) {
-		erase_flash();
-		write_flash();
-	} else {
-		get_config();
-	}
+
+	if (*(curradr + offsetof(struct total_config_,config_version)) == FIRMWARERELEASE) get_config();
+	//erase_flash();
+	//write_flash();
+
+	//volatile uint8_t stored_release = *(curradr + offsetof(struct total_config_,config_version));
+	//if ( stored_release == FIRMWARERELEASE) get_config();
 
 
 	gpio_ports_config();
@@ -429,42 +506,6 @@ void custom_usb_config(void) {
 	uint32_t * curradr;
 	uint32_t id1,id2,id3;
 	uint8_t mod;
-
-	/*
-	USB_Product_String[0] = 79; // O
-	USB_Product_String[1] = 83; // S
-	USB_Product_String[2] = 72; // H
-	USB_Product_String[3] = 32; // Space
-	USB_Product_String[4] = 80; // P
-	USB_Product_String[5] = 66; // B
-	USB_Product_String[6] = 32; // Space
-	USB_Product_String[7] = 67; // C
-	USB_Product_String[8] = 111; // o
-	USB_Product_String[9] = 110; // n
-	USB_Product_String[10] = 116; // t
-	USB_Product_String[11] = 114; // r
-	USB_Product_String[12] = 111; // o
-	USB_Product_String[13] = 108; // l
-	USB_Product_String[14] = 108; // l
-	USB_Product_String[15] = 101; // e
-	USB_Product_String[16] = 114; // r
-	USB_Product_String[17] = 0;
-
-
-	if (config.usb_ps_uniq[0]) {
-		USB_Product_String[17] = 32; // Space
-		USB_Product_String[18] = 40; // (
-		while ((config.usb_ps_uniq[i]) && (i < 10)) {
-			USB_Product_String[19+i] = config.usb_ps_uniq[i];
-			i++;
-		}
-
-		USB_Product_String[19+i] = 41; // )
-		USB_Product_String[19+i+1] = 0;
-	}
-
-	USBD_PRODUCT_STRING_FS = USB_Product_String;
-	*/
 
 	USB_Serial_Number_Unique[14]=0;
 	curradr = (uint32_t *)UNIQUEIDREG;
@@ -544,6 +585,10 @@ void gpio_ports_config(void) {
 //		ADC1Prevs_Values[i] = 0;
 	}
 
+	for (uint8_t i=0;i<MAX_AXES;i++) {
+		sensor_report.sensor_value[i] = 0;
+	}
+
 	for (uint8_t i=0; i<MAX_BUTTONS; i++){
 		buttons[i].current_state = 0;
 		buttons[i].pressed = 0;
@@ -572,7 +617,7 @@ void gpio_ports_config(void) {
 
 	for (i=0;i<USEDPINS;i++){
 		switch (config.pin[i]) {
-		case Not_Used:		tmpconfvalue=0x4;
+		case Not_Used:		tmpconfvalue=0x8;
 							tmpbsrrvalue=0x10;
 							break;
 		case AnalogLowSmooth:
@@ -701,7 +746,8 @@ void gpio_ports_config(void) {
 			((SBstore[i] >= insert_button) && (SBstore[i] <= uparrow_button))) {
 			keyboard_exists = 1;
 		}
-		if ((SBstore[i] >= volumemute_button) && (SBstore[i] <= volumedown_button)) {
+		if (((SBstore[i] >= volumemute_button) && (SBstore[i] <= volumedown_button)) ||
+			((SBstore[i] >= player_button) && (SBstore[i] <= browserforward_button))) {
 			multimedia_exists = 1;
 		}
  	}
@@ -832,8 +878,7 @@ void sysclock_init(void) {
 	//Turn on prefetch flash buffer
 	FLASH->ACR |= FLASH_ACR_PRFTBE;
 	//Config for 2 cycles
-	FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
-	FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;
+	FLASH->ACR = (FLASH->ACR & ~FLASH_ACR_LATENCY) | FLASH_ACR_LATENCY_2;
 	//PLL as system clock
 	RCC->CFGR |= RCC_CFGR_SW_PLL;
 	//AHB not divided
@@ -882,7 +927,7 @@ void NVIC_init(void){
 }
 
 
-void fill_buffer_4_axises(void) {
+void fill_packets_4_axises(void) {
 	  uint8_t Ainput=0;
 	  uint8_t A2Binput=0;
 

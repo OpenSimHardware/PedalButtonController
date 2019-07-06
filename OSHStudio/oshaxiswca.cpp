@@ -88,7 +88,7 @@ void OSHaxiswca::paintEvent(QPaintEvent *event)
         painter.drawRect(BARXSTART+map(min_calib_value,0,4095,0,BARXEND)+1,SENSORBARYSTART,
                          map(sensor_value-min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);
     }
-    if (sensor_value > max_calib_value){
+    if (sensor_value >= max_calib_value){
         painter.setBrush(SENSORCALIBOUTCOLOR);
         painter.drawRect(BARXSTART,SENSORBARYSTART,
                          map(min_calib_value,0,4095,0,BARXEND),SENSORBARHEIGHT);

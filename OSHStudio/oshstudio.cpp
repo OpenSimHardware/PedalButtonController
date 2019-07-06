@@ -13,6 +13,7 @@ OSHStudio::OSHStudio(QWidget *parent) :
     ui->setupUi(this);
     ui->label_Stud_version->setText("0." + QString::number(OSHSTUDIOVERSION));
     config_mode = false;
+    file_logging = false;
 
     connect (ui->comboBox_BoardType, SIGNAL(currentIndexChanged(int)), SLOT(showBoardType(int)));
 
@@ -45,18 +46,9 @@ OSHStudio::OSHStudio(QWidget *parent) :
       QThread* thread = new QThread;
       Worker* worker = new Worker();
       worker->moveToThread(thread);
-      QThread* thread2 = new QThread;
-      Worker* worker2 = new Worker();
-      worker2->moveToThread(thread2);
-      QThread* thread3 = new QThread;
-      Worker* worker3 = new Worker();
-      worker3->moveToThread(thread3);
-
 
 
       connect(thread, SIGNAL(started()), worker, SLOT(processData()));
-      connect(thread2, SIGNAL(started()), worker2, SLOT(processCHIDData()));
-      connect(thread3, SIGNAL(started()), worker3, SLOT(processSensorData()));
 
       connect(worker, SIGNAL(putGamepadPacket(uint8_t *)),
                             SLOT(getGamepadPacket(uint8_t *)));
@@ -64,18 +56,14 @@ OSHStudio::OSHStudio(QWidget *parent) :
                             SLOT(showConnectDeviceInfo()));
       connect(worker, SIGNAL(putDisconnectedDeviceInfo()),
                             SLOT(hideConnectDeviceInfo()));
-      connect(worker2, SIGNAL(putConfigPacket(uint8_t *)),
+      connect(worker, SIGNAL(putConfigPacket(uint8_t *)),
                             SLOT(getConfigPacket(uint8_t *)));
-      connect(worker2, SIGNAL(putACKpacket(uint8_t *)),
+      connect(worker, SIGNAL(putACKpacket(uint8_t *)),
                             SLOT(getACKpacket(uint8_t *)));
-      connect(worker3, SIGNAL(putSensorPacket(uint8_t *)),
+      connect(worker, SIGNAL(putSensorPacket(uint8_t *)),
                             SLOT(setSensorsValue(uint8_t *)));
-      connect(worker, SIGNAL(putHBPacket()),
-                            SLOT(write_config_packet()));
 
       thread->start();
-      thread2->start();
-      thread3->start();
 
       //hide all single encoders config for now
       QString name_template_SE("widget_SE%1");
@@ -164,48 +152,64 @@ void OSHStudio::show_USB_exch_rate(int interval) {
 }
 
 void OSHStudio::getGamepadPacket(uint8_t * buff){
-    struct gamepad_report_ gamepad_report;
-    memcpy(&(gamepad_report.packet_id), buff, sizeof(struct gamepad_report_));
+    if (buff[0] == 1) {
+        struct gamepad_report_ gamepad_report;
+        memcpy(&(gamepad_report.packet_id), buff, sizeof(struct gamepad_report_));
 
-    ui->widget_axis1->setAxisValue(gamepad_report.axis[0]);
-    ui->widget_axis2->setAxisValue(gamepad_report.axis[1]);
-    ui->widget_axis3->setAxisValue(gamepad_report.axis[2]);
-    ui->widget_axis4->setAxisValue(gamepad_report.axis[3]);
-    ui->widget_axis5->setAxisValue(gamepad_report.axis[4]);
-    ui->widget_axis6->setAxisValue(gamepad_report.axis[5]);
+        ui->widget_axis1->setAxisValue(gamepad_report.axis[0]);
+        ui->widget_axis2->setAxisValue(gamepad_report.axis[1]);
+        ui->widget_axis3->setAxisValue(gamepad_report.axis[2]);
+        ui->widget_axis4->setAxisValue(gamepad_report.axis[3]);
+        ui->widget_axis5->setAxisValue(gamepad_report.axis[4]);
+        ui->widget_axis6->setAxisValue(gamepad_report.axis[5]);
 
-    for(int i = 0; i < MAX_BUTTONS; i++)
-    {
-        if ((SBstore[i].button_type == joystick_button) && (gamepad_report.buttons & (0x1ULL<<i)))
+        for(int i = 0; i < MAX_BUTTONS; i++)
+        {
+            if ((SBstore[i].button_type == joystick_button) && (gamepad_report.buttons & (0x1ULL<<i)))
                 SBstore[i].SB_wid_prt->set_button_state(true);
-        else SBstore[i].SB_wid_prt->set_button_state(false);
-    }
+            else SBstore[i].SB_wid_prt->set_button_state(false);
+        }
 
-    QString name_template("label_POV%1");
-    QPixmap povTop (":/Images/dpad_ct.png");
-    QPixmap povRight (":/Images/dpad_cr.png");
-    QPixmap povBottom (":/Images/dpad_cb.png");
-    QPixmap povLeft (":/Images/dpad_cl.png");
-    QPixmap povTopRight (":/Images/dpad_ctr.png");
-    QPixmap povRightBottom (":/Images/dpad_crb.png");
-    QPixmap povBottomLeft (":/Images/dpad_cbl.png");
-    QPixmap povLeftTop (":/Images/dpad_clt.png");
-    QPixmap povNull (":/Images/dpad.png");
-    for (int i=0; i<MAX_POVS; i++) {
-        QLabel *povLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i+1));
-        switch (gamepad_report.pov[i]) {
-            case 0: povLabel->setPixmap(povTop); break;
-            case 1: povLabel->setPixmap(povTopRight); break;
-            case 2: povLabel->setPixmap(povRight); break;
-            case 3: povLabel->setPixmap(povRightBottom); break;
-            case 4: povLabel->setPixmap(povBottom); break;
-            case 5: povLabel->setPixmap(povBottomLeft); break;
-            case 6: povLabel->setPixmap(povLeft); break;
-            case 7: povLabel->setPixmap(povLeftTop); break;
-            default: povLabel->setPixmap(povNull);
+        QString name_template("label_POV%1");
+        QPixmap povTop (":/Images/dpad_ct.png");
+        QPixmap povRight (":/Images/dpad_cr.png");
+        QPixmap povBottom (":/Images/dpad_cb.png");
+        QPixmap povLeft (":/Images/dpad_cl.png");
+        QPixmap povTopRight (":/Images/dpad_ctr.png");
+        QPixmap povRightBottom (":/Images/dpad_crb.png");
+        QPixmap povBottomLeft (":/Images/dpad_cbl.png");
+        QPixmap povLeftTop (":/Images/dpad_clt.png");
+        QPixmap povNull (":/Images/dpad.png");
+        for (int i=0; i<MAX_POVS; i++) {
+            QLabel *povLabel = ui->tabWidget->findChild<QLabel *>(name_template.arg(i+1));
+            switch (gamepad_report.pov[i]) {
+                case 0: povLabel->setPixmap(povTop); break;
+                case 1: povLabel->setPixmap(povTopRight); break;
+                case 2: povLabel->setPixmap(povRight); break;
+                case 3: povLabel->setPixmap(povRightBottom); break;
+                case 4: povLabel->setPixmap(povBottom); break;
+                case 5: povLabel->setPixmap(povBottomLeft); break;
+                case 6: povLabel->setPixmap(povLeft); break;
+                case 7: povLabel->setPixmap(povLeftTop); break;
+                default: povLabel->setPixmap(povNull);
+            }
+        }
+
+        if (file_logging) {
+            logstream << "Gamepad;" << gamepad_report.axis[0] << ";"
+                    << gamepad_report.axis[1] << ";"
+                    << gamepad_report.axis[2] << ";"
+                    << gamepad_report.axis[3] << ";"
+                    << gamepad_report.axis[4] << ";"
+                    << gamepad_report.axis[5] << ";"
+                    << gamepad_report.buttons << ";"
+                    << gamepad_report.pov[0] << ";"
+                    << gamepad_report.pov[1] << ";"
+                    << gamepad_report.pov[2] << ";"
+                    << gamepad_report.pov[3] << ";"
+                    << "\n";
         }
     }
-
 }
 
 void OSHStudio::showConnectDeviceInfo() {
@@ -623,12 +627,25 @@ void OSHStudio::update_ro_shapes(void){
 }
 
 void OSHStudio::setSensorsValue(uint8_t *buffer){
-    struct sensor_report_ report;
-    memcpy(&(report),buffer,sizeof(struct sensor_report_));
-    ui->widget_axis1->setSensorValue(report.sensor_value[0],report.min_calib[0],report.max_calib[0]);
-    ui->widget_axis2->setSensorValue(report.sensor_value[1],report.min_calib[1],report.max_calib[1]);
-    ui->widget_axis3->setSensorValue(report.sensor_value[2],report.min_calib[2],report.max_calib[2]);
-    ui->widget_axis4->setSensorValue(report.sensor_value[3],report.min_calib[3],report.max_calib[3]);
-    ui->widget_axis5->setSensorValue(report.sensor_value[4],report.min_calib[4],report.max_calib[4]);
-    ui->widget_axis6->setSensorValue(report.sensor_value[5],report.min_calib[5],report.max_calib[5]);
+    if (buffer[0] == 5) {
+        struct sensor_report_ report;
+        memcpy(&(report),buffer,sizeof(struct sensor_report_));
+        ui->widget_axis1->setSensorValue(report.sensor_value[0],report.min_calib[0],report.max_calib[0]);
+        ui->widget_axis2->setSensorValue(report.sensor_value[1],report.min_calib[1],report.max_calib[1]);
+        ui->widget_axis3->setSensorValue(report.sensor_value[2],report.min_calib[2],report.max_calib[2]);
+        ui->widget_axis4->setSensorValue(report.sensor_value[3],report.min_calib[3],report.max_calib[3]);
+        ui->widget_axis5->setSensorValue(report.sensor_value[4],report.min_calib[4],report.max_calib[4]);
+        ui->widget_axis6->setSensorValue(report.sensor_value[5],report.min_calib[5],report.max_calib[5]);
+        if (file_logging) {
+            logstream << "Sensor;" << report.sensor_value[0] << ";"
+                    << report.sensor_value[1] << ";"
+                    << report.sensor_value[2] << ";"
+                    << report.sensor_value[3] << ";"
+                    << report.sensor_value[4] << ";"
+                    << report.sensor_value[5] << ";"
+                    << "\n"   ;
+        }
+    }
 }
+
+

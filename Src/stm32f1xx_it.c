@@ -37,6 +37,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "keypad.h"
+#include "periph_init.h"
 #include "usbd_customhid.h"
 #include "..\common_types\common_defines.h"
 #include "..\common_types\common_structs.h"
@@ -167,6 +168,10 @@ void SysTick_Handler(void)
     extern volatile uint8_t connected_mode;
 
     static uint8_t usb_cycle=0;
+    static uint8_t packet_cycle=0;
+    static uint8_t sensor_cycle=0;
+
+//    volatile uint8_t remainder=0;
 
 
     millis++;
@@ -174,29 +179,39 @@ void SysTick_Handler(void)
     if (!(millis % (HBTIME*1000))) connected_mode = 0;
 
 	CheckButtons();
+	fill_packets_4_buttons();
+ 	fill_packets_4_axises();
 
 
 	if (!(millis%config.usb_exchange_rate)) {
 		usb_cycle++;
+
+		if (packet_cycle > 3) packet_cycle=0;
+//		remainder = usb_cycle%(mouse_inputs+keyboard_exists+multimedia_exists+1);
+
 		if (config_flag) {
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, send_buffer, USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
+			packet_cycle++;
 			return;
 		}
 
-		if ((mouse_inputs) && (usb_cycle%4 == 1)){
+		if ((mouse_inputs) && (packet_cycle == 1)){
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(mouse_report.packet_id), sizeof(struct mouse_report_));
+			packet_cycle++;
 			return;
 		}
-		if ((keyboard_exists) && (usb_cycle%4 == 2)){
+		if ((keyboard_exists) && (packet_cycle == 2)){
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(keyboard_report.packet_id), sizeof(struct keyboard_report_));
+			packet_cycle++;
 			return;
 		}
-		if ((multimedia_exists) && (usb_cycle%4 == 3)){
+		if ((multimedia_exists) && (packet_cycle == 3)){
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(multimedia_report.packet_id), sizeof(struct multimedia_report_));
+			packet_cycle++;
 			return;
 		}
 
-		if ((connected_mode) && usb_cycle%2) {
+		if ((connected_mode) && ++sensor_cycle%2) {
 			for (uint8_t i=0; i<MAX_AXES; ++i){
 				sensor_report.min_calib[i] = config.axes[i].axis_min_calib_value;
 				sensor_report.max_calib[i] = config.axes[i].axis_max_calib_value;
@@ -205,6 +220,7 @@ void SysTick_Handler(void)
 		} else {
 			USBD_CUSTOM_HID_SendReport(hUsbDevice_0, &(gamepad_report.packet_id), sizeof(struct gamepad_report_));
 		}
+		packet_cycle++;
 	}
 
   /* USER CODE END SysTick_IRQn 0 */

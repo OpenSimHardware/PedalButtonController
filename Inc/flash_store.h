@@ -43,6 +43,5 @@
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr);
 void get_config(void);
 void write_flash(void);
-void erase_flash(void);
 
 #endif /* FLASH_STORE_H_ */

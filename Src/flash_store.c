@@ -31,15 +31,7 @@
 #include <periph_init.h>
 
 
-extern struct pin_conf pins[USEDPINS];
-//extern struct axis_conf axises[AXISES];
-//extern uint8_t POV_config;
-//volatile extern uint8_t USB_Product_String_Unique[10];
-//volatile extern uint8_t USB_Serial_Number_Unique[13];
-//volatile extern struct rot_conf Single_rotaries[USEDPINS];
 volatile extern struct total_config_ config;
-
-
 
 
 uint16_t * get_lastpage_addr(uint16_t * flash_size_reg_addr) {
@@ -63,20 +55,21 @@ void get_config(void) {
 	}
 }
 
-void erase_flash(void) {
-	 /* Authorize the FPEC Access */
-	  FLASH->KEYR = FLASH_KEY1;
-	  FLASH->KEYR = FLASH_KEY2;
+//void erase_flash(void) {
+//	 /* Authorize the FPEC Access */
+//	  FLASH->KEYR = FLASH_KEY1;
+//	  FLASH->KEYR = FLASH_KEY2;
 
 	  /* Clear 2 page */
-	  FLASH->CR |= FLASH_CR_PER; /* Page erase */
-	  FLASH->AR = (uint32_t)get_lastpage_addr((uint16_t *)FLASHSIZEREG);
-	  FLASH->CR|= FLASH_CR_STRT; /* Start erase */
-	  while ((FLASH->SR & FLASH_SR_BSY) != 0 ) /* Wait end of erase */
-	    ;
-	  FLASH->CR &= ~FLASH_CR_PER; /* Page erase end */
-	  FLASH->CR |= FLASH_CR_LOCK; /* Lock the flash back */
-}
+//	  FLASH->CR |= FLASH_CR_PER; /* Page erase */
+//	  FLASH->AR = (uint32_t)get_lastpage_addr((uint16_t *)FLASHSIZEREG);
+//	  FLASH->CR|= FLASH_CR_STRT; /* Start erase */
+//	  while ((FLASH->SR & FLASH_SR_BSY) != 0 ) /* Wait end of erase */
+//	    ;
+//	  FLASH->CR &= ~FLASH_CR_PER; /* Page erase end */
+//	  FLASH->CR |= FLASH_CR_LOCK; /* Lock the flash back */
+
+//}
 
 void write_flash(void) {
   uint16_t * currflashaddr;
@@ -86,6 +79,18 @@ void write_flash(void) {
   FLASH->KEYR = FLASH_KEY1;
   FLASH->KEYR = FLASH_KEY2;
 
+  /* Clear last page */
+  FLASH->CR |= FLASH_CR_PER; /* Page erase */
+  FLASH->AR = (uint32_t)get_lastpage_addr((uint16_t *)FLASHSIZEREG);
+  FLASH->CR|= FLASH_CR_STRT; /* Start erase */
+  while ((FLASH->SR & FLASH_SR_BSY) != 0 ) /* Wait end of erase */
+  	    ;
+  FLASH->CR &= ~FLASH_CR_PER; /* Page erase end */
+
+
+  while ((FLASH->SR & FLASH_SR_BSY) != 0 );
+
+  FLASH->CR &= ~FLASH_CR_PER;
 
   currflashaddr = get_lastpage_addr((uint16_t *)FLASHSIZEREG);
   currstructaddr = (uint16_t *)&(config.packet_id1);

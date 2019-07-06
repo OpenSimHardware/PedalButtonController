@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "../common_types/common_structs.h"
 
-#define MENUELEM 96
+#define MENUELEM 103
 
 struct button_namings_ {
     QString parent_menu;
@@ -35,8 +35,8 @@ private:
     button_mode current_button_type;
     button_namings_ const button_namings[MENUELEM] = {
         {"Joystick", "Joystick button", "Joy",          joystick_button,},
-        {"Joystick", "Shift1 Joystick button", "JoySh1",joysticksh1_button,},
-        {"Joystick", "Shift2 Joystick button", "JoySh2",joysticksh2_button},
+//        {"Joystick", "Shift1 Joystick button", "JoySh1",joysticksh1_button,},
+//        {"Joystick", "Shift2 Joystick button", "JoySh2",joysticksh2_button},
         {"POV", "POV1 Up", "POV1U",                     pov1up_button},
         {"POV", "POV1 Right", "POV1R",                  pov1right_button},
         {"POV", "POV1 Down", "POV1D",                   pov1down_button},
@@ -94,6 +94,20 @@ private:
         {"Specials", "Left Arrow", "LArrow",            leftarrow_button},
         {"Specials", "Down Arrow", "DArrow",            downarrow_button},
         {"Specials", "Up Arrow", "UArrow",              uparrow_button},
+//        {"Multimedia", "Audio Player", "Player",        player_button},
+        {"Multimedia", "Play", "Play",                  play_button},
+        {"Multimedia", "Stop", "Stop",                  stop_button},
+//        {"Multimedia", "Eject", "Eject",                eject_button},
+        {"Multimedia", "Scan Next", "Next",             next_button},
+        {"Multimedia", "Scan Previous", "Prev",         prev_button},
+        {"Multimedia", "Calculator", "Calc",            calc_button},
+//        {"Multimedia", "Control Panel", "CPanel",       cpanel_button},
+//        {"Multimedia", "Task Manager", "TaskMan",       taskman_button},
+        {"Multimedia", "Explorer", "Explorer",            explorer_button},
+//        {"Multimedia", "Browser", "Browser",            browser_button},
+        {"Multimedia", "Browser Home", "BrowsHom",      browserhome_button},
+        {"Multimedia", "Browser Back", "BrowsBak",      browserback_button},
+        {"Multimedia", "Browser Forward", "BrowsFrw",   browserforward_button},
         {"Digits", "0", "0",                            d0_button},
         {"Digits", "1", "1",                            d1_button},
         {"Digits", "2", "2",                            d2_button},

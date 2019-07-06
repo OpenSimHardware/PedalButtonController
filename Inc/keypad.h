@@ -53,5 +53,6 @@ typedef enum {
 void CheckRows(uint8_t column, uint8_t type);
 void CheckButtons(void);
 void SetButtonState(uint8_t i, GPIO_PinState rowstate, button_type type);
+void fill_packets_4_buttons(void);
 
 #endif /* KEYPAD_H_ */

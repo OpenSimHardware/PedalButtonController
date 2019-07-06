@@ -1,6 +1,7 @@
 #include "oshstudio.h"
 #include "ui_oshstudio.h"
 #include<QMessageBox>
+#include <QTextStream>
 
 void OSHStudio::loadFromFile()
 {
@@ -52,4 +53,33 @@ void OSHStudio::saveToFile()
             file.write(reinterpret_cast<char*>(&config.packet_id1), sizeof(total_config_));
             file.close();
         }
+}
+
+void OSHStudio::on_startLog_Button_toggled(bool checked)
+{
+    if (checked) {
+        QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Packets logging file"), "",
+            tr("All Files (*)"));
+
+        if (fileName.isEmpty()){
+            ui->startLog_Button->setChecked(false);
+            return;
+        } else {
+            logfile.setFileName(fileName);
+            if (!logfile.open(QIODevice::WriteOnly)) {
+                QMessageBox::information(this, tr("Unable to open file"),logfile.errorString());
+                ui->startLog_Button->setChecked(false);
+                return;
+             }
+        }
+        file_logging = true;
+        logstream.setDevice(&logfile);
+        ui->startLog_Button->setText("Stop Logging to File");
+    } else {
+        file_logging = false;
+        logstream.flush();
+        logfile.close();
+        ui->startLog_Button->setText("Start Logging to File");
+    }
 }

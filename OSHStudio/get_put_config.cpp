@@ -416,7 +416,7 @@ void OSHStudio::getConfig_Slot()
     uint8_t bufrep2[2]={3,1};
     config_mode = true;
 
-    hid_write(handle_read, bufrep2, 2);
+    if (handle_read) hid_write(handle_read, bufrep2, 2);
 }
 
 
@@ -429,26 +429,28 @@ void OSHStudio::getConfigPacket(uint8_t * buf){
         case (sizeof(total_config_)/BUFFSIZE): {
             memcpy((&(config.packet_id1)+(BUFFSIZE*(buf[1]-1))), buf, BUFFSIZE);
             next_req[1]=0xFF; // EOT flag
-            hid_write(handle_read, next_req, BUFFSIZE);
-            config_mode = false;
-            if(mutex_for_load.tryLock()) {
-                if (config.config_version != OSHSTUDIOVERSION) {
-                    QMessageBox::warning(this, tr("Nope!"),
+            if (handle_read) {
+                hid_write(handle_read, next_req, BUFFSIZE);
+                config_mode = false;
+                if(mutex_for_load.tryLock()) {
+                    if (config.config_version != OSHSTUDIOVERSION) {
+                        QMessageBox::warning(this, tr("Nope!"),
                                      tr("It seems the board has wrong FW version"));
-                } else {
-                    setConfig_Slot();
-                    QMessageBox::information(this, tr("Success!"),
+                    } else {
+                        setConfig_Slot();
+                        QMessageBox::information(this, tr("Success!"),
                                          tr("Board's config loaded successfully."));
-                }
-                mutex_for_load.unlock();
+                    }
+                    mutex_for_load.unlock();
                 }
             }
+        }
             break;
         default: {
             if (buf[1] < sizeof(total_config_)/BUFFSIZE) {
                 memcpy((&(config.packet_id1)+(BUFFSIZE*(buf[1]-1))), buf, BUFFSIZE);
                 next_req[1]=buf[1]+1;
-                hid_write(handle_read, next_req, BUFFSIZE);
+                if (handle_read) hid_write(handle_read, next_req, BUFFSIZE);
                 }
             }
         break;
@@ -460,55 +462,50 @@ void OSHStudio::getACKpacket(uint8_t * buf_recieved){
     uint8_t buf[BUFFSIZE] = {0};
     static QMutex mutex_for_save;
 
-    config.packet_id1 = 2;
-    config.packet_id2 = 2;
-    config.packet_id3 = 2;
-    config.packet_id4 = 2;
-    config.packet_id5 = 2;
-    config.packet_id6 = 2;
-    config.packet_id7 = 2;
-    config.packet_id8 = 2;
-    config.packet_id9 = 2;
-    config.operation_code1 = 1;
-    config.operation_code2 = 2;
-    config.operation_code3 = 3;
-    config.operation_code4 = 4;
-    config.operation_code5 = 5;
-    config.operation_code6 = 6;
-    config.operation_code7 = 7;
-    config.operation_code8 = 8;
-    config.operation_code9 = 9;
+    if (buf_recieved[0] == 5) {
+        config.packet_id1 = 2;
+        config.packet_id2 = 2;
+        config.packet_id3 = 2;
+        config.packet_id4 = 2;
+        config.packet_id5 = 2;
+        config.packet_id6 = 2;
+        config.packet_id7 = 2;
+        config.packet_id8 = 2;
+        config.packet_id9 = 2;
+        config.operation_code1 = 1;
+        config.operation_code2 = 2;
+        config.operation_code3 = 3;
+        config.operation_code4 = 4;
+        config.operation_code5 = 5;
+        config.operation_code6 = 6;
+        config.operation_code7 = 7;
+        config.operation_code8 = 8;
+        config.operation_code9 = 9;
 
-    uint8_t confirmed_packet = buf_recieved[1];
-    switch(confirmed_packet){
-    case (sizeof(total_config_)/BUFFSIZE): {
+        uint8_t confirmed_packet = buf_recieved[1];
+        switch(confirmed_packet){
+        case (sizeof(total_config_)/BUFFSIZE): {
             buf[0] = 2;
             buf[1] = 255; //EOT marker
-            hid_write(handle_read, buf, BUFFSIZE);
-            config_mode = false;
-            if(mutex_for_save.tryLock()) {
-                QMessageBox::information(this, tr("Success!"),
+            if (handle_read) {
+                hid_write(handle_read, buf, BUFFSIZE);
+                config_mode = false;
+                if(mutex_for_save.tryLock()) {
+                    QMessageBox::information(this, tr("Success!"),
                                          tr("Config saved successfully to the board"));
-                mutex_for_save.unlock();
+                    mutex_for_save.unlock();
+                }
             }
             break;
         }
-    default: {
+        default: {
             if (confirmed_packet < sizeof(total_config_)/BUFFSIZE) {
                 memcpy(buf, (&(config.packet_id1)+(BUFFSIZE*confirmed_packet)), BUFFSIZE);
-                hid_write(handle_read, buf, BUFFSIZE);
+                if (handle_read) hid_write(handle_read, buf, BUFFSIZE);
             }
             break;
+        }
         }
     }
 }
 
-void OSHStudio::write_config_packet(void){
-    static uint8_t i=0;
-    if (!config_mode){
-        if (!(i++%10)){
-            const uint8_t hb_packet[BUFFSIZE] = {2,254,0};
-            hid_write(handle_read, hb_packet, BUFFSIZE);
-        }
-    }
-}

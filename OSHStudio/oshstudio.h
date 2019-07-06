@@ -88,6 +88,9 @@ private:
   uint8_t pov4;
   uint16_t axes_shapes[MAX_AXES][SHAPEVALUES];
   bool config_mode;
+  bool file_logging;
+  QFile logfile;
+  QTextStream logstream;
 
 private slots:
   void drawHelpSB(void);
@@ -131,7 +134,7 @@ private slots:
   void current_profile_changed(int current_profile);
   void update_ro_shapes(void);
   void setSensorsValue(uint8_t *buffer);
-  void write_config_packet(void);
+  void on_startLog_Button_toggled(bool checked);
 };
 
 #endif // OSHSTUDIO_H
